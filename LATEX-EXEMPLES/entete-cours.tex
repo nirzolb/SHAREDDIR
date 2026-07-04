@@ -1,0 +1,194 @@
+
+\providecommand\FINDEQUOI{entete-cours}
+\providecommand\FINRELU{}
+\providecommand\FINPROVISOIRE{\input{\FINDEQUOI}}
+
+					
+\providecommand\DOparametres{
+
+
+	%% TEMP
+	\providecommand\STRIPTEASEMESSAGE{}
+	\includeversion{ifnotSTRIPTEASECSE304}
+	
+	\ifnotmodeDIFFUSIONFINALE{\markversion{NOTCSE304NORINF412}}
+	\ifmodeDIFFUSIONFINALE{\includeversion{NOTCSE304NORINF412}}
+		
+	\ifdefined\QUATRECENTDOUZE
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTINF412}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTINF412}}
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTCSE304NORINF412}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTCSE304NORINF412}}
+		\POLYINF412{}
+	\else
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTINF412}}
+		\ifmodeDIFFUSIONFINALE{\includeversion{NOTINF412}}
+	\fi
+	
+	\ifdefined\TROISCENTQUATRE
+		\def\doLOGICSUMMARY{} 
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTCSE304}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTCSE304}}
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTCSE304NORINF412}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTCSE304NORINF412}}
+		\POLYCSE304{}
+		
+		\ifdefined\STRIPTEASE
+			\excludeversion{ifnotSTRIPTEASECSE304}
+			\renewcommand\STRIPTEASEMESSAGE{
+			\bigskip
+				<remaining part of this chapter not yet available online>
+				}
+		\else
+			\includeversion{ifnotSTRIPTEASECSE304}
+			\providecommand\STRIPTEASEMESSAGE{}
+		\fi
+
+	\else
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTCSE304}}
+		\ifmodeDIFFUSIONFINALE{\includeversion{NOTCSE304}}
+	\fi
+
+	\ifdefined\COURSLFMIvingtvingt
+		\def\doLOGICSUMMARY{} 
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTLFMI2020}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTLFMI2020}}
+		\POLYLFMIvingtvingt
+	\else
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTLFMI2020}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTLFMI2020}}
+	\fi
+	
+
+	
+	\ifdefined\COURSMPRIvingtvingtun
+		\ifnotmodeDIFFUSIONFINALE{ \markversion{NOTMPRI2021}}
+		\ifmodeDIFFUSIONFINALE{ \excludeversion{NOTMPRI2021}}
+		\POLYMPRIvingtvingtun
+	\else
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTMPRI2021}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTMPRI2021}}
+                \fi
+
+	\ifdefined\COURSMPRIvingtvingtquatre
+		\ifnotmodeDIFFUSIONFINALE{ \markversion{NOTMPRI2024} \markversion{MPRI2024} }
+		\ifmodeDIFFUSIONFINALE{ \excludeversion{NOTMPRI2024} \includeversion{MPRI2024}}
+		\POLYMPRIvingtvingtun
+	\else
+		\ifnotmodeDIFFUSIONFINALE{\markversion{NOTMPRI2024} \markversion{MPRI2024}}
+		\ifmodeDIFFUSIONFINALE{\excludeversion{NOTMPRI2024} \includeversion{MPRI2024}}
+	\fi
+	
+	\providecommand\FINRELU{}
+}
+
+
+\providecommand\parametres{
+\DOparametres
+
+}
+
+\providecommand\parametresurs{
+\def\DIFFUSIONFINALE{}
+\def\DOPAGEDEGARDE{} %page de garde ou pas pour chaque chapitre imprimé individuellement
+\DOparametres
+\renewcommand\FINRELU{\input{\FINDEQUOI}}
+}
+
+\providecommand\ifnotSAFEMODE[1]{}
+\ifdefined\SAFEMODE
+	\renewcommand\parametres{\parametresurs}
+	\ifdefined\POLYMODE
+	\else
+		\def\POLYCHAPTERMODE{}
+	\fi
+\else
+	\renewcommand\ifnotSAFEMODE[1]{
+	%% 2021: Comprend pas mais assure
+\ifdefined\SAFEMODE
+\else
+	#1
+\fi
+}
+\fi
+
+
+
+\providecommand\GROS{}
+
+\ifdefined\COURSMODE
+\renewcommand\GROS{12pt}
+\fi
+
+
+\providecommand\ifnotPOLYCHAPTERMODE[1]{
+\ifdefined\POLYCHAPTERMODE
+\else
+#1
+\fi
+}
+
+\providecommand\ifPOLYCHAPTERMODE[1]{
+\ifdefined\POLYCHAPTERMODE
+#1
+\fi
+}
+
+
+\providecommand\ifnotPOLYMODE[1]{
+\ifdefined\POLYMODE
+\else
+#1
+\fi
+}
+
+\providecommand\ifPOLYMODE[1]{
+\ifdefined\POLYMODE
+#1
+\fi
+}
+
+
+\providecommand\IFNOTSUB[1]{#1}
+\IFNOTSUB{
+%
+%
+\ifPOLYMODE{\documentclass{book}}
+\ifnotPOLYMODE{
+	\ifnotPOLYCHAPTERMODE{
+		\documentclass[\GROS]{article}
+	}
+	\ifPOLYCHAPTERMODE{
+		\documentclass{book}
+	}
+	
+	
+
+}
+
+%%%% STYLES: APRES VOLS
+
+\usepackage{fourier}
+
+%%%% FIN STYLES
+
+\usepackage{versions}
+\includeversion{pasweb}
+
+
+\input{macros}
+\input{macros-moins-propres}
+\input{macros-intitules}
+
+
+
+\parametres
+
+\ifdefined\doLOGICSUMMARY
+	\includeversion{LOGICSUMMARY}
+\else
+	\excludeversion{LOGICSUMMARY}
+\fi
+
+}
+

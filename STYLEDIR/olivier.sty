@@ -1,0 +1,804 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{olivier}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Package Olivier.sty
+%
+%  Author: Olivier Bournez.
+%  Date: 1999
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Options:
+%      [french]/[english]
+%          default: french
+%          action: set language
+%      [chapitre=chapter]/[]
+%          default: [] (not set)
+%          action: theorems are indexed on chapters
+%      [notes]/[expose]/[cv]/[]
+%          default: [] (notset)
+%          action: 
+%                [notes]:  set macros for quick note taking
+%                [expose]: set macros for making slides
+%                [cv]:     set macros for writing a CV.
+%      [brouillon]/[]
+%          default: [] (notset)
+%          action: write "brouillon" on every page
+% Use:
+%     \Figure{name}                  (include figure)
+%     \Figuret{name}{label}{caption}
+%     \mybiblio                      (generate bibliography)
+%     \jolipage{text1}{text2}{text3} (generate a title page)
+
+
+
+%%%%%%% Required packages
+\RequirePackage{ifthen}
+\RequirePackage{latexsym}
+\RequirePackage{epic}
+\RequirePackage{eepic}
+
+\RequirePackage{amsfonts}
+\RequirePackage{amsmath}
+\RequirePackage{comment}
+
+%%% Pour figures
+\RequirePackage{here}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 reste
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%% Required by X-symbols
+\RequirePackage{amssymb}
+\DeclareTextSymbol{\textbackslash}{T1}{92}
+\newcommand{\nsubset}{\not\subset}
+\providecommand{\textflorin}{\textit{f}}
+\newcommand{\setB}{{\mathord{\mathbb B}}}
+\newcommand{\setC}{{\mathord{\mathbb C}}}
+\newcommand{\setN}{{\mathord{\mathbb N}}}
+\newcommand{\setQ}{{\mathord{\mathbb Q}}}
+\newcommand{\setR}{{\mathord{\mathbb R}}}
+\newcommand{\setZ}{{\mathord{\mathbb Z}}}
+\newcommand{\coloncolon}{\mathrel{::}}
+\newcommand{\lsemantics}{\mathopen{\lbrack\mkern-3mu\lbrack}}
+\newcommand{\rsemantics}{\mathclose{\rbrack\mkern-3mu\rbrack}}
+
+%%%%%%%% Local setttings
+
+\providecommand{\homedir}{/Users/bournez}
+\providecommand{\bibdir}{\homedir/Bibliographie}
+\providecommand{\figdir}{./Fig}
+\providecommand{\setbibdir}[1]{\renewcommand{\bibdir}{#1}}
+\providecommand{\setfigdir}[1]{\renewcommand{\figdir}{#1}}
+
+%%%%%%%% Process options
+
+\newboolean{french} 
+\newboolean{chapitre}
+\newboolean{brouillon}
+\newboolean{mynotes}
+\newboolean{cv}
+\newboolean{expose}
+\newboolean{lettre}
+\newboolean{automate}
+
+\setboolean{french}{false}
+\setboolean{chapitre}{false}
+\setboolean{mynotes}{false}
+\setboolean{brouillon}{false}
+\setboolean{cv}{false}
+\setboolean{expose}{false}
+\setboolean{automate}{false}
+\setboolean{lettre}{false}
+
+
+\DeclareOption{french} {\setboolean{french}{true}}
+\DeclareOption{english}{ \setboolean{french}{false}}
+\DeclareOption{chapitre}{\setboolean{chapitre}{true}}
+\DeclareOption{chapter}{\setboolean{chapitre}{true}}
+\DeclareOption{brouillon}{\setboolean{brouillon}{true}}
+\DeclareOption{mynotes}{\setboolean{mynotes}{true} 
+                      %\setboolean{brouillon}{true}
+                      \setboolean{french}{true}}
+\DeclareOption{cv}{\setboolean{cv}{true}}
+\DeclareOption{expose}{\setboolean{expose}{true}}
+\DeclareOption{automate}{\setboolean{automate}{true}}
+\DeclareOption{lettre}{\setboolean{lettre}{true}}
+
+\newboolean{pppower}
+\setboolean{pppower}{false}
+\DeclareOption{ppower4}{\setboolean{pppower}{true}}
+
+
+\newboolean{pprosper}
+\setboolean{pprosper}{false}
+\DeclareOption{prosper}{\setboolean{pprosper}{true} \setboolean{expose}{true}}
+
+\newboolean{pbeamer}
+\setboolean{pbeamer}{false}
+\DeclareOption{beamer}{\setboolean{pbeamer}{true} \setboolean{expose}{true}}
+
+
+\newboolean{fullscreen}
+\setboolean{fullscreen}{false}
+\DeclareOption{fullscreen}{\setboolean{fullscreen}{true}}
+
+
+
+\ProcessOptions*
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 prosper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\ifthenelse{\boolean{pprosper}} {
+  \newcommand\notprosper[1]{}
+  \newcommand\ifprosper[1]{#1}
+}
+{
+ \newcommand\notprosper[1]{#1}
+  \newcommand\ifprosper[1]{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 beamer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\ifthenelse{\boolean{pbeamer}} {
+  \newcommand\notbeamer[1]{}
+  \newcommand\ifbeamer[1]{#1}
+}
+{
+ \newcommand\notbeamer[1]{#1}
+  \newcommand\ifbeamer[1]{}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [lettre]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{lettre}} {
+   \RequirePackage{lettre}
+}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [notes]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{mynotes}} {
+   \newcommand{\emath}[1]{\ensuremath{#1}}
+   \RequirePackage{notes}
+}{
+   \newcommand{\emath}[1]{#1}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [cv]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{cv}} {
+   \RequirePackage{cv}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                [french]/[english]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\ifthenelse{\boolean{french}}
+{   \RequirePackage [francais,english]{babel}
+
+%% Soit disant nécessaire à cause d'un conflit sur package label a propos du :
+%\usepackage[babel=true,kerning=true]{microtype}
+% EN FAIT LA SOLUTION EST
+%\usepackage[english,frenchb]{babel}
+% 
+% quand figure:
+% \shorthandoff{:}
+% \selectlanguage{english}
+% \begin{tikzpicture}
+% ...
+% \end{tikzpicture}
+% \selectlanguage{frenchb}
+
+
+  \ifthenelse{\boolean{brouillon}}
+     {   \RequirePackage[french]{draftcopy}}
+     {}
+  \newcommand{\ProofName}{Preuve}
+  \newcommand{\SketchName}{Sch{\'e}ma de preuve}
+  \newcommand{\TheoremName}{Th{\'e}or{\`e}me}
+  \newcommand{\LemmaName}{Lemme}
+  \newcommand{\PropositionName}{Proposition}
+  \newcommand{\CorollaryName}{Corollaire}
+  \newcommand{\ClaimName}{Affirmation}
+  \newcommand{\FactName}{Fait}
+  \newcommand{\DefinitionName}{D{\'e}finition}
+  \newcommand{\ConventionName}{Convention}
+  \newcommand{\OpenPbName}{{Probl{\`e}me}}
+  \newcommand{\QuestionName}{Question}
+  \newcommand{\ConjectureName}{Conjecture}
+  \newcommand{\RemarkName}{Remarque}
+  \newcommand{\ObservationName}{Observation}
+  \newcommand{\ExampleName}{Exemple}
+}
+{
+  \ifthenelse{\boolean{brouillon}}
+    {   \RequirePackage{draftcopy}}
+    {}
+  \newcommand{\ProofName}{Proof}
+  \newcommand{\SketchName}{Scketch of proof}
+  \newcommand{\TheoremName}{Theorem}
+  \newcommand{\LemmaName}{Lemma}
+  \newcommand{\PropositionName}{Proposition}
+  \newcommand{\CorollaryName}{Corollary}
+  \newcommand{\ClaimName}{Claim}
+  \newcommand{\FactName}{Fact}
+  \newcommand{\DefinitionName}{Definition}
+  \newcommand{\ConventionName}{Convention}
+  \newcommand{\OpenPbName}{{Open problem}}
+  \newcommand{\QuestionName}{Question}
+  \newcommand{\ConjectureName}{Conjecture}
+  \newcommand{\RemarkName}{Remark}
+  \newcommand{\ObservationName}{Observation}
+  \newcommand{\ExampleName}{Example}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                [chapter]/[]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\ifthenelse{\boolean{chapitre}}
+{
+
+  \newtheorem{theorem}{\TheoremName}[chapter]
+  \newtheorem{definition}{\DefinitionName}[chapter]
+  \newtheorem{openproblem}{\OpenPbName}[chapter]
+  \newtheorem{lemma}{\LemmaName}[chapter]
+  \newtheorem{proposition}{\PropositionName}[chapter]
+  \newtheorem{corollary}{\CorollaryName}[chapter]
+  \newtheorem{observation}{\ObservationName}[chapter]
+  \newtheorem{conjecture}{\ConjectureName}[chapter]
+  \newtheorem{example}{\ExampleName}[chapter]
+}
+{
+\notbeamer{  \newtheorem{theorem}{\TheoremName} }
+\notbeamer{  \newtheorem{definition}{\DefinitionName} }
+\notbeamer{   \newtheorem{lemma}{\LemmaName} }
+\notbeamer{   \newtheorem{corollary}{\CorollaryName} }
+\notbeamer{   \newtheorem{example}{\ExampleName} }
+  \newtheorem{openproblem}{\OpenPbName}
+  \newtheorem{proposition}{\PropositionName}
+  \newtheorem{observation}{\ObservationName}
+  \newtheorem{conjecture}{\ConjectureName}
+%\newtheorem{remarque}{\RemarkName}
+}
+\notbeamer{  \newenvironment{proof}{{\bf \ProofName}:}{\hfill $\Box$ } }
+\newenvironment{sketch}{{\bf \SketchName}:}{\hfill $\Box$}
+\newcommand{\remarque}[1]{{\bf \RemarkName.}~ #1}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 pdf/dvi output format detection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Attention: SUR MAC (en fait distrib live Tex), pdftex, latex est la meme 
+%% commande (pdfetex)
+%% => NE JAMAIS SE BASER SUR \pdfoutput (contrairement au monde entier)
+%% Facon propre: utiliser le package ifpdf
+
+\RequirePackage{ifpdf}
+\ifpdf 
+   \newcommand{\psonly}[1]{}
+   \newcommand{\pdfonly}[1]{#1}
+\else
+   \newcommand{\psonly}[1]{#1}
+   \newcommand{\pdfonly}[1]{}
+\fi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 Accents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\RequirePackage[latin1]{inputenc}
+%  \RequirePackage[T1]{fontenc}
+\RequirePackage[cyr]{aeguill}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 Paquetages pour les figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\psonly{
+%  \RequirePackage{a4}
+  \RequirePackage[dvips]{graphicx}
+  % graphicx: donne la commande \includegraphics
+  % en théorie fournit aussi \epsfig
+  % d'ou le fait que commente
+  %\RequirePackage[dvips]{epsfig}
+
+  \RequirePackage{pstricks}
+}
+
+
+\pdfonly{
+%% Apparement cette commande est obsolete.
+  \RequirePackage%[pdftex]
+  {graphicx}
+  % graphicx: donne la commande \includegraphics
+  % Emulation
+   \providecommand\epsfig[1]{\includegraphics{#1}}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 Couleurs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pdfonly{ \RequirePackage{color} }
+\psonly{  \RequirePackage{color}  }
+
+
+%%%%% ATTENTION POUR QUE TOUT MARCHE
+%%%% IL FAUT QUE dvipsnames soit dans les options du
+%%% \documentclass (for e.g. \documentclass[compress,dvipsnames]{beamer})
+
+%% Explications
+%% \usepackage[driver,usenames,dvipsnames]{color}
+%% driver= dvips ou pdftex en pratique
+%% usenames: loads all the named colours
+%% dvipsnames: makes the named colour model of dvips
+%%             available to other drivers;
+%%
+%% 1) Définir une couleur 
+%%      \definecolor{name}[model]{specs}
+%%        model= rgb (entre autres)
+%%        spec = 0.5 1 0.2 (entre 0 et 1)
+%%
+%%
+%% 2) \color col_spec: met la couleur courante
+%%     \textcolor col_spec {texte}:  met la coulueur du texte
+%%    \normalcolor : remet à couleur normale
+%%
+%%  Ici: col_spec is either the name of a 
+%%       defined colour, like {blue}, or [model]{spec}, like [rgb]{0,1,0}.
+%%
+
+%% Pour afficher toutes les couleurs
+%   \usepackage{multicol}
+%   \renewcommand*{\DefineNamedColor}[4]{%
+%     \textcolor[named]{#2}{\rule{7mm}{7mm}}\quad
+%     \texttt{#2}\strut\\}
+ 
+%   \begin{center}\Large Named colours in \texttt{dvipsnam.def}
+%   \end{center}
+%   \begin{multicols}{3}
+%     \input{dvipsnam.def}
+%   \end{multicols}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [expose]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{expose}} {
+   \RequirePackage{expose-new}
+   \RequirePackage{expose}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Macros for figure inclusion
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\psonly{
+   \newcommand {\Figure}[1] {\begin{figure}[hptb] \begin{center}
+   \input{\figdir/#1.pstex_t} 
+    \end{center}\end{figure}}
+}
+\pdfonly{
+   \newcommand {\Figure}[1] {\begin{figure}[hptb] 
+     \begin{center}
+   \input{\figdir/#1.pdftex_t} 
+   \end{center}
+    \end{figure}
+}}
+
+
+
+
+\newcommand{\Fig}[1]{\Figure{#1}}
+%% Rappel: par défaut si pas extension
+%% latex: cherche .eps
+%% pdflatex: cherche .pdf
+%% utiliser epstopdf.
+
+\psonly{
+\newcommand {\Figurec}[2] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pstex_t} \caption{ #2}
+    \end{center}\end{figure}}
+
+\newcommand {\Figuret}[3] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pstex_t} \caption{\label{#2} #3}
+    \end{center}\end{figure}}
+
+\newcommand {\FigureRes}[4] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pstex_t} \caption[#4]{\label{#2} #3}
+    \end{center}\end{figure}}
+}
+
+\pdfonly{
+\newcommand {\Figurec}[2] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pdftex_t} \caption{ #2}
+    \end{center}\end{figure}}
+
+\newcommand {\Figuret}[3] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pdftex_t} \caption{\label{#2} #3}
+    \end{center}\end{figure}}
+
+\newcommand {\FigureRes}[4] {\begin{figure}[hptb] \begin{center}
+      \input{\figdir/#1.pdftex_t} \caption[#4]{\label{#2} #3}
+    \end{center}\end{figure}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Macros for bibliographie inclusion
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\bibcmd}{
+ \bibliography{\bibdir/divers,\bibdir/Analog,\bibdir/BSSComplexite,\bibdir/geometrie,\bibdir/hybridsystems,\bibdir/perso.bib,\bibdir/systemesdynamiques,\bibdir/HSI,\bibdir/HSII,\bibdir/HSIII,\bibdir/HSIV,\bibdir/HSV,\bibdir/HART97,\bibdir/HSCC98,\bibdir/HSCC99,\bibdir/HSCC00}
+  }
+
+\ifthenelse{\boolean{french}}
+{
+\newcommand{\mybiblio}{%\bibliographystyle{myfplain}
+\bibliographystyle{plain}
+\bibcmd}
+}{
+\newcommand{\mybiblio}{\bibliographystyle{plain}
+\bibcmd}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Macros for multifile documents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{donothing}{}{}
+\providecommand{\AutoCompile}{}
+\newcommand{\subdocument}{donothing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Macros for generating a title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\jolipage}[3]{\newpage \ \thispagestyle{empty} \vfill
+  \hrule \vspace{0.05cm} \hrule \vspace{0.2cm}
+\begin{center} 
+  {\sc \large #1 }
+  \\[0.3cm]
+  #2
+  \\[0.3cm]
+  #3
+\end{center}
+\vspace{0.2cm} \hrule \vspace{0.05cm} \hrule \vfill \newpage }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Macros for drawing automatas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{automate}} {
+  \RequirePackage{gastex}
+
+% Computeurs perso pour environement (ul=unitlength)
+\newcounter{largeurul}
+\newcounter{hauteurul}
+\newcounter{marginul}
+\newcounter{l}
+\newcounter{h}
+\newcounter{ox}
+\newcounter{oy}
+% Defauts:
+\setcounter{marginul}{20}
+\gasset{Nadjust=w,Nadjustdist=2}
+% Macros:
+\newcommand{\initialnode}{\node[Nmarks=r]}
+\newcommand{\edge}{\drawedge}
+\newcommand{\edgeleft}{\drawedge[ELside=l]}
+\newcommand{\edgeright}{\drawedge[ELside=r]}
+\newcommand{\edgecurveleft}{\drawedge[curvedepth=3]}
+\newcommand{\edgecurveright}{\drawedge[curvedepth=-3,ELside=r]}
+
+\newcommand{\boucle}{\drawloop}
+\newcommand{\invariant}[2]{\nodelabel[ExtNL=y,NLangle=270,NLdist=1](#1){#2}}
+
+\newcommand{\edgecond}[3]{ \edgeleft(#1){#2} \edgeright(#1){#3} }
+\newcommand{\edgecondcurve}[3] {\edgecurveleft(#1){#2 #3}}
+\newcommand{\edgecondboucle}[3]{\boucle(#1){#2 #3}}
+
+
+% Environnement: #1=maxx, #2=maxy, #3=h or l, #4= 5cm
+\newenvironment{automaton}[4]{
+  \setcounter{largeurul}{#1}
+  \setcounter{hauteurul}{#2}
+  \setcounter{l}{\thelargeurul+2*\themarginul}
+  \setcounter{h}{\thehauteurul+2*\themarginul}
+  \setcounter{ox}{-\themarginul}
+  \setcounter{oy}{-\themarginul}
+  \setlength{\unitlength}{#4/\value{#3}}
+  \begin{center}
+%\begin{turn}{90}
+    \begin{picture}(\thel,\theh)(\theox,\theoy)
+    %\put(\theox,\theoy){\framebox(\thel,\theh){}}
+}{
+    \end{picture}
+%  \end{turn}
+\end{center}
+}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Usefull macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% documents
+\newcommand{\titreu}[1]{\title{#1} \author{} \date{}   \maketitle}
+\newcommand{\titred}[2]{\title{#1} \author{} \date{#2} \maketitle}
+\newcommand{\titre}[3]{\title{#1} \author{#2} \date{#3} \maketitle}
+\newcommand{\arevoir}{{\bf A REVOIR}}
+\newcommand{\incomplet}{{\em incomplet}}
+
+% struts and co
+
+\newcommand{\barreinvisible}[1]{\rule{0cm}{#1}}
+\newcommand{\monte}[2]{\raisebox{#2}[0cm]{#1}}
+\newcommand{\unite}{ex}
+
+
+% emphasizing new words
+
+\newcommand{\motnouv}[1]{ \emph {#1}}
+\newcommand{\motnouvi}[2]{  \index{#2} \motnouv{#1}}
+\newcommand{\motnouvm}[1] { $#1$}
+\newcommand{\motnouvmi}[2] { \index{#2} \motnouvm{#1} }
+\newcommand{\mysee}[1]{voir #1}
+
+
+% N,Z,Q,R
+\ifdefined\MACROSPOINTEXOUVERT
+\else
+	\newcommand{\N}{\emath{\mathbb{N}}}
+	\providecommand{\R}{\emath{\mathbb{R}}}
+	\newcommand{\Z}{\emath{\mathbb{Z}}}
+	\newcommand{\Q}{\emath{\mathbb{Q}}}
+	\newcommand{\C}{\emath{\mathbb{C}}}
+	\newcommand{\QP}{\emath{\Q^{+}}}
+	\newcommand{\RP}{\emath{{\R^{+}}}}
+
+% calligraphic letters
+	\newcommand{\mA}{\emath{{\mathcal{A}}}}
+	\newcommand{\mH}{\emath{{\mathcal{H}}}}
+	\newcommand{\mJ}{\emath{{\mathcal{J}}}}
+	\newcommand{\mN}{\emath{{\mathcal{N}}}}
+	\newcommand{\mP}{\emath{{\mathcal{P}}}}
+	\newcommand{\mT}{\emath{{\mathcal{T}}}}
+	\newcommand{\mF}{\emath{{\mathcal{F}}}}
+	\newcommand{\mG}{\emath{{\mathcal{G}}}}
+	\newcommand{\mX}{\emath{{\mathcal{X}}}}
+
+% non-uniform complexity classes
+
+	\newcommand{\IP}{\emath{\mathbb{P}}}
+	\newcommand{\INP}{\emath{\mathbb{NP}}}
+	\newcommand{\INBP}{\emath{\mathbb{NBP}}}
+
+
+% writing sets
+
+	\newcommand{\ao}{\{}
+	\newcommand{\af}{\}}
+	\newcommand{\ac}[1]{\ao{}#1\af{}}
+	\newcommand{\bool}{\ac{0,1}}
+	\newcommand{\unn}{\ac{1\dots n}}
+
+
+
+% logical formulas
+
+	\newcommand{\existe}{\emath{\exists}}
+	\newcommand{\ex}{\existe}
+	\newcommand{\tout}{\emath{\forall}}
+	\newcommand{\fa}{\tout}
+	\newcommand{\et}{\emath{\wedge}}
+	\newcommand{\ou}{\emath{\vee}}
+	\newcommand{\non}{\emath{\neg}}
+	\newcommand{\dans}{\emath{\in}}
+	\newcommand{\nondans}{\emath{\notin}}
+	\newcommand{\nonegal}{\emath{\neq}}
+	\newcommand{\inclus}{\emath{\subset}}
+	\newcommand{\implique}{\emath{\Rightarrow}}
+	\newcommand{\imp}{\implique}
+	\newcommand{\ssi}{\emath{\Leftrightarrow}}
+	\newcommand{\equivalent}{\ssi}
+	\newcommand{\intersection}{\emath{\cap}}
+	\newcommand{\inter}{\emath{\cap}}
+	\newcommand{\union}{\emath{\cup}}
+	\newcommand{\different}{\emath{\neq}}
+	\newcommand{\oppose}{\different}
+	\newcommand{\carre}{\emath{\Box}}
+	\providecommand{\boite}{\emath{\Box}}
+	\newcommand{\toujours}{\emath{\Box}}
+	\newcommand{\tjrs}{\emath{\Box}}
+	\newcommand{\trjs}{\emath{\Box}}
+	\newcommand{\suivant}{\emath{\bigcirc}}
+	\newcommand{\eventuellement}{\emath{\diamond}}
+	\newcommand{\evt}{\emath{\diamond}}
+	\newcommand{\vide}{\emath{\emptyset}}
+	\newcommand{\losange}{\emath{\diamond}}
+	\newcommand{\prive}{\emath{-}}
+	\newcommand{\tilda}{\emath{\sim{}}}
+	\newcommand{\croix}{\emath{\times}}
+	%\newcommand\mytilde{$~\tilde{ }$}
+	\newcommand\mytilde{\~{}}
+
+\fi
+
+% deduction
+
+\newcommand{\prouve}{\emath{\vdash}}
+\newcommand{\prouvei}[1]{\emath{\vdash_{#1}}}
+\newcommand{\modele}{\emath{\models}}
+\newcommand{\deduit}[2]{\emath{\frac{#1}{#2}}}
+\newcommand{\deduitd}[3]{\deduit{#1\ #2}{#3}}
+\newcommand{\hoare}[3]{\ac{#1}#2\ac{#3}}
+\newcommand{\bottom}{\emath{\bot}}
+
+% rewriting
+
+
+\newcommand{\sousterme}[2]{\emath{ #1_{|p}}}
+\newcommand{\replace}[3]{\emath{ #1[#3]_{|p}}}
+\newcommand{\racine}{\emath{\Lambda}}
+\newcommand{\subsume}{sub}
+\newcommand{\renommage}{ren}
+\newcommand{\encompass}{enc}
+\newcommand{\fleche}{\emath{\rightarrow}}
+\newcommand{\flecheinv}{\emath{\leftarrow}}
+\newcommand{\flechesym}{\emath{\leftrightarrow}}
+\newcommand{\flechee}[1]{\emath{\rightarrow^#1}}
+\newcommand{\flecheinve}[1]{\emath{\rightarrow^#1}}
+\newcommand{\flechesyme}[1]{\emath{\leftrightarrow^#1}}
+\newcommand{\flecheei}[2]{\emath{\rightarrow^#1_#2}}
+\newcommand{\flechei}[1]{\emath{\rightarrow_#1}}
+\newcommand{\flecheinvei}[2]{\emath{\rightarrow^#1_#2}}
+\newcommand{\flechesymei}[2]{\emath{\leftrightarrow^#1_#2}}
+\newcommand{\equ}{\emath{\simeq}}
+\newcommand{\derivation}[1]{\flecheei{*}{E}}
+\newcommand{\invderivation}{\flecheinvei{*}{E}}
+\newcommand{\congruence}[1]{\flechesymei{*}{E}}
+\newcommand{\algebrequotient}{\mT/\congruence{E}}
+
+% geometry
+
+\ifdefined\MACROSPOINTEXOUVERT
+\else
+	\newcommand\vectorl[1]{{\mathbf#1}}
+	\newcommand\vx{\vectorl{x}}
+	\newcommand\vy{\vectorl{y}}
+	\newcommand\vz{\vectorl{z}}
+	\newcommand\ve{\vectorl{e}}
+	\newcommand\vv{\vectorl{v}}
+	\newcommand\vu{\vectorl{u}}
+	\newcommand\vzer{\vectorl{0}}
+	\newcommand\vi{\vectorl{1}}
+\fi
+
+% 
+
+\ifdefined\MACROSPOINTEXOUVERT
+\else
+	\newcommand\systeme[1]{
+	\left\{
+	\begin{array}{lll} 
+	#1
+	\end{array}
+	\right.
+	}
+
+	\newcommand\systemee[1]{
+	\left\{
+	\begin{array}{llll} 
+	#1
+	\end{array}
+	\right.
+	}
+\fi
+
+
+% notes
+\newcommand{\essentiel}[1]{\fbox{\begin{minipage}{9cm} #1 
+    \end{minipage}
+  }}
+
+\ifdefined\MACROSPOINTEXOUVERT
+\else
+	\newcommand{\todo}[1] {\fbox{\begin{minipage}{9cm} {\bf TODO:\\ #1 }
+ 	   \end{minipage}
+	  }}
+\fi
+
+\newtheorem{question}{Question du jour}
+\newtheorem{bilan}{Bilan}
+\newcommand{\idef}[1]{\item \ [#1]}
+
+
+\newcommand{\doubleligne}[2]{%
+{\tiny  \begin{tabular}[h]{c}
+#1\\
+#2 \end{tabular}}%
+}
+
+\newcommand{\elan}{{\sf ELAN}}
+\newcommand{\Elan}{{\sf ELAN}}
+\newcommand{\ELAN}{{\sf ELAN}}
+
+
+
+\newcommand{\rayer}[1]{\setbox1=\hbox{#1}\mbox{}\rlap{\rule[.3ex]{\wd1}{3pt}}\unhbox1}
+
+\newcommand{\LORIAaddress}{{\sc LORIA/INRIA},\\ 615 rue du Jardin Botanique,
+                BP 101,\\ 54602 Villers-lès-Nancy Cedex, Nancy,
+                France.}
+\providecommand{\institute}[1]{\begin{center} #1 \end{center}}
+
+\def\espace{\vfill}
+
+
+\providecommand\url[1]{
+\let\savetruc\Fcolonspace
+\def\Fcolonspace{}
+{\tt #1}
+\let\Fcolonspace\savetruc}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [pour la synchro]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \pdfonly{\RequirePackage{pdfsync}}
+% \psonly{\RequirePackage{srcltx}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 [pour pbs de redefinition]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Undefine}[1]{\let#1\undefined }
+
+

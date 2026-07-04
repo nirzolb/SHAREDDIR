@@ -1,0 +1,50 @@
+%!TEX spellcheck = English
+%% can also set root = something
+
+\documentclass{article}
+%\usepackage{olivier}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\IfFileExists{pdfsync.sty}{\usepackage{pdfsync}}{}
+\usepackage{hyperref}
+
+%%%% MACROS
+\input{macros.tex} %~/lib/LaTeX/Perso/macros.tex}
+%\input{macros-moins-propres.tex}
+
+
+%soit iso latin1
+%\usepackage[cyr]{aeguill}
+%soit utf8
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+
+%%%%% Fin macros
+
+
+\begin{document}
+
+\title{Titre}
+\author{
+ Olivier Bournez% \inst{1}
+\\[0.5cm] %{\myaddress}
+}
+\date{\today}
+%\institute{\affiliationofficielleolivier}
+
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+
+\section{Introduction}
+
+
+\bibliographystyle{plainurl}
+%\bibliography{bournez.perso}
+%\bibliography{/Users/bournez/bibliographie/Bib-Files/bournez,/Users/bournez/bibliographie/Bib-Files/perso}
+\end{document}
+

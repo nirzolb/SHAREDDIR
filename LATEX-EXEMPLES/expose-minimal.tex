@@ -1,0 +1,246 @@
+%!TEX spellcheck = English
+%% can also set root = something
+
+\providecommand\ifnotSLIDE[1]{}
+
+\documentclass[compress,dvipsnames]{beamer}
+
+\input{macros}
+\usepackage[beamer,expose,french]{olivier}
+
+
+%soit iso latin1
+%\usepackage[cyr]{aeguill}
+%soit utf8
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+%%%%%
+
+\newcommand{\motimportant}[1]{\textcolor{red}{#1}}
+\newcommand{\motnouveau}[1]{\textcolor{green}{#1}}
+
+
+
+\newcommand{\partie}[1]{\begin{myslidee}{} \vfill \begin{center} {\large \colortitre{#1}} \vfill
+  \end{center} \end{myslidee}}
+\newcommand\POURMOI[1]{} %%% #1 si commentaires perso.
+
+\renewcommand\systeme[1]{
+\left\{
+\begin{array}{lll} 
+#1
+\end{array}
+\right.
+}
+
+\begin{document}
+
+%%%%
+
+\AtBeginSection[]{\frame{\frametitle{Menu%  d'aujourd'hui
+    }\tableofcontents[current,hideallsubsections]}}
+% \AtBeginSubsection[]{\frame{\frametitle{Sub-menu} \tableofcontents[subsectionstyle=show/shaded/hide,sectionstyle=show/hide]}}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{Title}
+\title{Un sujet passionnant}
+\author{
+% Quelquepart \\
+% \  \\[1cm]
+\colorsoustitre{Olivier Bournez}%\inst{1}
+% \and 
+% \colorsoustitre{coauteur}\inst{2}
+}
+\bigskip
+
+\institute{
+  % \inst{1}
+\affiliationofficielleolivierslides
+% \and
+% \inst{2}
+% l'institut de mon copain.
+}
+\date{  
+Aujourd'hui.
+}
+
+\frame{
+\begin{columns}
+ %  \begin{column}{0.25\textwidth}
+% \centerline{
+% \includegraphics[height=1.2cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_IPP}}
+% \end{column}
+  \begin{column}{0.25\textwidth}
+  \raggedright
+  {
+    \includegraphics[height=1.2cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_CNRS}
+    }
+  \end{column}
+  \begin{column}{0.5\textwidth}
+    \end{column}
+\begin{column}{0.25\textwidth}
+  \raggedleft
+  {
+    \includegraphics[height=1.2cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_LIX}
+    }
+  \end{column}
+%   \begin{column}{0.25\textwidth}
+%     \centerline{
+%       \includegraphics[height=1.2cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_LIX}
+%       }
+% \end{column}
+\end{columns}
+
+\titlepage
+
+\vfill
+%\vspace{2\baselineskip}
+\begin{columns}
+  \begin{column}{0.25\textwidth}
+\centerline{
+\includegraphics[height=1.4cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_IPP}}
+\end{column}
+ %  \begin{column}{0.25\textwidth}
+%   \centerline
+%   {
+%     \includegraphics[height=1.2cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_CNRS}
+%     }
+% \end{column}
+% \begin{column}{0.25\textwidth}
+%   \centerline
+%   {
+%     \includegraphics[height=1.5cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_X_new}
+%     }
+%     \end{column}
+\begin{column}{0.5\textwidth}
+  \end{column}
+  \begin{column}{0.25\textwidth}
+    \centerline{
+      \includegraphics[height=2.5cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_X_new}
+      }
+\end{column}
+\end{columns}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Section 1}
+
+
+\begin{myslide}{meuh: tutu}
+\begin{itemize}
+\item chose
+\item truc
+\end{itemize}
+
+\end{myslide}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Section 1}
+
+
+\begin{myslide}{meuh: tutu}
+\begin{itemize}
+\item chose
+\item truc
+\end{itemize}
+
+\end{myslide}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{myslide}{Plus d'infos}
+\hypertarget{back}{}
+
+\begin{itemize}
+\item Lien vers 1 \hyperlink{complement1}{texte du lien}
+\end{itemize}
+\end{myslide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+%
+%        APPENDIXut
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\appendix
+
+
+
+\begin{myslide}{meuh: tutu}
+\hypertarget{complement1}{}
+
+\begin{itemize}
+\item chose
+\item truc
+\end{itemize}
+
+
+\hyperlink{back}{\beamerreturnbutton{retour}}
+\end{myslide}
+
+
+
+
+
+
+\bibliographystyle{plainurl}
+\bibliography{/Users/bournez/bibliographie/Bib-Files/bournez,/Users/bournez/bibliographie/Bib-Files/perso}
+\end{document}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         END DOCUMENT
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Section 2}
+
+
+
+
+\begin{myslide}{Le projet machin: problematiques}
+
+  \begin{itemize}
+\item theorie de chose
+\item[]
+ \item Plus precisment:  
+   \begin{itemize}
+     \item  du dynamisme pour les jeux.
+     \item Theutorie des jeux et autostabilisation.
+     \item Complexite et approximation des equilibres.
+     \end{itemize}
+\item[]
+ \item Applications:
+   \begin{itemize}
+   \item Reseaux de telecommunications.
+   \item Reseaux de capteurs.
+   \end{itemize}
+\end{itemize}
+\end{myslide}
+
