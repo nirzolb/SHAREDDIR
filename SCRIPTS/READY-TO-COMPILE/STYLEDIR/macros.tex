@@ -1,0 +1,3019 @@
+
+\providecommand\nolncs[1]{#1}	
+
+\newcommand\affiliationofficielleolivier{LIX, CNRS, École polytechnique, Institut Polytechnique de Paris, Palaiseau, France}
+\newcommand\affiliationofficielleolivierslides{LIX, CNRS, École polytechnique, \\ Institut Polytechnique de Paris, Palaiseau, France}
+
+
+\providecommand\danger{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%              begin. Switch modes compatibilités
+%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Apxproof mode
+\providecommand\apxproofmode[1]{}
+	% sinon: \newcommand\apxproof[1]{#1}
+	
+\providecommand\apxproofmodesubsection[1]{}
+	% sinon: \newcommand\apxproofmodesubsection[1]{#1}
+% utiliser: \appendixapxproofsubsection au lieu de \appendix dans ce cas. 
+		
+
+%% Lipics mode
+\providecommand\lipicsmode{}
+	% sinon: \newcommand\lipicsmode[1]{#1}
+		% en vrai sert qu'à définir \nolipics
+		
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%              end. Switch modes compatibilités
+%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% begin gestion des switchs
+
+% en fait \nopilcs est la seule commande utilisée
+
+\newcommand\nolipics[1]{#1}
+\lipicsmode{\renewcommand\nolipics[1]{}}
+
+\providecommand\NODECORATION[1]{}
+\lipicsmode{
+\providecommand\NODECORATION[1]{#1}
+}
+
+\providecommand\PASSIAPXPROOF[1]{#1}
+\apxproofmode{\renewcommand\PASSIAPXPROOF[1]{}}
+
+
+
+%% end gestion des switchs
+
+\def\MACROSPOINTEXOUVERT{}
+
+
+\providecommand\ifnotTDEXAM[1]{#1}
+\providecommand\ifnotSLIDE[1]{#1}
+
+
+  
+% pour preuves en appendix
+\providecommand\PREUVESENAPPENDIX[1]{}
+
+
+
+%%%% STYLES: APRES VOLS
+
+
+\NODECORATION{
+\usepackage{fourier}
+}
+
+%%%% Box around environment
+\usepackage[framemethod=tikz]{mdframed}
+
+\newcommand\ENVCOLOR[1]{#1}
+\newcommand\BEGINTEMPENVCOLOR[1]{\let\envcolorwas\ENVCOLOR\renewcommand\ENVCOLOR[1]{#1}}
+\newcommand\ENDTEMPENVCOLOR{\let\ENVCOLOR\envcolorwas}
+
+
+\NODECORATION{
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exercice}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exercise}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exercicee}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exerciced}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exercicec}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{blue!10},roundcorner=8pt]{exercicedc}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{orange!20},roundcorner=8pt]{example}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{orange!20},roundcorner=8pt]{exemple}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{orange!10},roundcorner=8pt]{remark}
+\ifnotSLIDE{\surroundwithmdframed[backgroundcolor=\ENVCOLOR{green!15},roundcorner=8pt]{definition}}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{gray!35}]{proposition}
+\ifnotSLIDE{\surroundwithmdframed[backgroundcolor=\ENVCOLOR{gray!35},roundcorner=8pt]{theorem}}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{gray!35}]{lemma}
+\surroundwithmdframed[hidealllines=true,backgroundcolor=\ENVCOLOR{gray!35}]{corollary}
+
+
+\surroundwithmdframed[backgroundcolor=red!35,roundcorner=8pt]{theoremaprouver}
+\surroundwithmdframed[backgroundcolor=red!35,roundcorner=8pt]{conjectureaprouver}
+}
+
+%%% tcolorbox
+
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+
+
+  %%. Commande magique
+%% \tcolorboxenvironment{⟨name⟩}{⟨options⟩}: attach options de tcolorbox à environnement
+%% alternative: je cree des boites moi meme: voici des exemples
+
+
+\newtcolorbox{maboiteconfiance}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={#2},#1}
+  
+\newtcolorbox{maboiteresume}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={#2},#1}
+  \newtcolorbox{maboiteresumeperso}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={#2},#1}
+  \newtcolorbox{maboitecommentaire}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={#2},#1}
+\newtcolorbox{maboitetruc}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
+attach boxed title to top left={yshift=-2mm},
+  title={#2},#1}
+  
+
+
+%%%% FIN STYLES
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Version ENSEIGNEMENT 2020
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%english, french
+\ifdefined\CESTDUFRANCAIS
+	\providecommand\LANGUE[2]{#2}
+	\usepackage[french]{babel}
+\else
+	\providecommand\LANGUE[2]{#1}
+\fi
+\providecommand\LANGUEinv[2]{\LANGUE{#2}{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Packages
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% SURLIGNEUR
+\providecommand\ifnotmodeDIFFUSIONFINALE[1]{
+%% 2021: Comprend pas mais assure
+\ifdefined\SAFEMODE
+\else
+#1
+\fi
+%#1
+}
+\providecommand\ifmodeDIFFUSIONFINALE[1]{
+\ifdefined\SAFEMODE
+#1
+\else
+\fi
+}
+\newcommand\SURLIGNE[1]{
+\ifnotmodeDIFFUSIONFINALE{
+\BEGINTEMPENVCOLOR{blue!30}
+{                        \colorbox{blue!30}{
+
+\noindent \begin{minipage}{\textwidth}
+#1
+\end{minipage}
+}
+}
+\ENDTEMPENVCOLOR}
+\ifmodeDIFFUSIONFINALE{
+\noindent \begin{minipage}{\textwidth}
+#1
+\end{minipage}
+}
+}
+
+
+\newenvironment{confiance}{\begin{maboiteresume}[colback=brown!50]{Résumé ici}}{\end{maboiteresume}}
+\newcommand\CONFIANCE[2][Confiance ici]{
+\begin{maboiteconfiance}[colback=yellow!50]{#1}
+\textbf{ATTENTION #1: #2}
+\end{maboiteconfiance}
+}
+
+\newenvironment{resume}{\begin{maboiteresume}[colback=brown!50]{Résumé ici}}{\end{maboiteresume}}
+\newcommand\RESUME[2][Résumé ici]{
+\begin{maboiteresume}[colback=brown!50]{#1}
+#1: #2
+\end{maboiteresume}
+}
+
+\newenvironment{resumeperso}{\begin{maboiteresumeperso}[colback=brown!50]{Résumé perso ici}}{\end{maboiteresumeperso}}
+\newcommand\RESUMEPERSO[2][Résumé perso  ici]{
+\begin{maboiteresumeperso}[colback=brown!50]{#1}
+#1: #2
+\end{maboiteresumeperso}
+%
+%
+%\todo[inline, color=brown]{résumé: #1}
+%\colorbox{brown}{
+%\noindent \begin{minipage}{\textwidth}
+%{
+%\bf 
+%#2
+%}
+%\end{minipage}
+%}
+}
+
+\newcommand\DANSLAMARGE[1]{
+\ifnotmodeDIFFUSIONFINALE{
+\marginpar{\textcolor{brown}{#1}}}
+}
+
+\newenvironment{commentaireperso}{\begin{maboitecommentaire}[colback=brown!30]{Commentaire perso} Commentaire perso:}{\end{maboitecommentaire}}
+\newcommand\COMMENTAIREPERSO[2][Commentaire perso]{
+\begin{maboitecommentaire}[colback=brown!30]{#1}
+Commentaire perso: #2
+\end{maboitecommentaire}
+}
+
+
+\newcommand\SURSURLIGNE[2][truc surligné ici]{
+%\todo[inline, color=orange]{surligné: #1}
+\ifnotmodeDIFFUSIONFINALE{
+\BEGINTEMPENVCOLOR{blue!60}
+	                 \colorbox{blue!60}{
+\noindent \begin{minipage}{\textwidth}
+{
+\bf 
+#2
+}
+\end{minipage}
+}
+\ENDTEMPENVCOLOR
+}
+\ifmodeDIFFUSIONFINALE{#2}
+}
+
+\newcommand\IMPORTANT[1]{
+\ifnotmodeDIFFUSIONFINALE{
+\BEGINTEMPENVCOLOR{yellow!100}
+		        \colorbox{yellow!100}{
+
+\noindent \begin{minipage}{\textwidth}
+{ 
+#1
+}
+\end{minipage}
+}
+\ENDTEMPENVCOLOR
+}
+\ifmodeDIFFUSIONFINALE{#1}
+}
+
+
+\newcommand\QUESTION[1]{
+\ifnotmodeDIFFUSIONFINALE{
+\BEGINTEMPENVCOLOR{oceanfoam!100}
+		        \colorbox{oceanfoam!100}{
+
+\noindent \begin{minipage}{\textwidth}
+{ 
+#1
+}
+\end{minipage}
+}
+\ENDTEMPENVCOLOR
+}
+\ifmodeDIFFUSIONFINALE{#1}
+}
+
+
+
+
+\newcommand\SOUSLIGNE[1]{
+\colorbox{lightgray}{
+
+\noindent \begin{minipage}{\textwidth}
+{ \color{gray}
+#1
+}
+\end{minipage}
+}
+}
+
+
+
+%% Gestion des cross-references cross-referencing
+\usepackage{xr-hyper}
+\usepackage{hyperref}
+
+%%
+\usepackage{versions}
+\usepackage{amsmath,amssymb,mathrsfs,amsfonts}
+%\usepackage{mathabx}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{versions}
+\usepackage{color}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage{todonotes}
+\usepackage{proof}
+\usepackage{xstring}
+
+%% Index
+\usepackage{makeidx}
+\makeindex
+\providecommand\DOINDEXPRINT{}
+\providecommand\SIGNALEMOTNOUV[1]{}
+\ifdefined\INDEXPRINT
+	\ifnotSAFEMODE{
+%	\usepackage{showidx}
+%	\let\oldindex\index
+%	\renewcommand{\index}[1]{\oldindex{#1}\marginpar{LA: \tiny#1}}
+	\renewcommand\DOINDEXPRINT{
+	      	\let\oldindex\index
+		\renewcommand{\index}[1]{\oldindex{##1}\marginpar{IDXLA: \tiny##1}}
+		\renewcommand\SIGNALEMOTNOUV[1]{\marginpar{MNV: \small\textbf{##1}}}
+	}
+	}
+\fi
+
+% === gestion des accents
+
+
+%soit iso latin1
+%\usepackage[cyr]{aeguill}
+%soit utf8
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+%%%  Pour citation \Cref (cref, ref)	
+
+\usepackage{cleveref}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Gestion des accents spéciaux.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{macros-accents}
+\input{macros-markdown}
+
+
+%\usepackage{PDFdraftcopy}
+
+
+%-- Pour Ã©tat des chapitres
+
+
+%\newcommand\ETAT{\draftstring{BROUILLON}}
+%
+%\newcommand\brouillon{\renewcommand\ETAT{\draftstring{BROUILLON}}}
+%
+%\newcommand\final{\renewcommand\ETAT{\draftstring{\rien}}}
+%
+%\newcommand\travail{\renewcommand\ETAT{\draftstring{CHANTIER}}}
+%
+%\newcommand\bazar{\renewcommand\ETAT{\draftstring{BAZAR TOTAL}}}
+%
+%\final
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      TRADUCTION EN COURS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% === volé Amaury
+
+
+
+\usepackage{stmaryrd}
+\usepackage{ifthen}
+\usepackage{mathtools}
+\usepackage{dsfont}
+\PASSIAPXPROOF{\usepackage{thmtools}}
+\usepackage{longtable}
+\usepackage{mathdots}
+\usepackage{booktabs}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      TIKZ STUFFS
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% volé pour dessin des GPAC: PAS SUR QUE BESOIN de TOUT
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepgflibrary{arrows}
+\usetikzlibrary{fit}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{graphs}
+\usetikzlibrary{topaths}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.pathmorphing}
+%
+ \usetikzlibrary{calc}
+ \usetikzlibrary{automata}
+\usetikzlibrary{chains}
+\usetikzlibrary{scopes}
+ \usetikzlibrary{positioning}
+ \usetikzlibrary{through,backgrounds}
+\usepackage{circuitikz}
+% % pour accolades
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      MACROS locales
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%====================
+%                      Moi
+%=====================
+
+
+\newcommand\myaddress{ 
+{\sc LIX, CNRS, Ecole Polytechnique, Institut Polytechnique de Paris, }\\ 91128 Palaiseau Cedex, FRANCE \\
+{\small Olivier.Bournez@lix.polytechnique.fr}}
+
+
+
+%====================
+%                      un peu de trucs sales
+%=====================
+
+%=  pour style lipics et ses trucs
+
+\providecommand\ifnotPOLYCHAPTERMODE[1]{#1}
+\providecommand\ifPOLYCHAPTERMODE[1]{}
+
+\ifnotPOLYCHAPTERMODE{
+\ifdefined\thechapter
+\providecommand\spnewtheorem[4]{\newtheorem{#1}{#2}[chapter]}
+\providecommand\spnewtheoremi[5]{\newtheorem{#1}[#5]{#2}}
+\else
+\providecommand\spnewtheorem[4]{\newtheorem{#1}{#2}}
+\providecommand\spnewtheoremi[5]{\newtheorem{#1}[#5]{#2}}
+\fi
+}
+\ifPOLYCHAPTERMODE{
+\providecommand\spnewtheorem[4]{\newtheorem{#1}{#2}}
+\providecommand\spnewtheoremi[5]{\newtheorem{#1}[#5]{#2}}
+}
+\providecommand\nolipics[1]{#1}
+
+
+
+
+%====================
+%                      un peu de trucs franchement sales
+%=====================
+
+
+% on l'inclus pas ici.
+%\input{macros-moins-propres}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Page de Garde Cours X
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\includeversion{metdate}
+
+\newcommand\XPAGEDEGARDE[2]{
+\thispagestyle{empty}
+\title{{#1} \\[2cm] %\\[3cm] 
+{\large #2}
+}
+\author{
+ Olivier Bournez% \inst{1}
+\\[0.5cm] 
+bournez@lix.polytechnique.fr%{\myaddress}
+}
+%\date{
+%\vspace{2cm}
+%\includegraphics[height=2.5cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_X_new}
+%}
+\begin{metdate}
+\date{
+\vspace{2cm}
+Version \LANGUE{of}{du} \today \\[1cm] 
+\includegraphics[height=3.5cm]{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS/logo_X_new}
+}
+\end{metdate}
+\maketitle
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      MACROS UTILES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%                      Macros
+ 
+%-------------
+%--- vectors  ---
+%-------------
+
+ 
+\newcommand\vectorl[1]{{\mathbf#1}}
+\newcommand\tu[1]{\vectorl{#1}}
+
+\newcommand\vp{\vectorl{p}}
+\newcommand\va{\vectorl{a}}
+\newcommand\vb{\vectorl{b}}
+\newcommand\vc{\vectorl{c}}
+\newcommand\vf{\vectorl{f}}
+\newcommand\vn{\vectorl{n}}
+\newcommand\vx{\vectorl{x}}
+\newcommand\vX{\vectorl{X}}
+\newcommand\vy{\vectorl{y}}
+\newcommand\vz{\vectorl{z}}
+\newcommand\ve{\vectorl{e}}
+\newcommand\vv{\vectorl{v}}
+\newcommand\vr{\vectorl{r}}
+\newcommand\vu{\vectorl{u}}
+\newcommand\vA{\vectorl{A}}
+\newcommand\vB{\vectorl{B}}
+\newcommand\vC{\vectorl{C}}
+\newcommand\vD{\vectorl{D}}
+
+%-------------
+%--- overline ---
+%-------------
+
+
+\newcommand\ox{\overline{x}}
+\newcommand\oy{\overline{y}}
+\newcommand\oc{\overline{c}}
+\newcommand\oa{\overline{a}}
+\newcommand\ow{\overline{w}}
+\newcommand\od{\overline{d}}
+\newcommand\ob{\overline{b}}
+\newcommand\oP{\overline{P}}
+\newcommand\oee{\overline{e}}
+\newcommand\ot{\overline{t}}
+\newcommand\ou{\overline{u}}
+\newcommand\ov{\overline{v}}
+\newcommand\oz{\overline{z}}
+\newcommand\am{\overline{a}}
+\newcommand\om{\overline{m}}
+\newcommand\oj{\overline{j}}
+
+%----------------
+%--- ensembles ---
+%----------------
+
+\newcommand\Q{\mathbb{Q}}
+\newcommand\R{\mathbb{R}}
+\newcommand\Z{\mathbb{Z}}
+\providecommand\C{\mathbb{C}}
+\newcommand\N{\mathbb{N}}
+\newcommand\K{\mathbb{K}}
+\newcommand\F{\mathbb{F}}
+
+\newcommand\dyadic{\mathbb{D}}
+\newcommand\Zd{{\Z_2}}
+\newcommand\Zp{{\Z_p}}
+%
+\newcommand\RP{\mathbb{R}^{>0}}
+\newcommand\QP{\mathbb{Q}^{>0}}
+
+
+%----------------
+%--- lettres cal ---
+%----------------
+
+\newcommand\mK{\mathcal{K}}
+\newcommand\mD{\mathcal{D}}
+\newcommand\mA{\mathcal{A}}
+\newcommand\mL{\mathcal{L}}
+\newcommand\mX{\mathcal{X}}
+\newcommand\mG{\mathcal{G}}
+\newcommand\mE{\mathcal{E}}
+\newcommand\mH{\mathcal{H}}
+\newcommand\mR{\mathcal{R}}
+\newcommand\mF{\mathcal{F}}
+\newcommand\mJ{\mathcal{J}}
+\newcommand\mO{\mathcal{O}}
+\newcommand\mP{\mathcal{P}}
+\newcommand\mN{\mathcal{N}}
+\newcommand\mS{\mathcal{S}}
+\newcommand\mM{\mathcal{M}}
+\newcommand\mC{\mathcal{C}}
+\newcommand\mV{\mathcal{V}}
+\newcommand\mI{\mathcal{I}}
+\newcommand\mT{\mathcal{T}}
+
+\newcommand\fC{\mathcal{C}}
+
+%----------------
+%--- lettres frak ---
+%----------------
+
+
+\newcommand\kM{\mathfrak{M}}
+\newcommand\kN{\mathfrak{N}}
+\newcommand\kU{\mathfrak{U}}
+\newcommand\kg{\mathfrak{g}}
+
+
+
+%--------------------------
+%--- Façon noter noms classes ---
+%---------------------------
+
+\newcommand{\cp}[1]{\operatorname{#1}}
+
+
+%--------------------------
+%--- Calculabilité  ---
+%---------------------------
+
+% -- classes
+\LANGUE{
+\newcommand\RE{\cp{CE}}
+}
+{\newcommand\RE{\cp{RE}}
+}
+
+\newcommand\Rec{\cp{D}}
+\newcommand\PR{\cp{PR}}
+\newcommand\Gregn{\mE_n}
+
+
+%--------------------------
+%--- Réductions  ---
+%---------------------------
+
+\newcommand\lem{\le_{m}}
+\newcommand\lelog{\le_{L}}
+\newcommand\equivlog{\equiv_{L}}
+
+
+
+%--------------------------
+%--- Complexité  ---
+%---------------------------
+
+% COMPLEXITE
+
+% -- P
+\newcommand{\Ptime}{\cp{P}}      % P
+\newcommand\PTIME{\Ptime}
+\newcommand\PTIMEs[1]{{\PTIME}_{#1}}
+\newcommand\PTIMEsp[1]{{\PTIME}_{#1}^0}
+\renewcommand\P{\PTIME}
+\newcommand{\FPtime}{\cp{FPTIME}}
+
+% -- NP
+\newcommand\NP{\cp{NP}}
+\newcommand{\NPtime}{\NP}
+\newcommand\NPs[1]{\cp{NP}_{#1}}
+\newcommand{\FNP}{\cp{FNP}}
+
+\newcommand\NDP{\cp{NDP}}
+\newcommand\coNDP{\cp{coNDP}}
+\newcommand\NDPs[1]{\cp{NDP}_{#1}}
+
+% -- coNP
+\newcommand\coNP{\cp{coNP}}
+
+% -- PSPACE
+\newcommand\PSPACE{\cp{ PSPACE}}
+\newcommand\NPSPACE{\cp{ NPSPACE}}
+\newcommand{\Pspace}{\PSPACE}
+\newcommand{\FPspace}{\cp{FPSPACE}}
+
+
+% -- LOGSPACE
+\newcommand\LSPACE{\cp{LOGSPACE}}
+\newcommand\NLSPACE{\cp{NLOGSPACE}}
+\newcommand\coNLSPACE{\cp{coNLOGSPACE}}
+\newcommand\coNL{\cp{coNL}}
+
+% -- Autres
+\newcommand\EXPTIME{\cp{EXPTIME}}
+\newcommand\NEXPTIME{\cp{NEXPTIME}}
+\newcommand\EXPSPACE{\cp{EXPSPACE}}
+\newcommand\PH{\cp{PH}}
+\newcommand\NC{\cp{NC}}
+\newcommand\AC{\cp{AC}}
+\newcommand\PPAD{\cp{\mathbf{PPAD}}}
+\newcommand\PLS{\cp{\mathbf{PLS}}}
+
+% -- Reverse math
+\newcommand{\WKL}{\ensuremath{\docheck{\mathsf{WKL}_0}}}
+\newcommand{\ACA}{\ensuremath{\docheck{\mathsf{ACA}_0}}}
+\newcommand{\ATR}{\ensuremath{\docheck{\mathsf{ATR}_0}}}
+\newcommand{\RCAO}{\ensuremath{\docheck{\mathsf{RCA}_0}}}
+\newcommand{\PiCA}{\ensuremath{\docheck{\Pi^1_1\!\text{-}\mathsf{CA}_0}}}
+
+
+% -- circuits
+\newcommand\CIRCUIT[2]{\cp{CIRCUIT(#1,#2)}}
+\newcommand\UCIRCUIT[2]{\cp{UCIRCUIT(#1,#2)}}
+
+% -- Classes proba
+\newcommand\PP{\cp{PP}}
+\newcommand\RPP{\cp{RP}}
+\newcommand\ZPP{\cp{ZPP}}
+\newcommand\coRP{\cp{coRP}}
+\newcommand\BPP{{\cp{BPP}}}
+
+% -- IP
+\newcommand\IP{\cp{IP}}
+\newcommand\PCP{\cp{PCP}}
+
+% -- non-uniforme
+\newcommand\nuP{\mathbb{P}}
+\newcommand\nuPs[1]{\mathbb{P}_{#1}}
+\newcommand\nuPsp[1]{\mathbb{P}_{#1}^0}
+\newcommand\nuNP{\mathbb{N}\mathbb{P}}
+%\newcommand\poly{/{poly}}
+\newcommand\Ppoly{\PTIME_{\poly}}
+\newcommand\NPpoly{\NP_{\poly}}
+
+% -- conditions d'uniformité
+\newcommand\Luniforme{\cp{L}}
+\newcommand\BCuniforme{\cp{BC}}
+
+
+% Classes de circuits
+\newcommand\TC{\cp{TC}}
+\newcommand\LFP{\cp{LFP}}
+\newcommand\FAC{\cp{FAC}}
+\newcommand\FACC{\cp{FACC}}
+\newcommand\FTC{\cp{FTC}}
+\newcommand\FNC{\cp{FNC}}
+
+% Logiques temorelles
+\newcommand\CTL{\cp{CTL}}
+\newcommand\LTL{\cp{LTL}}
+
+% -- mesure temps/espace/taille
+
+\newcommand\DTIME{\cp{DTIME}}
+\newcommand\TIME[1]{\cp{TIME(#1)}}
+\newcommand\TIMEs[2]{\cp{TIME_{#2}(#1)}}
+\newcommand\TIMEsp[2]{\cp{TIME^0_{#2}(#1)}}
+\newcommand\NTIME[1]{\cp{NTIME(#1)}}
+\newcommand\NTIMEs[2]{\cp{NTIME_{#2}(#1)}}
+\newcommand\NTIMEsp[2]{\cp{NTIME_{#2}^0(#1)}}
+\newcommand\DSPACE{\cp{DSPACE}}
+\newcommand\SPACE[1]{\cp{SPACE(#1)}}
+\newcommand\SPACEs[2]{\cp{SPACE_{#2}(#1)}}
+\newcommand\NSPACE[1]{\cp{NSPACE(#1)}}
+\newcommand\NSPACEs[2]{\cp{NSPACE_{#2}(#1)}}
+\newcommand\coNSPACE[1]{\cp{coNSPACE(#1)}}
+\newcommand\TIMEON[2]{\cp{TIME(#1,#2)}}
+\newcommand\SPACEON[2]{\cp{SPACE(#1,#2)}}
+\newcommand\SIZE[1]{\cp{ size(#1)}}
+\newcommand\ATIME{\cp{ATIME}}
+\newcommand\ASPACE{\cp{ASPACE}}
+
+
+%% autre:
+\newcommand\LH{\cp{LH}}
+\newcommand\FO{\cp{FO}}
+\newcommand\SO{\cp{SO}}
+\newcommand\ESOhorn{\cp{ESO_{horn}}}
+\newcommand\SOhorn{\cp{SO_{horn}}}
+\newcommand\ACzero{\cp{AC_0}}
+\newcommand{\LINSPACE}{\cp{LINSPACE}}
+\newcommand{\mFLINSPACE}{\mF_{\cp{LINSPACE}}}
+\newcommand{\LOGSPACE}{\cp{LOGSPACE}}
+\newcommand\ALOGTIME{\cp{ALOGTIME}}
+\newcommand\RF{\cp{RF}}
+
+
+\newcommand\BOOL[1]{\cp{{BOOLEAN(#1)}}}
+\newcommand\DET{\cp{ DET}}
+
+% % -- dirty
+
+
+\newcommand{\cPspace}{\cp{\sharp PSPACE}}
+\newcommand{\cAPtime}{\cp{\sharp APTIME}}
+%\newcommand{\FPspace}{\cp{FPSPACE}}
+%\newcommand{\FPspaceN}{\cp{FPSPACE}^{+}}
+%\newcommand{\FPspaceN}{\cp{FPSPACE}}
+
+
+
+%-------------------------
+%--- Problèmes de décision  ---
+%--------------------------
+
+\newcommand\decisionname[1]{\cp{#1}}
+
+
+\newcommand\Luniv{\decisionname{L_{univ}}}
+\newcommand\HALTINGPROBLEM{\decisionname{HALTING-PROBLEM}}
+\newcommand\SAT{\decisionname{SAT}}
+\newcommand\MAXtSAT{\decisionname{MAX3SAT}}
+\newcommand\REACH{\decisionname{REACH}}
+\newcommand\CIRCUITVALUE{\decisionname{CIRCUITVALUE}}
+\newcommand\MONOTONECIRCUITVALUE{\decisionname{MONOTONECIRCUITVALUE}}
+\newcommand\THEOREMS{\decisionname{THEOREMS}}
+\newcommand\QCIRCUITSAT{\decisionname{QCIRCUITSAT}}
+\newcommand\QSAT{\decisionname{QSAT}}
+\newcommand\QBF{\decisionname{QBF}}
+\newcommand\SATVALUE{\decisionname{SATVALUE}}
+\newcommand\SUCCINTSAT{\decisionname{SUCCINTSAT}}
+\newcommand\SUCCINTSATVALUE{\decisionname{SUCCINTSATVALUE}}
+\newcommand\GEOGRAPHY{\decisionname{GEOGRAPHY}}
+\newcommand\PARITY{\decisionname{PARITY}}
+\newcommand\MAJ{\decisionname{MAJ}}
+\newcommand\CVP{\CIRCUITVALUE}
+\newcommand\BOOLEANPROGRAMVALUE{BOOLEAN~PROGRAM~VALUE}
+
+\newcommand\CLIQUE{\cp{CLIQUE}}
+\LANGUEinv{
+\newcommand\RECOUVREMENTDESOMMETS{\cp{RECOUVREMENT~DE~SOMMETS}}
+\newcommand\RS{\RECOUVREMENTDESOMMETS}
+}{
+\newcommand\RECOUVREMENTDESOMMETSeng{\cp{VERTEX~COVER}}
+\newcommand\RSeng{\RECOUVREMENTDESOMMETSeng}
+}
+
+\LANGUEinv{\newcommand\COUPUREMAXIMALE{\cp{COUPURE~MAXIMALE}}}
+{\newcommand\COUPUREMAXIMALEeng{\cp{MAXIMAL~CUT}}}
+\newcommand\CIRCUITHAMILTONIEN{\CHAMILTONIEN}
+\LANGUEinv{\newcommand\VOYAGEURDECOMMERCE{\VCOMMERCE}}
+{\newcommand\VOYAGEURDECOMMERCEeng{\VCOMMERCEeng}}
+
+\LANGUEinv{\newcommand\CIRCUITLEPLUSLONG{\cp{CIRCUIT~LE~PLUS~LONG}}}
+{\newcommand\CIRCUITLEPLUSLONGeng{\cp{LONGEST~CIRCUIT}}}
+\LANGUEinv{\newcommand\SOMMEDESOUSENSEMBLE{\SUBSETSUM}}{
+\newcommand\SOMMEDESOUSENSEMBLEeng{\SUBSETSUMeng}}
+\LANGUEinv{
+\newcommand\SACADOS{\cp{SAC~A~DOS}}}
+{\newcommand\SACADOSeng{\cp{KNAPSACK}}}
+
+%français
+\LANGUEinv{
+\newcommand\CHAMILTONIEN{\cp{CIRCUIT~HAMILTONIEN}}}
+{\newcommand\CHAMILTONIENeng{\cp{HAMILTONIAN~CIRCUIT}}}
+\LANGUEinv{
+\newcommand\VCOMMERCE{\cp{VOYAGEUR~DE~COMMERCE}}}
+{\newcommand\VCOMMERCEeng{\cp{TRAVELING~SALESMAN}}}
+\LANGUEinv{
+\newcommand\kCOLORABILITE{\cp{k-COLORABILITE}}}
+{\newcommand\kCOLORABILITEeng{\cp{k-COLORABILITY}}}
+\LANGUEinv{
+\newcommand\COLORIAGE{\cp{BON~COLORIAGE}}}
+{\newcommand\COLORIAGEeng{\cp{GOOD~COLORING}}}
+\LANGUEinv{
+\newcommand\tCOLORABILITE{\cp{3-COLORABILITE}}}
+{\newcommand\tCOLORABILITEeng{\cp{3-COLORABILITY}}}
+\LANGUEinv{
+\newcommand\SUBSETSUM{\cp{SOMME~DE~SOUS~ENSEMBLE}}}
+{\newcommand\SUBSETSUMeng{\cp{SUBSET~SUM}}}
+\newcommand\PARTITION{\cp{PARTITION}}
+\LANGUEinv{
+\newcommand\NOMBREPREMIER{\decisionname{NOMBRE~ PREMIER}}}
+{\newcommand\NOMBREPREMIEReng{\decisionname{PRIME~NUMBER}}}
+\LANGUEinv{
+\newcommand\CODAGE{\decisionname{CODAGE}}}
+{\newcommand\CODAGEeng{\decisionname{ENCODING}}}
+\newcommand\kSAT{\cp{k-SAT}}
+\newcommand\tSAT{\cp{3-SAT}}
+\newcommand\NAESAT{\cp{NAESAT}}
+\newcommand\NAEtSAT{\cp{NAE3SAT}}
+\newcommand\NAEqSAT{\cp{NAE4SAT}}
+\newcommand\STABLE{\cp{\LANGUE{INDEPENDANT~SET}{STABLE}}}
+
+%\newcommand\CM{\cp{COUPURE MAXIMALE}}
+\LANGUEinv{
+\newcommand\POSTpb{\cp{Problème~de~ la~correspondance~de~Post}}}
+{\newcommand\POSTpbeng{\cp{Post~correspondence~problem}}}
+
+\LANGUEinv{
+\newcommand\PARITE{\cp{PARITE}}}
+{\newcommand\PARITEeng{\cp{PARITY}}}
+
+
+%-------------------------
+%--- Modèles parallèles  ---
+%--------------------------
+
+
+% PARALLELISME
+\newcommand\RAM{\cp{RAM}}
+%
+\newcommand\PRAM{\cp{PRAM}}
+\newcommand\CRCW{\cp{CRCW}}
+\newcommand\CREW{\cp{CREW}}
+\newcommand\EREW{\cp{EREW}}
+
+
+%------------------------
+%--- codages  ---
+%------------------------
+
+
+\newcommand\codage[1]{\langle #1 \rangle}
+\newcommand\tuple[1]{\codage{#1}}
+\newcommand\paire[2]{\codage{#1,#2}}
+\newcommand\triplet[3]{\codage{#1,#2,#3}}
+\newcommand\quadruplet[4]{\codage{#1,#2,#3,#4}}
+\newcommand\cinquplet[5]{\codage{#1,#2,#3,#4,#5}}
+
+
+%------------------------
+%--- descriptive set theory  ---
+%------------------------
+
+\newcommand\baire{\mathcal{N}}
+\newcommand\peano{\overline{\mathcal{N}}} %% A MOI
+\newcommand\cantor{\mathcal{C}}
+%
+\newcommand\bSigma{\mathbf{\Sigma}}
+\newcommand\bPi{\mathbf{\Pi}}
+\newcommand\bDelta{\mathbf{\Delta}}
+%
+
+
+%%%%%% ABOUT NOMS QUI CHANGES
+
+\newcommand\WF{\cp{WF}}
+\newcommand\WO{\WF}
+\newcommand\LO{\cp{LO}}
+\newcommand\DLO{\cp{DLO}}
+% 
+\newcommand\rk{\cp{rank}}
+
+
+%% Moins propre:
+
+\newcommand\I{\mathbb{I}}
+\renewcommand\H{\mathbb{H}}
+%
+\newcommand\leKB{<_{KB}}
+%
+\newcommand\finiomega{{<\omega}}
+\newcommand\compl{^\frown}
+\newcommand\prefix{ ~ prefix~  } 
+\newcommand\X{{X}}
+\newcommand\Y{\mathcal{Y}}
+\newcommand\subsetstrict{\subset}
+
+\renewcommand\complement[1]{#1^{c}}
+
+
+%------------------------
+%--- schémas de récursion ---
+%------------------------
+
+%%                      Source papier MFCS 2019
+
+
+% COMPLEXITY
+
+%% MFCS differe de Clote:
+%% Version à taille restreinte
+
+\newcommand\co{\cp{co}}
+
+\newcommand\mFPTIME{\mF_{PTIME}}
+\newcommand{\mFPSPACE}{\mF_{SPACE}}
+\newcommand{\mFPH}{\mF_{PH}}
+
+\newcommand\SigmaP{\Sigma^P}
+\newcommand\DeltaP{\Delta^{P}}
+\newcommand\PiP{\Pi^{P}}
+\newcommand\coSigmaP{\co\SigmaP}
+\newcommand\coPiP{\mF{\co\PiP}}
+
+%% autres classes:
+
+
+%% Schemas pour complexité implicite
+
+\newcommand\COMP{\cp{ COMP}}
+\newcommand\CRN{\cp{ CRN}}
+\newcommand\BRN{\cp{ BRN}}
+\newcommand\SBRN{\cp{ SBRN}}
+\newcommand\BR{\cp{ BR}}
+\newcommand\kBR{k-\cp{ BR}}
+\newcommand \WBPR{\cp{ WBPR}}
+\newcommand \BMIN{\cp{ BMIN}}
+\newcommand \BSUM{\cp{ BSUM}}
+\newcommand\SBSUM{\cp{ SBSUM}}
+\newcommand \BPROD{\cp{ BPROD}}
+\newcommand \SBPROD{\cp{ SBPROD}}
+\newcommand \SCOMP{\cp{ SCOMP}}
+\newcommand \SR{\cp{ SR}}
+\newcommand \SRN{\cp{ SRN}}
+
+%% devrait etre défini
+\newcommand\WBRN{\cp{ WBRN}}
+
+
+
+%-- godel
+\newcommand\INTDIV{\cp{INTDIV}}
+\newcommand\DIV{\cp{DIV}}
+\newcommand\EVEN{\cp{EVEN}}
+\newcommand\ODD{\cp{ODD}}
+\newcommand\PRIME{\cp{PRIME}}
+\newcommand\POWER{\cp{POWER}}
+\newcommand\BIT{\cp{BIT}}
+\newcommand\negHP{\overline{\cp{HP}}}
+\newcommand\HP{\cp{HP}}
+\newcommand\negLuniv{\overline{\Luniv}}
+\newcommand\VALCOMP{\cp{VALCOMP}}
+\newcommand\mWINDOW{\cp{LEGAL}}
+\newcommand\mmWINDOW{\cp{WINDOW}}
+\newcommand\LENGTH{\cp{LENGTH}}
+\newcommand\DIGIT{\cp{DIGIT}}
+\newcommand\MATCH{\cp{MATCH}}
+\newcommand\MOVE{\cp{MOVE}}
+\newcommand\START{\cp{START}}
+\newcommand\CELL{\cp{CELL}}
+\newcommand\HALT{\cp{HALT}}
+\newcommand\SUBST{\cp{SUBST}}
+\newcommand\PROOF{\cp{PROOF}}
+\newcommand\PROVABLE{\cp{PROVABLE}}
+\newcommand\CONSIST{\cp{CONSIST}}
+
+
+
+%---------------------
+%--- calculus (AP) ---
+%---------------------
+
+% \jacobian{f}{x}
+\newcommand{\jacobian}[1]{J_{#1}}
+%\newcommand{\grad}[1]{\overrightarrow{\operatorname{grad}}~{#1}}
+\newcommand{\grad}[1]{\nabla{#1}}
+\newcommand{\scalarprod}[2]{{#1}\cdot{#2}}
+\newcommand{\bigO}[1]{\mathcal{O}\left(#1\right)}
+\newcommand\smallO{o}
+\newcommand{\softO}[1]{\tilde{\mathcal{O}}\left(#1\right)}
+\newcommand{\taylor}[3]{{T_{#1}^{#2}#3}}
+\newcommand{\transpose}[1]{{#1}^T}
+\newcommand{\pastsup}[2]{{\sup}_{#1}#2}
+
+\DeclareMathOperator\arctanh{arctanh}
+
+
+
+%---------------
+%--- norms (AP) ---
+%---------------
+
+
+\newcommand{\inorm}[2]{\left\lVert{#1}\right\rVert_{#2}}
+\newcommand{\twonorm}[1]{\inorm{#1}{2}}
+\newcommand{\infnorm}[1]{\inorm{#1}{}}
+\newcommand{\normsup}[1]{\infnorm{#1}{}}
+%
+\newcommand\hausdorff{d_H}
+%
+\newcommand\norm[1]{\infnorm{#1}}
+
+
+%----------------
+%--- topology ---
+%----------------
+
+% \openball{pt}{radius}
+ \newcommand{\openball}[2]{B_{#2}(#1)}
+\newcommand{\closedball}[2]{\ovl{B}_{#2}(#1)}
+\newcommand{\closure}[1]{\ovl{#1}}
+% \newcommand{\interior}[1]{\mathring{#1}}
+% \newcommand{\border}[1]{\partial{#1}}
+
+
+
+
+%-----------------
+%--- functions (AP) ---
+%-----------------
+ 
+\newcommand{\lambdafun}[2]{(#1)\mapsto{#2}}
+\newcommand{\lambdafunex}[2]{#1\mapsto{#2}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+
+ 
+%-----------------------
+%--- Machines de Turing  ---
+%-----------------------
+
+\newcommand\blanc{\vectorl{B}}
+
+
+
+%-----------------
+%--- Logique ---
+%-----------------
+ 
+\newcommand\sem[1]{{[\semspace[}#1{]\semspace]}}
+\newcommand\sems[1]{{[\semspace[}#1{]\semspace]}}
+\newcommand\semss[1]{\sem{#1}_{\sigma'}}
+\newcommand\semspace{\kern -.25ex}
+\newcommand\true{true}
+\newcommand\false{false}
+%extension élémentaire:
+\newcommand\elem{\preceq}
+\newcommand\godel[1]{\lceil #1 \rceil}
+
+%-----------------
+%--- Model theory ---
+%-----------------
+
+\newcommand\hull[1]{\langle #1 \rangle}
+
+%-----------------
+%--- Ordinaux ---
+%-----------------
+
+\newcommand\omegaunCK{\omega_1^{CK}}
+\newcommand\omegaunck{\omegaunCK}
+
+\DeclareMathOperator{\cof}{cof}
+
+%-----------------
+%--- Surréels (QG) ---
+%-----------------
+
+\newcommand{\On}{\textbf{On}}
+\newcommand{\Nobf}{\textbf{No}}
+\newcommand{\Nobb}{\ensuremath{\mathbbmss{No}}}
+\newcommand{\Nolt}[1]{\ensuremath{\Nobf_{< #1}}}
+\newcommand{\Noleq}[1]{\ensuremath{\Nobf_{\leq #1}}}
+\newcommand{\Noltbb}[1]{\ensuremath{\Nobb_{< #1}}}
+\providecommand\No{\Nobf}
+\newcommand\Noalpha{\Nolt{\alpha}}
+\newcommand\Nolambda{\Nolt{\lambda}}
+
+\DeclareMathOperator{\length}{length}
+\DeclareMathOperator{\supp}{supp} % operateur support
+
+
+%----------------------
+%---Maths  de base (AP)  ---
+%----------------------
+
+\DeclareMathOperator{\dom}{dom} % operateur support
+
+\DeclareMathOperator{\size}{size}
+
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+\newcommand{\card}[1]{{\##1}}
+\newcommand\priv{ - }
+\newcommand\prive{-}
+\renewcommand{\restriction}{\mathord{\upharpoonright}}
+\newcommand\restrict[1]{_{\restriction #1}}
+
+% \providecommand\mod{}
+%% UNDEFINE:
+\let\mod\relax
+\let\div\relax
+\DeclareMathOperator{\mod}{mod} 
+\DeclareMathOperator{\div}{div} 
+
+% partieentier
+\newcommand\entieres[1]{\lceil #1 \rceil}
+\newcommand\entierei[1]{\lfloor #1 \rfloor}
+
+
+%----------------------
+%---Symbole danger ---
+%----------------------
+
+
+%\providecommand*{\TakeFourierOrnament}[1]{{%
+%\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
+%\providecommand*{\danger}{{\Huge \TakeFourierOrnament{66}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      ASMeries
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% CIRCUITS
+%-- particuliers
+\newcommand\REPLACE{\cp{REPLACE}}
+\newcommand\EQUAL{\cp{EQUAL}}
+\newcommand\EVALUE{\cp{EVALUE}}
+\newcommand\TVALUE{\cp{TVALUE}}
+\newcommand\UPDATE{\cp{UPDATE}}
+\newcommand\ASSIGN{\cp{ASSIGN}}
+\newcommand\PAR{\cp{PAR}}
+\newcommand\DO{\cp{DO}}
+
+
+% ASM
+\newcommand\emplacement[2]{(#1,#2)}
+\newcommand\contenu[2]{\sem{(#1,#2)}}
+\newcommand\affecte[3]{(#1,#2)\leftarrow#3}
+\newcommand\ctl{ctl\_state}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      GPACqueries
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%------------------------
+%--- generable zoo (GPAC) ---
+%------------------------
+
+\newcommand{\myop}[1]{\operatorname{#1}}
+\newcommand{\abs}{\myop{abs}}
+\newcommand{\sg}{\myop{sg}}
+\newcommand{\ip}[1]{\myop{ip}_{#1}}
+\newcommand{\rnd}{\myop{rnd}}
+\newcommand{\lil}{\myop{lil}}
+\newcommand{\lxh}{\myop{lxh}}
+\newcommand{\hxl}{\myop{hxl}}
+\newcommand{\plil}{\myop{plil}}
+\newcommand{\reach}{\myop{reach}}
+%\newcommand{\mreach}{\myop{mreach}}
+\newcommand{\watchdog}{\myop{watchdog}}
+\newcommand{\monitor}{\myop{monitor}}
+%\newcommand{\norm}{\myop{norm}}
+\newcommand{\mx}{\myop{mx}}
+\newcommand{\mn}{\myop{mn}}
+\newcommand{\sample}{\myop{sample}}
+\newcommand{\select}{\myop{select}}
+\newcommand{\ssine}[1]{\sin_{#1}}
+\newcommand{\clamp}{\myop{clamp}}
+
+\newcommand{\fnsg}[3]{tanh((#1)*(#2)*(#3))}
+\newcommand{\fnipone}[3]{(1+\fnsg{(#1)-1}{#2}{#3})/2.}
+\newcommand{\fnipinf}[1]{#1-sin(2*pi*(#1))/2./pi}%
+\newcommand{\fnlil}[5]{%
+\fnipone{(#3)-(#1)+1-((#2)-(#1))/8.}{#4+log(1+4./(#2-#1)*(#5)*(#5))+log(1+4)}{8./(#2-#1)}%
+*\fnipone{#2-#3+1-(#2-#1)/8.}{#4+log(1+4/(#2-#1)*(#5)*(#5))+log(1+4)}{8./(#2-#1)}%
+*4./(#2-#1)*(#5)}
+\newcommand{\fnlxh}[5]{\fnipone{(#3)-(#1+#2)/2.+1}{#4+log(1+(#5)*(#5))}{2./(#2-#1)}*(#5)}
+\newcommand{\fnhxl}[5]{\fnipone{(#1+#2)/2.-(#3)+1}{#4+log(1+(#5)*(#5))}{2./(#2-#1)}*(#5)}
+\newcommand{\fnplilf}[4]{sin(((#4)-((#1)+(#2))/2.+(#3)/4.)*2.*pi/(#3))}
+\newcommand{\fnplil}[6]{(#6)*\fnlxh{\fnplilf{#1}{#2}{#3}{#1}}%
+{\fnplilf{#1}{#2}{#3}{#1+((#2)-(#1))/4.}}%
+{\fnplilf{#1}{#2}{#3}{#4}}%
+{#5+2.+log(1+(#6)*(#6))}%
+{1./4.+2./((#2)-(#1))}}
+\newcommand{\fnssine}[2]{sin(#2)*(1-cos(#2)/cos(#1))}
+
+
+
+%--------------------
+%--- complexity GPAC ---
+%--------------------
+
+
+%\ifthenelse{\equal{#1}{}}{Empty.}{Nonempty.}
+\newcommand{\myclass}[1]{\operatorname{#1}}
+% \newcommand{\gcomp}[2]{\ensuremath{\myclass{GCOMP}(#1,#2)}}
+% \newcommand{\ggenerable}[1]{\textcolor{red}{\ensuremath{#1-}\text{generable}}}
+ \newcommand{\gval}[2][]{\ensuremath{\myclass{GVAL}_{#1}\ifthenelse{\equal{#2}{}}{}{[#2]}}}
+ \newcommand{\gpval}[1][]{\ensuremath{\myclass{GPVAL}_{#1}}}
+ \newcommand{\gc}[3][]{\ensuremath{\myclass{ATSC}(#2,#3)}}
+ \newcommand{\gpc}[1][]{\ensuremath{\myclass{ATSP}}}
+\newcommand{\cgc}[1][]{\ensuremath{\myclass{ATS}}}
+\newcommand{\gexpc}[1][]{\ensuremath{\myclass{AEXP}}}
+\newcommand{\gwc}[2]{\ensuremath{\myclass{AW}(#1,#2)}}
+\newcommand{\gpwc}{\ensuremath{\myclass{AWP}}}
+\newcommand{\cgwc}{\ensuremath{\myclass{AW}}}
+\newcommand{\grc}[3]{\ensuremath{\myclass{AR}(#1,#2,#3)}}
+\newcommand{\gprc}{\ensuremath{\myclass{ARP}}}
+\newcommand{\gsc}[3]{\ensuremath{\myclass{AS}(#1,#2,#3)}}
+\newcommand{\gpsc}{\ensuremath{\myclass{ASP}}}
+\newcommand{\goc}[3]{\ensuremath{\myclass{AO}(#1,#2,#3)}}
+\newcommand{\gpoc}{\ensuremath{\myclass{AOP}}}
+\newcommand{\cgoc}{\ensuremath{\myclass{AO}}}
+\newcommand{\guc}[4]{\ensuremath{\myclass{AX}(#1,#2,#3,#4)}}
+\newcommand{\gpuc}{\ensuremath{\myclass{AXP}}}
+\newcommand{\glc}[2][]{\ensuremath{\myclass{AL}(#2)}}
+\newcommand{\gplc}[1][]{\ensuremath{\myclass{ALP}}}
+\newcommand{\cglc}[1][]{\ensuremath{\myclass{AL}}}
+
+%\newcommand{\intinterv}[2]{\{#1,\ldots,#2\}}
+\newcommand{\intinterv}[2]{\llbracket#1,#2\rrbracket}
+
+\newcommand{\Rgen}{\R_{G}}
+\newcommand{\Rpoly}{\R_{P}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Mes codages obscures
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%% Codages
+
+% \newcommand\gammaoc{\gamma_{[0,1]}}
+% \newcommand\gammaonc{\gamma_{\N}}
+\newcommand\gammaTMc{\gamma^{TM}_{[0,1]}}
+\newcommand\gammaTMcatan{\gamma^{TM}_{(0,1)^2}}
+\newcommand\gammaTMnc{\gamma^{TM}_{\N^3}}
+\newcommand\gammaTMncd{\gamma^{TM}_{\N^2}}
+% \newcommand\gammaTMe{\gamma^{TM}_{*}}
+% \newcommand\gammas{\gamma_{sab}}
+% \newcommand\gammaord{\gamma_{cantor}}
+
+
+\newcommand\enccompact{\nu_{X}}
+ \newcommand\encinfinite{\nu_\N}
+ \newcommand\enc{\nu}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      DESSINS ET IMAGES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\IMAGE[2]{ \begin{center} 
+    \includegraphics[#1]{#2}
+  \end{center}
+  }
+
+
+  
+%%%% POUR FAIRE DESSIN.
+\newenvironment{dessinpp}[1]{
+\begin{tikzpicture}[baseline=(current bounding
+      box.west),#1]
+}
+{\end{tikzpicture}}
+
+
+
+
+\newenvironment{dessinp}[1]{
+\begin{center}\begin{tikzpicture}[baseline=(current bounding
+      box.north),#1]
+}
+{\end{tikzpicture}
+\end{center}}
+
+
+\newenvironment{dessin}{
+\begin{center}\begin{tikzpicture}[baseline=(current bounding
+      box.north)]
+}
+{\end{tikzpicture}
+\end{center}}
+
+
+
+\newenvironment{dessind}{
+\begin{tikzpicture}[baseline=(current bounding
+      box.north)]
+}
+{\end{tikzpicture}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR DESSINS GPAC
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%% MACROS DE BASE.
+
+
+\newcommand\constant[2]
+{
+node (#1)  [shape=circle,draw] {#2};
+\draw (#1.east) -- +(0.3,0) coordinate (#1-o) ; 
+\draw (#1.west) -- +(-0.3,0) coordinate (#1-i) ; 
+}
+
+\newcommand\basicproduct[2]
+{
+node (#1) {#2};
+\draw (#1) +(-0.4,0.4) -- +(0.4,0.4) -- +(0.8,0) -- +(0.4,-0.4) -- +(-0.4,-0.4) --
++(-0.4,0.4);
+\draw (#1) ++(0.8,0) -- ++(+0.3,0) coordinate (#1-o) ;
+\draw (#1) ++ (-0.4,0.2) -- +(-0.3,0) coordinate (#1-i1) ;
+\draw (#1) ++(-0.4,-0.2) -- +(-0.3,0) coordinate (#1-i2) ;
+}
+
+\newcommand\product[1]{\basicproduct{#1}{$+\Pi$}}
+\newcommand\negativeproduct[1]{\basicproduct{#1}{$-\Pi$}}
+
+
+%%BEGIN INTERNAL
+\newcommand\basicsummer[1]{
+coordinate (#1) {};
+\draw (#1) +(-0.5,0.6) -- +(0.5,0) -- +(-0.5,-0.6) -- +(-0.5,0.6);
+\draw (#1) ++(0.5,0) -- +(+0.3,0) coordinate (#1-o) ;
+}
+
+\newcommand\basicintegrator[1]{
+coordinate (#1) {};
+\draw (#1) +(-0.5,0.6) -- +(0.5,0) -- +(-0.5,-0.6) -- +(-0.5,0.6);
+\draw (#1) ++(0.5,0) -- +(+0.3,0) coordinate (#1-o) ;
+\draw (#1) +(-0.5,-0.6) -| +(-0.8,0.6) -- +(-0.5,0.6) ;
+ \draw (#1) ++(-0.65,0.6) -- +(0,+0.3) coordinate (#1-init) ;
+}
+
+\newcommand\splitfour[2]{
+\draw (#2) ++ (#1,0.4) -- +(-0.3,0) coordinate (#2-i1) ;
+\draw (#2) ++ (#1,0.15) -- +(-0.3,0) coordinate (#2-i2) ;
+\draw (#2) ++ (#1,-0.15) -- +(-0.3,0) coordinate (#2-i3) ;
+\draw (#2) ++ (#1,-0.4) -- +(-0.3,0) coordinate (#2-i4) ;
+}
+
+\newcommand\splitthree[2]{
+\draw  (#2) ++(#1,0.3) -- +(-0.3,0) coordinate (#2-i1) ;
+\draw  (#2) ++(#1,0) -- +(-0.3,0) coordinate (#2-i2) ;
+\draw  (#2) ++(#1,-0.3) -- +(-0.3,0) coordinate (#2-i3) ;
+}
+
+\newcommand\splittwo[2]{
+\draw  (#2) ++(#1,0.2) -- +(-0.3,0) coordinate (#2-i1) ;
+\draw  (#2) ++(#1,-0.2) -- +(-0.3,0) coordinate (#2-i2) ;
+}
+
+\newcommand\splitone[2]{
+\draw (#2) ++(#1,0) -- +(-0.3,0) coordinate (#2-i1) ;
+}
+
+%% END INTERNAL
+
+\newcommand\summerfour[1]{
+\basicsummer{#1}
+\splitfour{-0.5}{#1}
+}
+
+\newcommand\summerthree[1]{
+\basicsummer{#1}
+\splitthree{-0.5}{#1}
+}
+
+\newcommand\summertwo[1]{
+\basicsummer{#1}
+\splittwo{-0.5}{#1}
+}
+
+\newcommand\summerone[1]{
+\basicsummer{#1}
+\splitone{-0.5}{#1}
+}
+
+
+\newcommand\integratorfour[1]{
+\basicintegrator{#1}
+\splitfour{-0.8}{#1}
+<}
+
+
+\newcommand\integratorthree[1]{
+\basicintegrator{#1}
+\splitthree{-0.8}{#1}
+}
+
+
+\newcommand\integratortwo[1]{
+\basicintegrator{#1}
+\splittwo{-0.8}{#1}
+}
+
+
+\newcommand\integratorone[1]{
+\basicintegrator{#1}
+\splitone{-0.8}{#1}
+}
+
+%%%%% FIN MACROS
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Trucs d'Amaury
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%----------------
+%--- ref (AP) ---
+%----------------
+
+% \newcommand{\defref}[1]{Definition~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\thref}[1]{Theorem~\ref{#1}}
+\newcommand{\amaurycorref}[1]{Corollary~\ref{#1}}
+ \newcommand{\figref}[1]{Figure~\ref{#1}}
+% \newcommand{\figrefmult}[1]{Figures~{#1}}
+% \newcommand{\secref}[1]{Section~\ref{#1}}
+% %\renewcommand{\algref}[1]{Algorithm~\ref{#1}}
+ \newcommand{\propref}[1]{Proposition~\ref{#1}}
+% \newcommand{\exref}[1]{Example~\ref{#1}}
+\newcommand{\remref}[1]{Remark~\ref{#1}}
+
+
+ %-------------------
+%--- polynomials ---
+%-------------------
+
+\newcommand{\sigmap}[1]{{\Sigma{#1}}}
+\newcommand{\degp}[1]{{\operatorname{deg}(#1)}}
+\newcommand{\poly}{\operatorname{poly}}
+
+
+ %----------------------
+%--- misc functions ---
+%----------------------
+
+\newcommand{\sgn}[1]{\operatorname{sgn}(#1)}
+\newcommand{\intp}{\operatorname{int}}
+ \newcommand{\fracp}{\operatorname{frac}}
+\newcommand{\fiter}[2]{#1^{[#2]}}
+\newcommand{\frestrict}[2]{#1\restriction_{#2}}
+\newcommand{\indicator}[1]{\mathds{1}_{#1}}
+\newcommand{\idfun}{\operatorname{id}}
+% \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+ \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\round}[1]{\left\lfloor#1\right\rceil}
+\DeclareMathOperator\erf{erf}
+
+
+%------------
+%--- sets ---
+%------------
+
+\newcommand{\A}{\mathbb{A}}
+%\newcommand{\D}{\mathbb{D}}
+\newcommand{\Ns}{\mathbb{N}^*}
+%\newcommand{\C}{\mathbb{C}}
+%\newcommand{\K}{\mathbb{K}}
+% \MAT{height}{[width]}{[field]}
+\newcommand{\MAT}[3]{M_{#1\ifthenelse{\equal{#2}{}}{}{,#2}}\ifthenelse{\equal{#3}{}}{}{\left(#3\right)}}
+
+%\newcommand{\Rcomp}{\R_{c}}
+\newcommand{\Rp}{\R_{+}}
+\newcommand{\Rs}{\R^{*}}
+\newcommand{\Rps}{\R_{+}^{*}}
+
+%\newcommand{\Analytic}{C^\omega}
+%\newcommand{\PTIME}{\ensuremath{\operatorname{P}}}
+%\newcommand{\EXPTIME}{\ensuremath{\operatorname{EXPTIME}}}
+%\newcommand{\NP}{\ensuremath{\operatorname{NP}}}
+%\newcommand{\NPTIME}{\NP}
+\newcommand{\FP}{\ensuremath{\operatorname{FP}}}
+%\newcommand{\PSPACE}{\ensuremath{\operatorname{PSPACE}}}
+% \newcommand{\FPSPACE}{\ensuremath{\operatorname{FPSPACE}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Trucs de Quentin
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\fct}[5]{\ensuremath{#1 : \left\{\begin{array}{c c c}
+#2 & \rightarrow & #3\\
+#4 & \mapsto & #5
+                                             \end{array}\right.}}
+
+%Nouvelle fraction, plus jolie
+\newcommand{\f}[2]{	
+	\mathchoice%
+		{\dfrac{#1}{#2}}
+    	{\dfrac{#1}{#2}}
+		{\frac{#1}{#2}}
+		{\frac{#1}{#2}}
+}
+
+
+%%Ensembles et combinatoires
+
+%Ensemble avec propriété à drotie \{x | blabla\}
+\newcommand{\enstq}[2]{\left\{ \left.#1\ \vphantom{#2}\right|\ #2  \right\}}
+%meme chose mais avec des crochets
+\newcommand{\crotq}[2]{\left[ \left.#1\ \vphantom{#2}\right|\ #2  \right]}
+%même chose mais avec des brackets
+\newcommand{\bratq}[2]{\left\langle \left.#1\ \vphantom{#2}\right|\ #2  
+  \right\rangle}
+
+\newcommand{\intn}[2]{\ensuremath{
+		\left\llbracket\, #1\ ;\ #2\,\right\rrbracket
+              }}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%               ENVIRONNEMENTS THEOREMS & CO
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%----------------
+%--- pas dans lipics ---
+%-----------------
+
+
+\ifnotSLIDE{
+% commente car bug Fevrier 2026: \ifnotTDEXAM{\spnewtheorem{solution}{Solution}{\bfseries}{\rmfamily}}
+\spnewtheorem{openproblem}{Open Problem}{\bfseries}{\rmfamily}
+\spnewtheorem{remarkolivier}{Commentaire d'Olivier: }{\bfseries}{\rmfamily}
+\spnewtheorem{postulate}{Postulate}{\bfseries}{\rmfamily}
+}
+
+%----------------
+%--- dans lipics ---
+%-----------------
+%
+\newenvironment{exercice}[1]{\begin{exercise} \label{exo:#1-stt}}{\end{exercise}}
+\newenvironment{exerciced}[1]{\begin{exercisee}\label{exo:#1-stt}}{\end{exercisee}}
+\newenvironment{exercicec}[1]{\begin{exercise} \label{exo:#1-stt} (\LANGUE{solution on}{corrigé} page \pageref{exo:#1-cor})
+}{\end{exercise}}
+\newenvironment{exercicedc}[1]{\begin{exercisee} \label{exo:#1-stt} (\LANGUE{solution on}{corrigé} page \pageref{exo:#1-cor})
+}{\end{exercisee}}
+
+\newenvironment{slideproposition}{{\bf Proposition}}{}
+
+\ifnotSLIDE{
+\nolipics{
+\nolncs{\spnewtheorem{theorem}{\LANGUE{Theorem}{Théorème}}{\bfseries}{\rmfamily}}
+\nolncs{\spnewtheoremi{definition}{\LANGUE{Definition}{Définition}}{\bfseries}{\rmfamily}{theorem}}
+\nolncs{\spnewtheoremi{lemma}{\LANGUE{Lemma}{Lemme}}{\bfseries}{\rmfamily}{theorem}}
+\nolncs{\spnewtheoremi{corollary}{\LANGUE{Corollary}{Corollaire}}{\bfseries}{\rmfamily}{theorem}}
+\nolncs{\spnewtheoremi{proposition}{Proposition}{\bfseries}{\rmfamily}{theorem}}
+\nolncs{\spnewtheoremi{example}{\LANGUE{Example}{Exemple}}{\bfseries}{\rmfamily}{theorem}}
+%\spnewtheorem{sketch}{{\bf \LANGUE{Sketch of proof}{Démonstration (principe)}}}{\bfseries}{\rmfamily}
+\nolncs{\spnewtheoremi{remark}{\LANGUE{Remark}{Remarque}}{\bfseries}{\rmfamily}{theorem}}
+\nolncs{\spnewtheorem{exercise}{\LANGUE{Exercise}{Exercice}}{\bfseries}{\rmfamily}}
+\spnewtheorem{exercisee}{\LANGUE{*Exercise}{*Exercice}}{\bfseries}{\rmfamily}
+\spnewtheorem{summary}{\LANGUE{Summary}{Résumé}}{\bfseries}{\rmfamily}
+ %\spnewtheorem{exerciceenglish}{Exercise}{\bfseries}{\rmfamily}
+ %
+ \newenvironment{sketch}{{\bf \LANGUE{Sketch of proof}{Démonstration (principe)}}:}{\hfill $\Box$ }
+\nolncs{\spnewtheorem{conjecture}{\LANGUE{Conjecture}{Conjecture}}{\bfseries}{\rmfamily}}
+ %%
+ \spnewtheorem{theoremaprouver}{\LANGUE{Theorem TO BE PROVED}{Théorème (A PROUVER)}}{\bfseries}{\rmfamily}
+  \spnewtheorem{conjectureaprouver}{\LANGUE{Conjecture TO BE VERIFIED}{Conjecture (A VERIFIER)}}{\bfseries}{\rmfamily}
+ }}
+            
+ \makeatletter
+ \ifnotSLIDE{
+  \ifnotTDEXAM{
+\@ifundefined{proof}{
+	\newenvironment{proof}{{\bf \LANGUE{Proof}{Démonstration}}:}{\hfill $\Box$ 
+	}{}
+	}}}
+\makeatother
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Macros dont pas fier du tout
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newcommand\equations[1]{
+\begin{array}{lll}
+#1
+\end{array}
+}
+
+
+
+\newcommand\systeme[1]{
+\left\{
+\begin{array}{lll} 
+#1
+\end{array}
+\right.
+}
+
+
+
+%------------------
+%--- shorthands (AP)---
+%------------------
+\newcommand{\mtt}[1]{\mathtt{#1}}
+\newcommand{\ovl}[1]{\overline{#1}}
+\newcommand{\panic}[1]{\textcolor{red}{#1}}
+%\NewEnviron{epanic}{{\color{red}\BODY}}
+\newcommand{\idest}{\emph{i.e.\thinspace}}
+
+
+%------------------
+%--- mes trucs  ---
+%------------------
+
+
+\newcommand\implique{\Rightarrow}
+\newcommand\ssi{\Leftrightarrow}
+\newcommand\ac[1]{\{#1\}}
+\newcommand\zero{\vectorl{0}}
+\newcommand\un{\vectorl{1}}
+
+\newcommand\technique[1]{{\scriptsize #1}}
+
+
+%% Preuve and Co
+
+\newcommand\sensdirect{ Direction $\Rightarrow$. }
+\newcommand\sensindirect{ Direction $\Leftarrow$. }
+
+
+
+
+\newcommand\donnee{\mbox{<donnée>}}
+
+
+
+% pour aller vite
+
+\newcommand\gM{\mathfrak{M}}
+\newcommand\gMM{(M,f_1,\cdots,f_u,r_1,\cdots,r_v)}
+%
+\newcommand\mygM{\mK}
+\newcommand\mygMM{\left ( \K, \{op_i\}_{i\in I}, r_1 \ldots,
+r_\ell, \zero,\un \right )}
+\newcommand\myM{\K} 
+
+\newcommand\gMMM{(M,f_1,\cdots,f_u,c_1,\cdots,c_k,r_1,\cdots,r_v)}
+\newcommand\gMMMM{(f_1,\cdots,f_u,r_1,\cdots,r_v)}
+\newcommand\gMME{(M,f_1,\cdots,f_u,f'_1,\cdots,f'_\ell,r_1,\cdots,r_v)}
+\newcommand\gMMS{(f_1,\cdots,f_u,f'_1,\cdots,f'_\ell,r_1,\cdots,r_v)}
+
+\newcommand\bool{\mathfrak{B}}
+\newcommand\gbool{(\{0,1\},\zero,\un,=)}
+
+\newcommand\osg{\overline{sg}}
+\newcommand\moins{\mathrel{\dot{-}}}
+
+
+%%% TRUC DE BARWISE
+
+
+\newcommand\UM{\kU_{\kM}}
+\newcommand\VV{\mathbb{V}}
+% Hereditarily finite
+\newcommand\IHF{\mathbb{I}HF}
+\newcommand\IHP{\IHYP}
+\newcommand\IHYP{\mathbb{I}HYP}
+
+\providecommand\citep[1]{\cite{#1}}
+
+%% Cofinali
+
+
+% probas
+% défini dans amsmath
+\renewcommand\Pr{\cp{Pr}}
+\newcommand\Var{\cp{Var}}
+
+
+% -- mesures
+%\newcommand\card{card}
+\newcommand\taille{\LANGUE{size}{taille}}
+\newcommand\entree{e}
+\newcommand\profondeur{\LANGUE{depth}{profondeur}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 MACHINES DE TURING (graphique)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% Configuration de machine de Turing
+\newcommand\configTuring[3]{#1\textbf{#2}#3}
+
+
+%%% DESSIN CROIX PORU AIDER  A DESSINER
+
+\newcommand\croix{  +(-1,-1) -- +(1,1) +(-1,1) --
+  +(1,-1) }
+
+%% DESSIN ACCOLADE
+
+\newcommand\ACCOLADE[3]{
+%#1: coordonnées de départ
+%#2: coordonnées arrivée
+%#3: texte
+\draw[decorate,decoration={brace}]  (#1) -- (#2)
+ node[midway,above=0.1cm] {#3};
+}
+
+%%%
+
+
+\def\lcase{3.5 ex}
+\def\hcase{3.5ex}
+\tikzstyle{case} = []
+%[draw,minimum width = \lcase,minimum height = 3.6ex,baseline]
+\newcommand\dcase{ +(-0.5*\lcase,-0.5*\hcase) rectangle +(0.5*\lcase,0.5*\hcase)}
+%\newcommand\lettre[1]{\node [name=l,case,on chain=1] {#1};}
+
+
+\newcommand\RUBANMACHINEDETURING[6]{
+%#1: texte
+%#2: position de la tÃªte
+%#3: nb de blancs Ã  gauche
+%#4: nb de cases totales
+%#5: texte au dessus du ruban
+%#6: position du coin
+    \draw (#6) +(\lcase,4ex ) node {#5};
+    \draw (#6) +(-0.6,0)  node  {\ldots};  
+    \draw (#6) node[coordinate] (t) {};
+    \foreach \x in {1,2,...,#3} {
+         \draw (t) node [case]   {$\blanc$} \dcase;
+         \draw (t) ++(\lcase,0) node [coordinate] (t) {};
+       };
+   \StrLen{#1}[\Resultat] % ATTENTION IL FAUT CETTE SYNTAXE POUR FAIRE
+                         % EQUIVALENT D UN EDEF
+  
+\foreach \x in {1,...,\Resultat} 
+             { 
+        \draw (t) node [case]   {\StrChar{#1}{\x}} \dcase;
+        \draw (t) ++(\lcase,0) node [coordinate] (t) {};
+             }
+\pgfmathtruncatemacro{\z}{#4 - \Resultat - #3}
+
+  \foreach \x in {1,2,..., \z} {
+        \draw (t) node [case]   {$\blanc$} \dcase;
+        \draw (t) ++(\lcase,0) node [coordinate] (t) {};
+}
+%% Convention: graphiquement, la case numéro n se trouve Ã  (n*\lcase,0)
+%% en comptant les case Ã  partir de $0$
+
+   \draw  (t) +(0.1,0) node [name=r] {\ldots}; 
+}
+
+\newcommand\RUBANMACHINEDETURINGtexte[6]{
+%#1: texte
+%#2: position de la tÃªte
+%#3: nb de blancs Ã  gauche
+%#4: nb de cases totales (équivalent)
+%#5: texte au dessus du ruban
+%#6: position du coin
+    \draw (#6) +(\lcase,4ex ) node {#5};
+    \draw (#6) +(-0.6,0)  node  {\ldots};  
+    \draw (#6) node[coordinate] (t) {};
+   \foreach \x in {1,2,...,#3} {
+        \draw (t) node [case]   {$\blanc$} \dcase;
+        \draw (t) ++(\lcase,0) node [coordinate] (t) {};
+      };
+   \draw (#6) ++(-2*\lcase,0.5*\lcase)-- +(\lcase*#4,0);
+   \draw (#6) ++(-2*\lcase,-0.5*\lcase) -- +(\lcase*#4,0);
+   
+    \draw (t) ++(-0.5*\lcase,0) node [case,anchor=west]  (te) {#1};
+    \draw (te.east)  node [anchor=west,coordinate] (t) {};
+
+  \draw (t) ++(0.2*\lcase,0) node [coordinate] (t) {};
+   \foreach \x in {1,2,...,#3} {
+        \draw (t) node [case]   {$\blanc$} \dcase;
+        \draw (t) ++(\lcase,0) node [coordinate] (t) {};
+      };
+
+    \draw  (t) +(0.1,0) node [anchor=west] {\ldots}; 
+}
+
+
+\newcommand\RUBANMACHINEDETURINGTETE[6]{
+%
+% dessine la tete
+%
+% output: (tete)
+%
+\RUBANMACHINEDETURING{#1}{#2}{#3}{#4}{#5}{#6}
+% TETE
+     \draw (#6) + ( #2 * \lcase + #3  *\lcase,- 0.5*\lcase )
+     node[coordinate] (k) {};
+     \draw[->] (k) +(0,-0.5) -- (k);
+     \draw (k) +(0,-0.5) node[coordinate] (tete) {};
+}
+
+
+\newcommand\RUBANMACHINEDETURINGTETEtexte[6]{
+%
+% dessine la tete
+%
+% output: (tete)
+%
+\RUBANMACHINEDETURINGtexte{#1}{#2}{#3}{#4}{#5}{#6}
+% TETE
+     \draw (#6) + ( #2 * \lcase + #3  *\lcase,- 0.5*\lcase )
+     node[coordinate] (k) {};
+     \draw[->] (k) +(0,-0.5) -- (k);
+     \draw (k) +(0,-0.5) node[coordinate] (tete) {};
+}
+
+
+\newcommand\MACHINEDETURING[6]{
+%#1: texte
+%#2: position de la tÃªte
+%#3: état
+%#4: nb de blancs Ã  gauche
+%#5: nb de cases totales
+%#6: texte en haut du ruban
+%\begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETE{#1}{#2}{#4}{#5}{#6}{0,0}
+%
+%% ETAT:
+     \draw (tete) node [name=etat,draw,circle,anchor=north]  {#3};
+     \draw (etat) -- (tete);
+%\end{tikzpicture}
+}
+
+\newcommand\MACHINEDETURINGtexte[6]{
+%#1: texte
+%#2: position de la tÃªte
+%#3: état
+%#4: nb de blancs Ã  gauche
+%#5: nb de cases totales
+%#6: texte en haut du ruban
+%\begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETEtexte{#1}{#2}{#4}{#5}{#6}{0,0}
+%
+%% ETAT:
+     \draw (tete) node [name=etat,draw,circle,anchor=north]  {#3};
+     \draw (etat) -- (tete);
+%\end{tikzpicture}
+}
+
+\newcommand\MACHINEDETURINGTROISRUBANS[9]{
+%#1: texte1
+%#2: position de la tÃªte 1
+%#3: texte2
+%#4: position de la tÃªte 2
+%#5: texte3
+%#6: position de la tÃªte 3
+%#7: état
+%#8: nb de blancs Ã  gauche 1
+%#9: nb de cases totales
+%\begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETE{#1}{#2}{#8}{#9}{\LANGUE{tape}{ruban} $1$}{0,0}
+\draw (tete) node[coordinate] (tete1) {};
+\draw (tete1) +(8,0) node[coordinate] (tete1b) {};
+\draw (tete1) -| (tete1b) ;
+
+\RUBANMACHINEDETURINGTETE{#3}{#4}{#8}{#9}{\LANGUE{tape}{ruban} $2$}{0,-2}
+\draw (tete) node[coordinate] (tete2) {};
+\draw (tete2) +(-8.5,0) node[coordinate] (tete2b) {};
+\draw (tete2) -| (tete2b) ;
+
+\RUBANMACHINEDETURINGTETE{#5}{#6}{#8}{#9}{\LANGUE{tape}{ruban} $3$}{0,-4}
+\draw (tete) node[coordinate] (tete3) {};
+
+%% ETAT:
+     \draw (tete3) node [name=etat,draw,circle,anchor=north]  {#7};
+     \draw (etat) -- (tete3);
+    \draw  (etat) -|  (tete2b);
+\draw  (etat) -|  (tete1b);
+%\end{tikzpicture}
+}
+
+\newcommand\MACHINEDETURINGTROISRUBANSENGLISH[9]{
+%#1: texte1
+%#2: position de la tÃªte 1
+%#3: texte2
+%#4: position de la tÃªte 2
+%#5: texte3
+%#6: position de la tÃªte 3
+%#7: état
+%#8: nb de blancs Ã  gauche 1
+%#9: nb de cases totales
+%\begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETE{#1}{#2}{#8}{#9}{tape $1$}{0,0}
+\draw (tete) node[coordinate] (tete1) {};
+\draw (tete1) +(8,0) node[coordinate] (tete1b) {};
+\draw (tete1) -| (tete1b) ;
+
+\RUBANMACHINEDETURINGTETE{#3}{#4}{#8}{#9}{tape $2$}{0,-2}
+\draw (tete) node[coordinate] (tete2) {};
+\draw (tete2) +(-8.5,0) node[coordinate] (tete2b) {};
+\draw (tete2) -| (tete2b) ;
+
+\RUBANMACHINEDETURINGTETE{#5}{#6}{#8}{#9}{tape $3$}{0,-4}
+\draw (tete) node[coordinate] (tete3) {};
+
+%% ETAT:
+     \draw (tete3) node [name=etat,draw,circle,anchor=north]  {#7};
+     \draw (etat) -- (tete3);
+    \draw  (etat) -|  (tete2b);
+\draw  (etat) -|  (tete1b);
+%\end{tikzpicture}
+}
+
+
+
+\newcommand\MACHINEDETURINGTROISRUBANStexte[9]{
+%#1: texte1
+%#2: position de la tÃªte 1
+%#3: texte2
+%#4: position de la tÃªte 2
+%#5: texte3
+%#6: position de la tÃªte 3
+%#7: état
+%#8: nb de blancs Ã  gauche 1
+%#9: nb de cases totales
+% \begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETEtexte{#1}{#2}{#8}{#9}{\LANGUE{tape}{ruban} $1$}{0,0}
+\draw (tete) node[coordinate] (tete1) {};
+\draw (tete1) +(8,0) node[coordinate] (tete1b) {};
+\draw (tete1) -| (tete1b) ;
+
+\RUBANMACHINEDETURINGTETEtexte{#3}{#4}{#8}{#9}{\LANGUE{tape}{ruban} $2$}{0,-2}
+\draw (tete) node[coordinate] (tete2) {};
+\draw (tete2) +(-8.5,0) node[coordinate] (tete2b) {};
+\draw (tete2) -| (tete2b) ;
+
+\RUBANMACHINEDETURINGTETEtexte{#5}{#6}{#8}{#9}{\LANGUE{tape}{ruban} $3$}{0,-4}
+\draw (tete) node[coordinate] (tete3) {};
+
+%% ETAT:
+     \draw (tete3) node [name=etat,draw,circle,anchor=north]  {#7};
+     \draw (etat) -- (tete3);
+    \draw  (etat) -|  (tete2b);
+\draw  (etat) -|  (tete1b);
+%\end{tikzpicture}
+}
+
+
+\newcommand\MACHINEDETURINGDEUXRUBANStexte[9]{
+%#1: texte1  
+%#2: position de la tÃªte 1 
+%#3: texte2 inutilisée
+%#4: position de la tÃªte 2 inutilisée
+%#5: texte3
+%#6: position de la tÃªte 3
+%#7: état
+%#8: nb de blancs Ã  gauche 1
+%#9: nb de cases totales
+% \begin{tikzpicture}[node distance=-0.15mm]
+
+\RUBANMACHINEDETURINGTETEtexte{#1}{#2}{#8}{#9}{\LANGUE{tape}{ruban} $1$}{0,0}
+\draw (tete) node[coordinate] (tete1) {};
+\draw (tete1) +(8,0) node[coordinate] (tete1b) {};
+\draw (tete1) -| (tete1b) ;
+
+% \RUBANMACHINEDETURINGTETEtexte{#3}{#4}{#8}{#9}{\LANGUE{tape}{ruban} $2$}{0,-1.5}
+% \draw (tete) node[coordinate] (tete2) {};
+% \draw (tete2) +(-5.5,0) node[coordinate] (tete2b) {};
+% \draw (tete2) -| (tete2b) ;
+
+\RUBANMACHINEDETURINGTETEtexte{#5}{#6}{#8}{#9}{\LANGUE{tape}{ruban} $2$}{0,-1.5}
+\draw (tete) node[coordinate] (tete3) {};
+
+%% ETAT:
+     \draw (tete3) node [name=etat,draw,circle,anchor=north]  {#7};
+     \draw (etat) -- (tete3);
+%   \draw  (etat) -|  (tete2b);
+\draw  (etat) -|  (tete1b);
+%\end{tikzpicture}
+}
+
+
+\def\argdix{2}
+\def\argonze{25}
+\newcommand\MACHINEDETURINGQUATRERUBANStextep[9]{
+%#1: texte1
+%#2: position de la tÃªte 1
+%#3: texte2
+%#4: position de la tÃªte 2
+%#5: texte3
+%#6: position de la tÃªte 3
+%#7: texte4
+%#8: position de la tÃªte 3
+%#9: état
+%#10: nb de blancs Ã  gauche 1
+%#11: nb de cases totales
+% \begin{tikzpicture}[node distance=-0.15mm]
+
+%% BUG sur #10 devenu \argdix
+%% BUG SUR #11 devenu \argonze
+
+\RUBANMACHINEDETURINGTETEtexte{#1}{#2}{\argdix}{\argonze}{\LANGUE{tape}{ruban} $1$}{0,0}
+% \draw (tete) node[coordinate] (tete1) {};
+% \draw (tete1) +(8,0) node[coordinate] (tete1b) {};
+% \draw (tete1) -| (tete1b) ;
+
+\RUBANMACHINEDETURINGTETEtexte{#3}{#4}{\argdix}{\argonze}{\LANGUE{tape}{ruban} $2$}{0,-1.5}
+% \draw (tete) node[coordinate] (tete2) {};
+% \draw (tete2) +(-5.5,0) node[coordinate] (tete2b) {};
+% \draw (tete2) -| (tete2b) ;
+
+\RUBANMACHINEDETURINGTETEtexte{#5}{#6}{\argdix}{\argonze}{\LANGUE{tape}{ruban} $3$}{0,-3.2}
+\draw (tete) node[coordinate] (tete3) {};
+
+\RUBANMACHINEDETURINGTETEtexte{#7}{#8}{\argdix}{\argonze}{\LANGUE{tape}{ruban} $4$}{0,-4.9}
+\draw (tete) node[coordinate] (tete4) {};
+
+%% ETAT:
+     \draw (tete4) node [name=etat,draw,circle,anchor=north]  {#9};
+%      \draw (etat) -- (tete3);
+%     \draw  (etat) -|  (tete2b);
+% \draw  (etat) -|  (tete1b);
+%\end{tikzpicture}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 MACHINES DE TURING (automate)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newcommand\dec{1ex}
+\newcommand\myACCOLADE[4]{
+\ACCOLADE{#1*\lcase+#4*\lcase-0.5*\lcase,0.5*\lcase+\dec}{#1*\lcase+#4*\lcase-0.5*\lcase+#3*\lcase,0.5*\lcase+\dec}{#2}
+}
+
+
+\newcommand\M{\Sigma}
+
+
+\newcommand\sommet[2]{\node[state] (#1) #2 {$#1$};}
+\newcommand\sommetinitial[2]{\node[state,initial] (#1) #2 {$#1$};}
+\newcommand\sommetfinal[2]{\node[state,accepting] (#1) #2 {$#1$};}
+\newcommand\gtransition[5]{\draw (#1) edge node {#2/#4 $#5$} (#3);}
+\newcommand\gtransitionba[5]{\draw (#1) [loop above] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbb[5]{\draw (#1) [loop below] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbleft[5]{\draw (#1) [loop left] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbright[5]{\draw (#1) [loop right] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbl[5]{\draw (#1) [bend left] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbr[5]{\draw (#1) [bend right] edge node {#2/#4
+    $#5$} (#3);}
+\newcommand\gtransitionbadouble[9]{\draw (#1) [loop above] edge node {
+\begin{tabular}{l}
+#2/#4 $#5$ \\
+  #7/#8 $#9$ \\
+\end{tabular}
+} (#3);}
+
+\newcommand\SCALE{}
+
+\newcommand\dessinmtp[2]{
+\begin{center}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.3cm,semithick,#2] 
+#1
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand\dessinmt[1]{\dessinmtp{#1}{scale=1}}
+
+
+\newcommand\ANIMATIONMT[1]{
+\begin{overprint}
+\begin{dessinp}{scale=0.52}
+\foreach \av/\q/\b  [count=\xi]
+in  
+{#1}
+{ 
+\only<\xi| handout 0>{ 
+ \StrLen{\av}[\Resintm] % ATTENTION IL FAUT CETTE SYNTAXE POUR FAIRE
+                         % EQUIVALENT D UN EDEF
+ \MACHINEDETURING{\av \b}{\Resintm}{$\q$}{5}{20}{}
+}}
+ \end{dessinp}
+\end{overprint}
+}
+
+\newcommand\ANIMATIONMTd[1]{
+\begin{overprint}
+\begin{dessinp}{scale=0.52}
+\foreach \av/\q/\b  [count=\xi]
+in  
+{#1}
+{ 
+\only<\xi| handout 0>{ 
+ \StrLen{\av}[\Resintm] % ATTENTION IL FAUT CETTE SYNTAXE POUR FAIRE
+                         % EQUIVALENT D UN EDEF
+ \hspace{-1cm}\MACHINEDETURING{\av \b}{\Resintm}{$\q$}{5}{33}{}
+}}
+ \end{dessinp}
+\end{overprint}
+}
+
+\def\MAXDET{20}
+
+\newcommand\DIAGRAMMEESPACETEMPS[1]{
+\draw node[coordinate] (tt) {};
+\foreach \av/\q/\b  in  
+{#1}
+{ 
+
+\RUBANMACHINEDETURING{\av{$\q$}\b}{0}{4}{\MAXDET}{}{tt};
+\draw (tt) +(0,-\hcase) node[coordinate] (tt) {};
+}
+%\foreach \x in {0,...,19} {\draw (tt) + (\x*\lcase,0) node {$\vdots$};}
+}
+
+
+
+\newcommand\progun{
+/q_0/0011, % initial
+X/q_1/011,X0/q_1/11,X/q_2/0Y1,/q_2/X0Y1,
+X/q_0/0Y1,XX/q_1/Y1,XXY/q_1/1, XX/q_2/YY, X/q_2/XYY,
+XX/q_0/YY,XXY/q_3/Y,XXYY/q_3/B,XXYYB/q_4/B
+}
+
+\newcommand\DIAGRAMMEESPACETEMPSun{
+\DIAGRAMMEESPACETEMPS
+%% RECOPIE progun
+{/q_0/0011, % initial
+X/q_1/011,X0/q_1/11,X/q_2/0Y1,/q_2/X0Y1,
+X/q_0/0Y1,XX/q_1/Y1,XXY/q_1/1, XX/q_2/YY, X/q_2/XYY,
+XX/q_0/YY,XXY/q_3/Y,XXYY/q_3/B,XXYYB/q_4/B}
+%% FIN RECOPIE
+}
+
+\newcommand\progdeux{
+/q_0/0010, X/q_1/010, X0/q_1/10, X/q_2/0Y0,/q_2/X0Y0,
+X/q_0/0Y0,XX/q_1/Y0,XXY/q_1/0,XXY0/q_1/%B,
+}
+
+
+\newcommand\DIAGRAMMEESPACETEMPSdeux{
+\DIAGRAMMEESPACETEMPS
+{
+%% RECOPIE progdeux
+/q_0/0010, X/q_1/010, X0/q_1/10, X/q_2/0Y0,/q_2/X0Y0,
+X/q_0/0Y0,XX/q_1/Y0,XXY/q_1/0,XXY0/q_1/%B,
+%% FIN RECOPIE
+}
+}
+
+\newcommand\DIAGRAMMEESPACETEMPSdeuxvariante{
+\def\memolcase{\lcase}
+\def\memoMAXDET{20}
+\def\MAXDET{15}
+\def\lcase{6 ex}
+\DIAGRAMMEESPACETEMPS
+{
+%% RECOPIE progdeux
+/q_00/010, X/q_10/10, X0/q_11/0, X/q_20/Y0,/q_2X/0Y0,
+X/q_00/Y0,XX/q_1Y/0,XXY/q_10/,XXY0/q_1B/%B,
+%% FIN RECOPIE
+}
+\def\lcase{\memolcase}
+\def\MAXDET{\memoMAXDET}
+}
+
+
+\newcommand\ANIMATIONun{
+\ANIMATIONMT
+%% RECOPIE progun
+{/q_0/0011, % initial
+X/q_1/011,X0/q_1/11,X/q_2/0Y1,/q_2/X0Y1,
+X/q_0/0Y1,XX/q_1/Y1,XXY/q_1/1, XX/q_2/YY, X/q_2/XYY,
+XX/q_0/YY,XXY/q_3/Y,XXYY/q_3/B,XXYYB/q_4/B}
+%% FIN RECOPIE
+}
+
+
+
+\newcommand\DESSINALGO[3]{
+% argument 1= ou
+% argument 2= texte 
+% argument 3= nom du noeud ex m
+\draw node[draw,#1,minimum size=1cm] (#3) {#2};
+
+% pour fitting box
+\draw (#3.west) +(-0.2cm,0) node (#3c2) {};
+\draw (#3.north) +(0,+0.2cm) node (#3c3) {};
+\draw (#3.south) +(0,-0.2cm) node (#3c4) {};
+}
+
+\newcommand\DESSINALGOa[3]{
+\DESSINALGO{#1}{#2}{#3}
+\draw (#3.east) +(-0.1cm,0.2cm) node(#3a) {};
+\draw[->] (#3a) -- ++(0.5cm,0) node (#3aa) {};
+\draw (#3aa) node[anchor=west] (#3aaa) {\LANGUE{Accept}{Accepte}};
+\draw (#3aaa.east) node(#3aaaa) {};
+}
+
+\newcommand\DESSINALGOe[4]{
+\DESSINALGO{#1}{#2}{#3}
+\draw (#3.east) +(-0.1cm,0.2cm) node(#3a) {};
+\draw[->] (#3a) -- ++(0.5cm,0) node (#3aa) {};
+\draw (#3aa) node[anchor=west] (#3aaa) {#4};
+\draw (#3aaa.east) node(#3aaaa) {};
+}
+
+
+\newcommand\DESSINALGOar[3]{
+\DESSINALGOa{#1}{#2}{#3}
+\draw (#3.east) +(-0.1cm,-0.2cm) node(#3r) {};
+\draw[->] (#3r) -- ++(0.5cm,0) node (#3rr) {};
+\draw (#3rr) node[anchor=west] (#3rrr) {\LANGUE{Reject}{Refuse}};
+\draw (#3rrr.east) node(#3rrrr) {};
+}
+
+
+\newcommand\WINDOWarg[7] {
+%#1: position
+%#2..7: contenu du tableau
+\draw (#1) node[case]  {#2} \dcase;
+\draw (#1) ++ (\lcase,0) node[case] {#3} \dcase;
+\draw (#1) ++ (2*\lcase,0) node[case] {#4} \dcase;
+\draw (#1) ++ (0,-\lcase) node[case] {#5} \dcase;
+\draw (#1) ++ (\lcase,-\lcase) node[case] {#6} \dcase;
+\draw (#1) ++ (2*\lcase,-\lcase) node[case] {#7} \dcase;
+}
+
+\newcommand\WINDOW[3]{
+%#1: positioin
+%#2: contenu
+%#3: étiquette
+\WINDOWarg{#1}
+{\StrChar{#2}{1}}{\StrChar{#2}{2}}{\StrChar{#2}{3}}
+{\StrChar{#2}{4}}{\StrChar{#2}{5}}{\StrChar{#2}{6}}
+\draw (#1) +(-\lcase*1.2,-\lcase*0.5) node {#3};
+}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 LISTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% LISTINGS
+\RequirePackage{listings}
+ \lstset{language=Java,
+ mathescape=true,
+ showspaces=false,
+ showstringspaces=false,
+ frame=single,
+morekeywords={recursive,then,div,function,integer,read,out,else,par,endpar,seq,endseq,and,not,read,write,repeat,until,undef,let,to,endfor,endif,endwhile,guess,in,parallel},
+% basicstyle=\ttfamily\small,
+% basewidth={1.1ex},
+% keywordstyle=\bf\color{blue},
+% %stringstyle=\bf\ttfamily\color{green},
+% commentstyle=\bfseries\color{magenta},
+ literate={:=}{{$\gets$ }}1 {<=}{{$\leq$}}2  {>=}{{$\geq$}}2
+ {!=}{{$\neq$}}1 
+ }
+% \lstset{escapechar=\%}
+\let\lst\lstinline
+\def\beginlisting{\begin{lstlisting}}
+\def\endlisting{\end{lstlisting}}  
+
+
+
+
+\newenvironment{algo}[1]{
+  \lstset{escapechar=\@}
+  \def\input{$#1$}
+  \def\out{out}
+  \def\BEGIN{\textbf{read} \input }
+ \def\BEGINN{\textbf{repeat} }
+  \def\END{\textbf{until out!=undef}}
+  \def\ENDD{\textbf{write \out}}
+  \def\ENDT{\textbf{until $\ctl$ = $q_a$ or $\ctl$ = $q_r$}}
+  \def\ENDR{\textbf{until $\ctl$ = $q_a$}}
+  \def\ENDP{\textbf{until $\ctl$ = $q_a$}}
+}{}
+\newenvironment{algon}[1]{
+  \lstset{numbers=left}
+  \begin{algo}{#1}
+}{\end{algo}}
+\newcommand\FSM[3]{FSM(#1,\lst{#2},#3)}
+\newcommand\FSMi[3]{FSM(#1,{#2},#3)}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      TRADUCTION EN COURS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\ENTREPOT[1]{\NDLR{ENTREPOT ICI: #1}}
+\newcommand\scite[2][]{\cite[#1]{#2}}
+\newcommand\nospellcheck[1]{{#1}}
+\newcommand\nd{nd}
+\newcommand\NL{
+ 
+}
+
+\newenvironment{FRANCAIS}{
+\small
+\color{orange}
+}
+{\normalsize
+\color{black}
+}
+
+
+\newenvironment{SEMIFRANCAIS}{
+\small
+\color{violet}
+}
+{\normalsize
+\color{black}
+}
+
+\newcommand\QFRANCAIS[1]{
+\begin{FRANCAIS}
+#1
+\end{FRANCAIS}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Wikipedia
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand\tightlist{}
+\providecommand\Complex{\C}
+\newenvironment{myalgie}{\begin{array}{lll}}{\end{array}}
+
+\newcommand\nl{\ \\ }
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Pour citations précises
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newcommand\citeprecis[2]{{\cite[#1]{#2}}}
+\newcommand\citeprecisinv[2]{\citeprecis{#2}{#1}}
+
+\usepackage{csquotes}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Travail sur couleurs
+%
+%   toutes les réponses pointent dans le même sens, et le schéma correspond exactement 
+%. au profil perceptif d’un protanope** (déficit des cônes L / longueurs d’onde longues)
+%  MAIS SEVERE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% ================================
+% GROUPE 1 — Verts sombres
+% ================================
+\definecolor{deepgreen}{RGB}{0,160,40}
+\definecolor{forestgreen}{RGB}{0,150,70}
+\definecolor{mossgreen}{RGB}{0,140,90}
+\definecolor{greenwave}{RGB}{0,150,90}
+\definecolor{forestmist}{RGB}{0,160,90}
+\definecolor{darkteal}{RGB}{0,130,70}
+
+% ================================
+% GROUPE 2 — Teal / verts bleutés
+% ================================
+\definecolor{seagreen}{RGB}{0,130,100}
+\definecolor{freshteal}{RGB}{0,140,130}
+\definecolor{greenteal}{RGB}{0,140,120}
+\definecolor{blueteal}{RGB}{0,150,120}      % ancien "teal" (doublon corrigé)
+\definecolor{lagoon}{RGB}{0,180,120}
+\definecolor{greenmist}{RGB}{0,170,110}
+
+% ================================
+% GROUPE 3 — Turquoises / Aqua
+% ================================
+\definecolor{springgreen}{RGB}{0,190,100}
+\definecolor{mintgreen}{RGB}{10,200,150}
+\definecolor{oceanfoam}{RGB}{0,200,150}
+\definecolor{aquagreen}{RGB}{30,210,170}
+\definecolor{coastalaqua}{RGB}{40,210,180}
+\definecolor{softaqua}{RGB}{40,210,190}
+
+% ================================
+% GROUPE 4 — Cyan / Aqua clairs
+% ================================
+\definecolor{emeraldteal}{RGB}{0,180,140}
+\definecolor{deepcyan}{RGB}{0,180,160}
+\definecolor{lightcyan}{RGB}{0,200,160}
+\definecolor{aquamarine}{RGB}{0,200,160}
+\definecolor{lightaqua}{RGB}{60,230,200}
+\definecolor{mistblue}{RGB}{80,240,210}
+
+% ================================
+% GROUPE 5 — Bleus clairs
+% ================================
+\definecolor{paleaqua}{RGB}{80,200,190}
+\definecolor{glacier}{RGB}{90,150,200}
+\definecolor{skyblueA}{RGB}{60,150,220}      % ancien "skyblue"
+\definecolor{lightsky}{RGB}{90,170,230}
+\definecolor{iceblue}{RGB}{120,190,240}
+\definecolor{frost}{RGB}{150,210,250}
+
+% ================================
+% GROUPE 6 — Bleus moyens
+% ================================
+\definecolor{steelblue}{RGB}{30,100,160}
+\definecolor{cadetblue}{RGB}{70,120,180}
+\definecolor{coolblue}{RGB}{110,170,220}
+\definecolor{morningblue}{RGB}{140,200,240}
+\definecolor{blueiceA}{RGB}{40,150,210}       % ancien "blueice" (doublon corrigé)
+\definecolor{blueair}{RGB}{60,170,225}
+
+% ================================
+% GROUPE 7 — Azurs / Bleu saturé
+% ================================
+\definecolor{tealblue}{RGB}{0,110,130}
+\definecolor{deepbluecyan}{RGB}{0,110,170}
+\definecolor{azur}{RGB}{0,70,180}
+\definecolor{brightazure}{RGB}{20,130,200}
+\definecolor{lightazure}{RGB}{80,180,235}
+\definecolor{skylight}{RGB}{100,200,245}
+
+% ================================
+% GROUPE 8 — Bleus sombres / violets
+% ================================
+\definecolor{nightblue}{RGB}{40,0,110}
+\definecolor{slateblue}{RGB}{20,40,120}
+\definecolor{violetA}{RGB}{60,50,160}         % ancien "violet" (distinct de violetB ci-dessous)
+\definecolor{blueviolet}{RGB}{80,60,180}
+\definecolor{purpleA}{RGB}{100,70,200}        % ancien "purple"
+\definecolor{lightpurple}{RGB}{130,90,210}
+
+% ================================
+% GROUPE 9 — Violets saturés / indigos
+% ================================
+\definecolor{lilac}{RGB}{160,110,220}
+\definecolor{indigoA}{RGB}{50,0,130}          % ancien "indigo"
+\definecolor{deepindigo}{RGB}{70,10,150}
+\definecolor{royalpurple}{RGB}{90,20,170}
+
+% ================================
+% GROUPE 10 — Fermeture cercle perceptif
+% ================================
+\definecolor{coolmint}{RGB}{0,130,70}
+\definecolor{deepsea}{RGB}{0,130,70}
+
+% ================================
+% PALETTE DEUTÉRANOPE — noms uniques
+% ================================
+\definecolor{crimson}{RGB}{200,30,60}
+\definecolor{brickred}{RGB}{180,40,40}
+\definecolor{coral}{RGB}{220,90,70}
+\definecolor{salmon}{RGB}{240,130,120}
+
+\definecolor{magenta}{RGB}{200,40,150}
+\definecolor{fuchsia}{RGB}{220,60,170}
+\definecolor{violetB}{RGB}{140,70,190}        % ancien "violet"
+\definecolor{indigoB}{RGB}{90,50,180}         % ancien "indigo"
+
+\definecolor{royalblueA}{RGB}{50,80,200}      % ancien "royalblue"
+\definecolor{azure}{RGB}{30,120,230}
+\definecolor{skyblueB}{RGB}{80,160,230}       % second "skyblue"
+\definecolor{tealB}{RGB}{0,150,170}           % second "teal"
+
+\definecolor{marine}{RGB}{0,80,140}
+
+
+
+
+%% Alternative
+
+% === Générateur automatique fill/text pour protanopes ===
+% Usage : \ProtaColorPair{mistblue}
+% Suppose que mistblue est déjà défini par \definecolor{mistblue}{RGB}{...}
+
+\newcommand{\ProtaColorPair}[1]{%
+  % fill = couleur originale
+  \colorlet{#1fill}{#1}%
+  % text = version assombrie idéalement lisible
+  \colorlet{#1text}{#1!80!black}%
+}
+
+%Utilisation
+%\ProtaColorPair{mistblue}
+
+%\textcolor{mistbluefill}{Couleur claire} \quad
+%\textcolor{mistbluetext}{Couleur pour texte}
+
+	\foreach \i/\name in {
+	  1/deepgreen,
+	  2/greenwave,
+	  3/lagoon,
+	  4/oceanfoam,
+	  5/softaqua,
+	  6/mistblue,
+ 	 7/lightsky,
+	  8/blueiceA,   % <-- corrigé
+	  9/deepcyan,
+	  10/azur,
+	  11/blueviolet,
+	  12/royalpurple}
+	  {\ProtaColorPair{\name}}
+	  
+
+
+\newcommand\ROUEPROTANOPEDOUZE{
+	% Roue chromatique protanope — 12 couleurs
+	\begin{tikzpicture}[scale=3]
+
+	\foreach \i/\name/\nametext in {
+	  1/deepgreen/deepgreen,
+	  2/greenwave/greenwave,
+	  3/lagoon/lagoontext,
+	  4/oceanfoam/oceanfoam,
+	  5/softaqua/softaquatext,
+	  6/mistblue/mistbluetext,
+ 	 7/lightsky/lightskytext,
+	  8/blueiceA/blueiceA,   % <-- corrigé
+	  9/deepcyan/blueiceA,
+	  10/azur/azur,
+	  11/blueviolet/blueviolet,
+	  12/royalpurple/royalpurple}
+	{
+	  % secteur coloré
+ 	 \filldraw[fill=\name, draw=black, line width=0.2pt]
+	    ({90-30*\i}:1)
+	    -- ({90-30*(\i-1)}:1)
+	    -- (0,0) -- cycle;
+
+ 	 % label dans la bonne couleur
+	  \node at ({90-30*(\i-0.5)}:1.25)
+	    {\textcolor{\nametext}{\small \nametext}};
+	}
+
+	\end{tikzpicture}
+}
+
+
+\newcommand\ROUEPROTANOPEVINGT{
+\begin{tikzpicture}[scale=3]
+
+\foreach \i/\name/\nametext in {
+  1/deepgreen/deepgreen,
+  2/greenwave/greenwave,
+  3/lagoon/lagoon,
+  4/oceanfoam/oceanfoam,
+  5/softaqua/softaquatext,
+  6/mistblue/mistbluetext,
+  7/lightsky/lightsky,
+  8/blueiceA/blueiceA,      % corrigé
+  9/deepcyan/deepcyan,
+  10/azur/azur,
+  11/brightazure/brightazure,
+  12/skyblueA/skyblueA,     % corrigé
+  13/coolblue/coolblue,
+  14/glacier/glacier,
+  15/marine/marine,
+  16/violetA/violetA,      % corrigé
+  17/blueviolet/blueviolet,
+  18/purpleA/purpleA,      % corrigé
+  19/royalpurple/royalpurple,
+  20/indigoA/indigoA}      % corrigé
+{
+  % Secteur coloré
+  \filldraw[fill=\name, draw=black, line width=0.2pt]
+    ({90-18*\i}:1)
+    -- ({90-18*(\i-1)}:1)
+    -- (0,0) -- cycle;
+
+  % Étiquette
+  \node at ({90-18*(\i-0.5)}:1.25)
+    {\textcolor{\nametext}{\small \nametext}};
+}
+
+\end{tikzpicture}
+}
+
+\newcommand\ROUEDEUTERANOPEDOUZE{
+% Roue chromatique deutéranope — 12 couleurs
+\begin{tikzpicture}[scale=3]
+
+\foreach \i/\name in {
+  1/crimson,
+  2/brickred,
+  3/coral,
+  4/salmon,
+  5/magenta,
+  6/fuchsia,
+  7/violetB,       % corrigé
+  8/indigoB,       % corrigé
+  9/royalblueA,    % corrigé
+  10/azure,
+  11/skyblueB,     % corrigé
+  12/tealB}        % corrigé
+{
+  % Secteur coloré
+  \filldraw[fill=\name, draw=black, line width=0.2pt]
+    ({90-30*\i}:1)
+    -- ({90-30*(\i-1)}:1)
+    -- (0,0) -- cycle;
+
+  % Label dans la couleur
+  \node at ({90-30*(\i-0.5)}:1.25)
+    {\textcolor{\name}{\small \name}};
+}
+
+\end{tikzpicture}
+}
+
+
+
+% === Macro intelligente pour foncer une couleur de façon lisible pour protanope ===
+% Usage : \protadarken{mistblue}{40}  -> crée mistblue@dark
+% Le 40 signifie : 40% de mélange avec du noir
+
+\newcommand{\DarkenForText}[2]{%
+  % #1 = nom de la couleur
+  % #2 = pourcentage (40 conseillé si tu ne sais pas)
+  %
+  % On crée une nouvelle couleur #1@dark
+  \colorlet{#1text}{black!#2!#1}%
+}
+
+
+
+
+
+%%%%
+
+% Groupe 1
+\DarkenForText{deepgreen}{20}
+\DarkenForText{forestgreen}{20}
+\DarkenForText{mossgreen}{20}
+\DarkenForText{greenwave}{20}
+\DarkenForText{forestmist}{20}
+\DarkenForText{darkteal}{20}
+
+% Groupe 2
+\DarkenForText{seagreen}{20}
+\DarkenForText{freshteal}{20}
+\DarkenForText{greenteal}{20}
+\DarkenForText{blueteal}{20}
+\DarkenForText{lagoon}{20}
+\DarkenForText{greenmist}{20}
+
+% Groupe 3
+\DarkenForText{springgreen}{20}
+\DarkenForText{mintgreen}{20}
+\DarkenForText{oceanfoam}{20}
+\DarkenForText{aquagreen}{20}
+\DarkenForText{coastalaqua}{20}
+\DarkenForText{softaqua}{20}
+
+% Groupe 4
+\DarkenForText{emeraldteal}{20}
+\DarkenForText{deepcyan}{20}
+\DarkenForText{lightcyan}{20}
+\DarkenForText{aquamarine}{20}
+\DarkenForText{lightaqua}{20}
+\DarkenForText{mistblue}{30}
+
+% Groupe 5
+\DarkenForText{paleaqua}{20}
+\DarkenForText{glacier}{20}
+\DarkenForText{skyblueA}{20}
+\DarkenForText{lightsky}{20}
+\DarkenForText{iceblue}{20}
+\DarkenForText{frost}{20}
+
+% Groupe 6
+\DarkenForText{steelblue}{20}
+\DarkenForText{cadetblue}{20}
+\DarkenForText{coolblue}{20}
+\DarkenForText{morningblue}{20}
+\DarkenForText{blueiceA}{20}
+\DarkenForText{blueair}{20}
+
+% Groupe 7
+\DarkenForText{tealblue}{20}
+\DarkenForText{deepbluecyan}{20}
+\DarkenForText{azur}{20}
+\DarkenForText{brightazure}{20}
+\DarkenForText{lightazure}{20}
+\DarkenForText{skylight}{20}
+
+% Groupe 8
+\DarkenForText{nightblue}{20}
+\DarkenForText{slateblue}{20}
+\DarkenForText{violetA}{20}
+\DarkenForText{blueviolet}{20}
+\DarkenForText{purpleA}{20}
+\DarkenForText{lightpurple}{20}
+
+% Groupe 9
+\DarkenForText{lilac}{20}
+\DarkenForText{indigoA}{20}
+\DarkenForText{deepindigo}{20}
+\DarkenForText{royalpurple}{20}
+
+% Groupe 10
+\DarkenForText{coolmint}{20}
+\DarkenForText{deepsea}{20}
+
+% Palette deutéranope
+\DarkenForText{crimson}{20}
+\DarkenForText{brickred}{20}
+\DarkenForText{coral}{20}
+\DarkenForText{salmon}{20}
+
+\DarkenForText{magenta}{20}
+\DarkenForText{fuchsia}{20}
+\DarkenForText{violetB}{20}
+\DarkenForText{indigoB}{20}
+
+\DarkenForText{royalblueA}{20}
+\DarkenForText{azure}{20}
+\DarkenForText{skyblueB}{20}
+\DarkenForText{tealB}{20}
+
+% Couleur supplémentaire
+\DarkenForText{marine}{20}
+
+%%%%%%%%%%%%%%%%%%%%%
+%
+%.   apx proof
+%
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% do
+\newcommand\PREUVESENAPPENDIXCOMPATIBLE{
+	\newenvironment{appendixproof}{{\bf \LANGUE{Proof}{Démonstration}}:}{\hfill $\Box$}
+	\newtheorem{theoremrep}[theorem]{Theorem}
+	\newtheorem{lemmarep}[theorem]{Lemma}
+	\newtheorem{propositionrep}[theorem]{Proposition}
+	\newtheorem{corollaryrep}[theorem]{Corollary}
+	\newtheorem{summaryrep}[theorem]{Summary}	
+}
+
+\providecommand\apxparameter{}
+
+%% proof inline
+%\providecommand\apxparameter{appendix=inline}
+%% proof in appendix
+%\providecommand\apxparameter{}
+
+
+\apxproofmode{
+\usepackage[\apxparameter]{apxproof}
+\theoremstyle{plain}
+
+\newtheoremrep{theorem}{Theorem}
+%\newtheoremrep{theoremconjecture}[theorem]{Theorem-To-Be-Proved=Conjecture}
+%\newtheoremrep{lemmaconjecture}[theorem]{Conjecture-To-Be-Proved=Conjecture}
+\newtheoremrep{claim}[theorem]{Theorem}
+\newtheoremrep{proposition}[theorem]{Proposition}
+\newtheoremrep{lemma}[theorem]{Lemma}
+\newtheoremrep{corollary}[theorem]{Corollary}
+%%bug mars 26: \newtheoremrep{summary}[theorem]{Summary}
+% Du coup:
+\newtheoremrep{resume}[theorem]{Summary}
+%bug mars 26: \newtheoremrep{openproblem}[theorem]{Open Problem}
+%\newtheoremrep{claim}[theorem]{Claim}
+}
+
+
+%\apxproofmodesubsection{
+%%apx proof, pour que compteur correct
+%\makeatletter
+%\AtBeginDocument{%
+%\let\axp@section\subsection
+%  \let\axp@oldsection\subsection
+%}
+%\makeatother
+%\renewcommand\appendixprelim{\section{Missing proofs}}
+%}
+
+
+\makeatletter
+\apxproofmodesubsection{
+\let\axp@section\subsection
+%\let\axp@oldsection\subsection
+\renewcommand\appendixprelim{\section{Proofs from main documents}}
+}
+\makeatother
+
+
+\makeatletter
+\newcommand\appendixapxproofsubsection{
+\appendix
+\let\apx@orig@appendix\appendix
+\renewcommand{\appendix}{}
+}
+\makeatother
+
+
+%%% Pour checker/vérifier que bon
+
+
+\newcommand\docheck[1]{\textcolor{check}{#1}}
+
+\usepackage{xcolor}
+%\definecolor{chose}{RGB}{0,110,50}
+%\definecolor{forestgreen}{RGB}{0,150,70}
+%\definecolor{ctruc}{RGB}{164,164,164}
+%\definecolor{oceanfoam}{RGB}{0,200,150}
+\definecolor{check}{RGB}{160,160,0}
+
+
+
+

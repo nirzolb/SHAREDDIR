@@ -1,0 +1,103 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{expose-new}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Required packages
+\RequirePackage{aeguill}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 POLICE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Si comicsansms
+%\usepackage{comicsans}
+%\renewcommand{\sfdefault}{comic} 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 BEAMER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% BEAMER THEME
+\usetheme{Villers}
+
+%\usetheme{Warsaw}
+%\usetheme{Montpellier}
+% beamerthemeAntibes.sty      beamerthemeGoettingen.sty   beamerthemePaloAlto.sty 
+% beamerthemeBergen.sty       beamerthemeHannover.sty     beamerthemePittsburgh.sty 
+% beamerthemeBerkeley.sty     beamerthemeIlmenau.sty      beamerthemeRochester.sty 
+% beamerthemeBerlin.sty       beamerthemeJuanLesPins.sty  beamerthemeSingapore.sty 
+% beamerthemeBoadilla.sty     beamerthemeLuebeck.sty      beamerthemeSzeged.sty 
+% beamerthemeCopenhagen.sty   beamerthemeMadrid.sty       beamerthemeWarsaw.sty 
+% beamerthemeDarmstadt.sty    beamerthemeMalmoe.sty       beamerthemeboxes.sty 
+% beamerthemeDresden.sty      beamerthemeMarburg.sty      beamerthemedefault.sty 
+% beamerthemeFrankfurt.sty    beamerthemeMontpellier.sty 
+%\usetheme{Madrid}
+%\usetheme{Vandoeuvre}
+%\usetheme{Singapore}
+%\usetheme{Villers}
+
+%\setbeamercovered{transparent}
+
+%
+%\useoutertheme[subsection=false]{miniframes}
+%\useoutertheme[compress,subsection=false]{miniframes}
+%\useinnertheme[shadow]{rounded}
+%\useinnertheme{rounded}
+%\usecolortheme{dolphin}
+%\usecolortheme{orchid}
+
+% On peut modifier l'icône de début d'item dans un environnement itemize par la commande :
+% \setbeamertemplate{itemize item}[style]
+% ... où style peut prendre l'une des valeurs suivantes : default, triangle, circle, square et ball.
+% De la même façon pour les items de deuxième niveau :
+% \setbeamertemplate{itemize subitem}[style]
+% et de troisième niveau :
+%\setbeamertemplate{itemize subsubitem}[style].
+
+\setbeamertemplate{itemize item}[square]
+\setbeamercolor{itemize item}{fg=orange}
+\setbeamertemplate{itemize subitem}[triangle]
+
+% Si voulait changer couleur d'une ball
+%%Some more looking at the source reveals: for the shaded stuff, the
+%%color is not itemize subitem, but subitem projected for the ball (and
+%%it's inverse, since apparently the ball is formally the background of
+%%an empty bullet):
+%% EN CLAIR: POUR AVOIR BOULE ROUGE
+%\setbeamertemplate{items}[ball]
+%\setbeamercolor{subitem projected}{bg=red}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                 PGF-TIKZ pour IMAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%% PGF-TIKZ
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+
+\hypersetup{colorlinks=true}
+
+%%% Necessaire
+\usetikzlibrary{arrows,shapes} 
+\tikzstyle{every picture}+=[remember picture]
+
+% pour gras
+\tikzstyle{every picture}+=[very thick]
+
+
+%% Necessaire, à cause d'un conflit sur package label a propos du :
+%\usepackage[babel=true,kerning=true]{microtype}
+
+
