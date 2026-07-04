@@ -5,7 +5,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% Required packages
-\RequirePackage{aeguill}
+\RequirePackage{lmodern}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,12 +53,12 @@
 %\usecolortheme{dolphin}
 %\usecolortheme{orchid}
 
-% On peut modifier l'icône de début d'item dans un environnement itemize par la commande :
+% On peut modifier l'icÃ´ne de dÃ©but d'item dans un environnement itemize par la commande :
 % \setbeamertemplate{itemize item}[style]
-% ... où style peut prendre l'une des valeurs suivantes : default, triangle, circle, square et ball.
-% De la même façon pour les items de deuxième niveau :
+% ... oÃ¹ style peut prendre l'une des valeurs suivantes : default, triangle, circle, square et ball.
+% De la mÃªme faÃ§on pour les items de deuxiÃ¨me niveau :
 % \setbeamertemplate{itemize subitem}[style]
-% et de troisième niveau :
+% et de troisiÃ¨me niveau :
 %\setbeamertemplate{itemize subsubitem}[style].
 
 \setbeamertemplate{itemize item}[square]
@@ -97,7 +97,16 @@
 \tikzstyle{every picture}+=[very thick]
 
 
-%% Necessaire, à cause d'un conflit sur package label a propos du :
+%% tikz Ã©crase le \path du paquet url ; on le rÃ©tablit ici une fois pour
+%% toutes (tikz rÃ©installe ses propres commandes localement dans chaque
+%% tikzpicture, donc ceci ne gÃªne pas les dessins). Sans cela, les
+%% \path{doi:...} produits par plainurl.bst dans le .bbl font Ã©chouer
+%% la compilation.
+\RequirePackage{url}
+\DeclareUrlCommand\path{\urlstyle{tt}}
+
+
+%% Necessaire, Ã  cause d'un conflit sur package label a propos du :
 %\usepackage[babel=true,kerning=true]{microtype}
 
 

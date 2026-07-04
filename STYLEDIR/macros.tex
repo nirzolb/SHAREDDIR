@@ -1,6 +1,11 @@
 
 \providecommand\nolncs[1]{#1}	
 
+%% Chemins par défaut (surchargables avant \input{macros} via \providecommand,
+%% ou après via \renewcommand) :
+\providecommand\BIBFILES{@@reference-biblio}
+\providecommand\FIGCOMMONS{/Users/bournez/lib/LaTeX/Perso/FIG-COMMONS}
+
 \newcommand\affiliationofficielleolivier{LIX, CNRS, École polytechnique, Institut Polytechnique de Paris, Palaiseau, France}
 \newcommand\affiliationofficielleolivierslides{LIX, CNRS, École polytechnique, \\ Institut Polytechnique de Paris, Palaiseau, France}
 
@@ -184,7 +189,7 @@ attach boxed title to top left={yshift=-2mm},
 \BEGINTEMPENVCOLOR{blue!30}
 {                        \colorbox{blue!30}{
 
-\noindent \begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
 #1
 \end{minipage}
 }
@@ -201,21 +206,21 @@ attach boxed title to top left={yshift=-2mm},
 \newenvironment{confiance}{\begin{maboiteresume}[colback=brown!50]{Résumé ici}}{\end{maboiteresume}}
 \newcommand\CONFIANCE[2][Confiance ici]{
 \begin{maboiteconfiance}[colback=yellow!50]{#1}
-\textbf{ATTENTION #1: #2}
+\textbf{ATTENTION : #2}
 \end{maboiteconfiance}
 }
 
 \newenvironment{resume}{\begin{maboiteresume}[colback=brown!50]{Résumé ici}}{\end{maboiteresume}}
 \newcommand\RESUME[2][Résumé ici]{
 \begin{maboiteresume}[colback=brown!50]{#1}
-#1: #2
+#2
 \end{maboiteresume}
 }
 
 \newenvironment{resumeperso}{\begin{maboiteresumeperso}[colback=brown!50]{Résumé perso ici}}{\end{maboiteresumeperso}}
 \newcommand\RESUMEPERSO[2][Résumé perso  ici]{
 \begin{maboiteresumeperso}[colback=brown!50]{#1}
-#1: #2
+#2
 \end{maboiteresumeperso}
 %
 %
@@ -238,7 +243,7 @@ attach boxed title to top left={yshift=-2mm},
 \newenvironment{commentaireperso}{\begin{maboitecommentaire}[colback=brown!30]{Commentaire perso} Commentaire perso:}{\end{maboitecommentaire}}
 \newcommand\COMMENTAIREPERSO[2][Commentaire perso]{
 \begin{maboitecommentaire}[colback=brown!30]{#1}
-Commentaire perso: #2
+#2
 \end{maboitecommentaire}
 }
 
@@ -248,7 +253,7 @@ Commentaire perso: #2
 \ifnotmodeDIFFUSIONFINALE{
 \BEGINTEMPENVCOLOR{blue!60}
 	                 \colorbox{blue!60}{
-\noindent \begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
 {
 \bf 
 #2
@@ -265,7 +270,7 @@ Commentaire perso: #2
 \BEGINTEMPENVCOLOR{yellow!100}
 		        \colorbox{yellow!100}{
 
-\noindent \begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
 { 
 #1
 }
@@ -282,7 +287,7 @@ Commentaire perso: #2
 \BEGINTEMPENVCOLOR{oceanfoam!100}
 		        \colorbox{oceanfoam!100}{
 
-\noindent \begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
 { 
 #1
 }
@@ -299,7 +304,7 @@ Commentaire perso: #2
 \newcommand\SOUSLIGNE[1]{
 \colorbox{lightgray}{
 
-\noindent \begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}
 { \color{gray}
 #1
 }
@@ -368,7 +373,8 @@ Commentaire perso: #2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{macros-accents}
-\input{macros-markdown}
+%% Tolérant tant que macros-markdown.tex n'est pas dans le dépôt :
+\InputIfFileExists{macros-markdown}{}{\typeout{*** macros-markdown.tex introuvable: ignore ***}}
 
 
 %\usepackage{PDFdraftcopy}

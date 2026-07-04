@@ -204,8 +204,12 @@ Aujourd'hui.
 
 
 
+%% En beamer, la bibliographie doit être dans un frame ; [fragile] car le
+%% .bbl de plainurl contient des \path{...}.
+\begin{frame}[fragile,allowframebreaks]{Références}
 \bibliographystyle{plainurl}
-\bibliography{@@reference-biblio}
+\bibliography{\BIBFILES}
+\end{frame}
 \end{document}
 
 
