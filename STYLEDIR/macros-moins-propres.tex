@@ -1,0 +1,1018 @@
+
+%% defaults
+
+\includeversion{NOTLFMI2020}
+\includeversion{NOTCSE304}
+\excludeversion{NOTDIFFUSIONFINALE}
+
+%% Booleans (dont teste si existe ou pas, pour construire des macros)
+% \SAFEMODE
+% -> \DIFFUSIONFINALE (via entête-cours)
+% -> \PAGEDEGARDE (via entête-cours)
+% \POLYMODE
+% \POLYCHAPTERMODE
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Hack pour DIFFUSION FINALE/ LFMI / Fin provisoire
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\def\DIFFUSIONFINALE{}
+
+\providecommand\ifnotmodeDIFFUSIONFINALE[1]{
+\ifdefined\DIFFUSIONFINALE
+\else
+#1
+\fi
+}
+
+\providecommand\ifmodeDIFFUSIONFINALE[1]{
+\ifdefined\DIFFUSIONFINALE
+%% 2021: Comprend pas mais assure
+\ifdefined\SAFEMODE
+\else
+#1
+\fi
+%#1
+\fi
+}
+
+
+
+\ifnotmodeDIFFUSIONFINALE{\includeversion{NOTDIFFUSIONFINALE}}
+\ifnotmodeDIFFUSIONFINALE{\newcommand\FINPROVISOIRELFMI[1]{}}
+
+\providecommand\FINPROVISOIRELFMI{
+  \section{Bibliographic notes}
+
+  The current text is highly based (sometimes copied) from:
+  
+  \bibliographystyle{alpha}
+  \bibliography{/Users/bournez/bibliographie/Bib-Files/bournez-avantbib2DOI,/Users/bournez/bibliographie/Bib-Files/perso}
+  \end{document}
+  }
+
+%\def\POLYCHAPTERMODE{}
+
+\providecommand\ifnotPOLYCHAPTERMODE[1]{
+\ifdefined\POLYCHAPTERMODE
+\else
+#1
+\fi
+}
+
+\providecommand\ifmodePOLYCHAPTERMODE[1]{
+\ifdefined\POLYCHAPTERMODE
+#1
+\fi
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR INDICATIONS: ETAT
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\ABSTRACTINTERNAL[1]{
+  \montruc[color=black!30]{
+  \hrule
+  \hrule
+  \danger   ABSTRACT:\\[0.5cm] #1
+
+  \vspace{0.5cm}
+  \hrule
+  \hrule
+  }
+  }
+
+\newcommand\ABSTRACT[1]{
+  \newpage
+  \montruc[color=black!20]{
+  \hrule
+  \hrule
+  \danger   ABSTRACT:\\[0.5cm] #1
+
+  \vspace{0.5cm}
+  \hrule
+  \hrule
+  }
+  }
+
+  
+\newcommand\PARTIEFINALISEE{
+  \newpage
+  \montruc[color=black!15]{
+  \hrule
+  \hrule
+  \danger   FINALISE A PARTIR ICI
+  \hrule
+  \hrule
+  }
+  }
+\newcommand\PARTIESEMIFINALISEE{
+  \newpage
+  \montruc[color=black!15]{
+  \hrule
+  \hrule
+  \danger   1/2 FINALISE A PARTIR ICI
+  \hrule
+  \hrule
+  }
+  }
+
+
+\newcommand\PARTIENONFINALISEE{
+  \newpage
+  \montruc[color=black!30]{
+  \hrule
+  \hrule
+  \danger   NON FINALISE A PARTIR ICI
+  \hrule
+  \hrule
+  }
+  }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Affichage titre du cours: générique
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+  \newcommand\POLYWARNING[1]{
+    
+    \chapter*{Preliminaries}
+
+    
+\begin{center} 
+  These are notes for the course: \\[1cm]
+  \textbf{#1}
+\end{center}
+
+\bigskip
+\fbox{\fbox{
+\begin{minipage}{10cm}
+\begin{center}
+These notes change from days to days.  \\
+Please do  not distribute. \\
+\end{center}
+\end{minipage}
+}}
+
+\bigskip
+\begin{center}
+  \textbf{
+    Version of \today.
+    }
+\end{center}
+
+ % This document is not stable.
+
+\vfill
+\begin{center}
+Any comment (even about typos, orthography) is welcome: \\
+send an email to bournez@lix.polytechnique.fr
+\end{center}
+}
+
+
+\newcommand\MYCOURSEON[2]{ 
+	%% External self-references
+	\ifnotPOLYMODE{
+		\ifdefined\MAINAUXFILE
+			\externaldocument{\MAINAUXFILE}
+		\fi
+		}
+	
+	\ifdefined\PASLAPREMIEREFOIS
+		\newpage
+	\else
+		\makeindex
+
+     		\begin{document}
+	\fi
+	\gdef\PASLAPREMIEREFOIS{}
+
+	\ifdefined\XPOLY
+		\XPAGEDEGARDE{\TITRECOURS\ifPOLYCHAPTERMODE{\\[0.5cm] \Large \bf \LANGUE{Chapter:}{Chapitre:}  #2}}{\SUBTITRECOURS}
+		\ifPOLYCHAPTERMODE{
+		\renewcommand\thesection{\arabic{section}}
+		\chapter*{#2}
+		}
+	\else
+	
+      \title{ \ifnotmodeDIFFUSIONFINALE{Course  #1 -}
+      \ifPOLYCHAPTERMODE{\LANGUE{Chapter:}{Chapitre:} }
+      #2}
+      \author{
+        Olivier Bournez% \inst{1}
+        \\[0.5cm] %{\myaddress}
+      }
+      \date{Version of \today}
+      % \institute{\myaddress}
+      
+
+
+
+
+      \ifnotPOLYCHAPTERMODE{
+      	\maketitle
+		}
+      \ifPOLYCHAPTERMODE{\ifdefined\DOPAGEDEGARDE
+      			\maketitle
+		\fi
+		\renewcommand\thesection{\arabic{section}}
+%		\renewcommand\thesubsection{\arabic{section}.\ara}
+      		\chapter*{#2}}
+
+      % \begin{abstract}
+      % \end{abstract}
+      \fi
+      
+
+
+      \DOINDEXPRINT
+      
+      %% 2021: (meme si je comprends pas)
+      \ifmodeDIFFUSIONFINALE{
+		\excludeversion{recherche}
+	}
+
+
+    }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      Affichage titre du cours: variantes
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    
+\newcommand\MYCOURSE[1]{
+  \MYCOURSEON{\csname numerocours#1\endcsname}{\csname nomcours#1\endcsname}
+  
+    \ifnotmodeDIFFUSIONFINALE{}%\listoftodos}
+
+  }
+  
+  \newcommand\MYCOURSEnew[1]{
+  \MYCOURSEON{???}{#1}
+  
+  \ifnotmodeDIFFUSIONFINALE{}%\listoftodos}
+
+  }
+
+%   ---------------------------
+%   Pour compatilité chapter
+%  ----------------------------
+
+\newcommand\PASPREMIEREPAGE[1]{}
+\providecommand\mychapter[1]{% \PASPREMIEREPAGE{\newpage} 
+  \renewcommand\PASPREMIEREPAGE[1]{##1}  \hrule\hrule \section*{#1}
+  \hrule\hrule \  \\[1cm]}
+\providecommand\chapter[1]{\PASPREMIEREPAGE{\newpage} 
+  \renewcommand\PASPREMIEREPAGE[1]{##1}  \hrule\hrule \section*{#1}
+  \hrule\hrule \  \\[1cm]}
+
+%   ---------------------------
+%   if not sub
+%  ----------------------------
+
+
+\providecommand\IFNOTSUB[1]{#1}
+\IFNOTSUB{
+  
+%\documentclass{article}
+\usepackage{versions}
+\includeversion{pasweb}
+%\input{macros}
+
+}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%               Déclaration de cours
+%
+%  (l'argument 1 = numéro sert pas)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\COURS[3]{
+  \expandafter\newcommand\csname numerocours#2\endcsname{#1}
+  \expandafter\newcommand\csname nomcours#2\endcsname{#3}
+}
+
+
+
+\newcommand\NANCY[3]{
+  \expandafter\newcommand\csname numerocours#2\endcsname{#1}
+  \expandafter\newcommand\csname nomcours#2\endcsname{#3}
+}
+
+
+\newcommand\INFquatrecentdouze[3]{
+  \expandafter\newcommand\csname numerocours#2\endcsname{#1}
+  \expandafter\newcommand\csname nomcours#2\endcsname{#3}
+}
+
+\newcommand\INFcinqsixun[3]{
+  \expandafter\newcommand\csname numerocours#2\endcsname{#1}
+  \expandafter\newcommand\csname nomcours#2\endcsname{#3}
+}
+
+
+
+\newcommand\MPRI[3]{
+  \expandafter\newcommand\csname numerocours#2\endcsname{#1}
+  \expandafter\newcommand\csname nomcours#2\endcsname{#3}
+}
+
+\newcommand\COURSEINCLUDE[2][]{
+  \renewcommand\IFNOTSUB[1]{}
+  \renewcommand\MYCOURSE[1]{\chapter{\ifnotmodeDIFFUSIONFINALE{#1} \csname nomcours##1\endcsname}
+    \ifnotmodeDIFFUSIONFINALE{\mychapter{Fichier: #2}}
+  }
+   \renewcommand\MYCOURSEnew[1]{\chapter{\ifnotmodeDIFFUSIONFINALE{#1} ##1 }
+    \ifnotmodeDIFFUSIONFINALE{\mychapter{Fichier: #2}}
+  }
+%  \renewcommand\FINSUBMPRI{}
+  \input{#2}
+}
+
+\newcommand\STRESSCOURSEINCLUDE[1]{
+  \COURSEINCLUDE[!STRESS!]{#1}
+  }
+
+  \newcommand\subCOURSEINCLUDE[1] {
+    \NDLR{BEGIN:  J'inclus/ Je répète ICI #1 }
+    \input{INCLUDE/#1}
+    \NDLR{END:  J'inclus/ Je répète ICI #1 }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR INDICATIONS: MESSAGES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% ancienne version
+% \newcommand\montruc[1]{\begin{center} {\fbox{\fbox{{#1}
+%         }}} \end{center}}
+
+
+
+
+\newcommand\montruc[2][]{
+  \ifnotmodeDIFFUSIONFINALE{
+  \begin{maboitetruc}[#1]{\danger} #2
+  \end{maboitetruc}
+%%  \todo[inline,color=green!20,caption={2do}, ssss#1]{\begin{minipage}{\textwidth-4pt}
+%\todo[inline,color=green!5%,caption={2do}
+%]{\begin{minipage}{\textwidth-4pt}
+%    #2\end{minipage}}
+}
+}
+
+\newcommand\montrucdanger[3][]{
+  \ifnotmodeDIFFUSIONFINALE{
+                    \montruc[#1]{\danger #2: #3}
+                    }
+}
+
+\newcommand\montrucdangermargin[3][]{
+  \ifnotmodeDIFFUSIONFINALE{
+  \montruc[#1]{\danger #2: #3}
+\marginpar{\danger #2: #3}
+}
+ }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      GESTION DES TRUCS MARQUES VERSIONS
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\renewcommand\beginmarkversion{\montrucdanger[colback=yellow!10]{=== begin NOT}{}\@Vs@sffbox{\@currenvir$>$}}
+ \renewcommand\endmarkversion{\@Vs@sffbox{$<$\@currenvir}\montrucdanger[colback=yellow!10]{end=== NOT}{}}
+\makeatother 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      VARIANTES DE MESSAGES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \newcommand\NDLR[1]{\montrucdanger[colback=blue!20]{NDLR}{#1}}
+ \newcommand\NLDR[1]{\NDLR{#1}}
+ \newcommand\VOIRAUSSI[1]{\montrucdanger[colback=yellow!20]{VOIR AUSSI}{#1}}
+ \newcommand\TODO[1]{\montrucdanger[colback=green!20]{TODO}{#1}}
+ \newcommand\ATTENTION[1]{\montruc[colback=brown!20]{\danger ATTENTION#1}}
+ \newcommand\COMPRENDPAS[1]{\montrucdanger[colback=yellow!20]{JE
+     COMPRENDS PAS CA}{#1}}
+  \newcommand\POSSIBLE[1]{\montrucdanger[colback=yellow!10]{
+      Serait possible}{#1}}
+ \newcommand\ENLEVE[1]{\montrucdanger[colback=gray!20]{
+      ENLEVE}{#1}}
+ 
+ 
+  \newcommand\DEPLACE[1]{
+    \vspace{0.5cm}
+    \hrule
+    \hrule
+      \vspace{0.5cm}
+    \montrucdangermargin[colback=black!40]{DEPLACE/MISSING CONCEPT
+    }{#1}
+      \vspace{0.5cm}
+    \hrule
+    \hrule
+      \vspace{0.5cm}
+  }
+
+\newcommand\BESOINDE[1]{\montrucdangermargin[colback=pink!20]{ATTTENTION
+     BESOIN DE}{#1}}
+\newcommand\MISSINGCONCEPT[1]{\montrucdangermargin[colback=pink!20]{MISSING CONCEPT
+     }{#1}}
+\newcommand\SAUTE[1]{\montrucdangermargin[colback=pink!20]{SAUTE
+  }{#1}}
+\newcommand\SHOULDBEHERE[1]{\BEGINTEMPENVCOLOR{blue!30}\montrucdanger[colback=pink!10]{
+SHOULD
+    BE HERE
+  }{    
+    \vspace{1cm}
+    
+    \centerline{$\vdots$}
+    
+   \centerline{ #1}
+    
+      \centerline{$\vdots$}
+          
+    \vspace{1cm}
+    }\ENDTEMPENVCOLOR}
+\newcommand\COULDBEHERE[1]{\montrucdangermargin[colback=pink!20]{COULD
+    BE HERE
+  }{#1}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR INDICATIONS: SOURCES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\SOURCEURL[1]{
+  \ifnotmodeDIFFUSIONFINALE{
+    \marginpar{ \textcolor{magenta}{Source: \url{#1}} }
+    }
+}
+
+\newcommand\SOURCETXT[1]{
+  \ifnotmodeDIFFUSIONFINALE{
+    \marginpar{ \textcolor{magenta}{Source: {#1}} }
+    }
+}
+
+\newcommand\SOURCE[1]{
+  \nocite{#1}
+  \ifnotmodeDIFFUSIONFINALE{
+    \marginpar{ \textcolor{magenta}{Source: \cite{#1}} }
+    }
+}
+
+
+%--------------------------------
+%--- Raccourci Sources particulières  ---
+%--------------------------------
+
+\newcommand\SOURCEJECH{\SOURCE{jech2003set}}
+\newcommand\SOURCEKECHRIS{\SOURCE{kechris2012classical}}
+\newcommand\SOURCENOTESSETTHEORY{\SOURCE{moschovakis2006notes}}
+\newcommand\SOURCEKOZENCT{\SOURCE{LivreKozenTC}}
+\newcommand\SOURCEMARKER{\SOURCE{marker2002descriptive}}
+\newcommand\SOURCEMOSCHO{\SOURCE{moschovakis2009descriptive}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR INDICATIONS: DELIRES/COMMENTAIRES
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%% ABOUT PLAN
+
+%\newcommand\PLANBUT[1]{\montruc{\begin{minipage}{0.8\textwidth} #1\end{minipage}}}
+
+
+%%%%%% ABOUT RECHERCHE
+
+
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{recherche}
+{}{}
+%{\color{blue} BEGIN-RECHERCHE:
+%%\ifmodeDIFFUSIONFINALE{diffusion finale}
+%%\ifnotmodeDIFFUSIONFINALE{not diffusion finale}
+%%	\ifdefined\SAFEMODE
+%%		SAFEMODE
+%%	\else
+%%		NOTSAFEMODE
+%%	\fi
+%  \todo[inline, color=blue]{recherche ici} }{
+%  END-RECHERCHE \color{black} }
+\tcolorboxenvironment{recherche}{colback=blue!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=blue!85!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={FAIRE RECHERCHE ICI}}
+}
+
+
+%%%%%% ABOUT DELIRE
+
+
+%\ifnotmodeDIFFUSIONFINALE{
+%\newenvironment{delire}{\color{violet} BEGIN-DELIRE: }{
+%  END-DELIRE \color{black} }
+%}
+
+
+%%%%%% ABOUT PERSO
+
+
+%\ifnotmodeDIFFUSIONFINALE{
+%\newenvironment{perso}{\color{brown}
+%  BEGIN-PERSO: }{
+%  END-PERSO\color{black} }
+%}
+
+
+
+%%%%%% ABOUT COMMENTAIRE
+
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{commentaire}{\begin{maboitecommentaire}[colback=brown!30]{Commentaire} Commentaire :}{\end{maboitecommentaire}}
+\newcommand\COMMENTAIRE[2][Commentaire ]{
+\begin{maboitecommentaire}[colback=brown!30]{#1}
+Commentaire : #2
+\end{maboitecommentaire}
+}
+}
+
+%%%%%% ABOUT HORSUJET
+
+
+%\ifnotmodeDIFFUSIONFINALE{
+%\newenvironment{probablementhorsujet}{\color{gray}
+%  BEGIN-PROBABLEMENT HORS SUJET: }{
+%  END-PROBABLEMENT HORS SUJET \color{black} }
+%}
+
+%%%%%% ABOUT BONUS
+
+
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{pasbesoinpourlinstant}{NOT NEEDEED FOR
+  THIS SECTION: }{ }
+    \tcolorboxenvironment{pasbesoinpourlinstant}{colback=green!5!white, colframe=gray!75!black,fonttitle=\bfseries, colbacktitle=green!85!black,enhanced,
+attach boxed title to top left={yshift=-2mm},
+  title={PAS BESOIN POUR L'INSTANT}}
+}
+
+%%%%%% ABOUT BONUS
+
+
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{bonus}{BONUS: }{
+  }
+  \tcolorboxenvironment{bonus}{colback=gray!5!white, colframe=gray!75!black,fonttitle=\bfseries, colbacktitle=gray!85!black,enhanced,
+attach boxed title to top left={yshift=-2mm},
+  title={BONUS}}
+}
+
+%%%%%% ABOUT BONUS
+
+
+\ifnotmodeDIFFUSIONFINALE{
+\newcommand\ATTENTIONREPETE[1]{
+  \ATTENTION{Repete (attention modif): #1}
+  \begin{remarkolivier}
+Repete (attention modif): #1
+\end{remarkolivier}
+}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      MACROS Papiers Paulin
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\x}{\times}
+\newcommand{\s}{\sigma}
+\newcommand\sep{.}
+\newcommand\bzero{\zero}
+\newcommand\bun{\un}
+\renewcommand{\a}{\alpha}
+\def\hd{{\sf hd}}
+\def\tl{{\sf tl}}
+\def\cons{{\sf cons}}
+\def\Cons{{\sf Cons}}
+\def\Pr{{\sf Pr}}
+\def\Op{{\sf Op}}
+\def\Rel{{\sf Rel}}
+\def\Equal{{\sf Equal}}
+\def\Eval{{\sf Eval}}
+\def\Gate{{\sf Gate}}
+\def\Selection{{\sf Selection}}
+\def\Result{{\sf Result}}
+\def\Circuit{{\sf Circuit}}
+\def\next{{\sf next}}
+\def\comp{{\sf comp}}
+\def\finalcomp{{\sf finalcomp}}
+\def\Pick{{\sf Pick}}
+\def\Hd{{\sf Hd}}
+\def\Tl{{\sf Tl}}
+\def\RevHd{{\sf RevHd}}
+\def\Node{{\sf Node}}
+\def\Length{{\sf Length}}
+\def\Tape{{\sf Tape}}
+\def\Head{{\sf Head}}
+\def\Time{{\sf Time}}
+\def\unpad{{\sf unpad}}
+\def\concat{{\sf concat}}
+\def\rg{{\sf right}}
+\def\lf{{\sf left}}
+\def\st{{\sf state}}
+\def\tope{{\sf top}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      MACROS POLY INF561
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\buglst[1]{#1}
+
+%\newcommand\mydefref[1]{\expandafter\newcommand\csname #1\endcsname{\ref{#1}}}
+%\mydefref{refthrisc}
+%\mydefref{refthcinqhuit}
+%\mydefref{refthcinqsix}
+%\mydefref{refthfondamcaract}
+%\mydefref{refdefcircuit}
+%%% sinon, fait à la main
+%\newcommand\refchapalgo{\ref{chapalgo}}
+%\newcommand\refchapmodeles{\ref{chapmodeles}}
+%\newcommand\refchappreliminaires{\ref{chappreliminaires}}
+%\newcommand\refchapcircuits{\ref{chapcircuits}}
+%\newcommand \refpropfondamen{\ref{propfondamen}}
+%\newcommand\refthhierspace{ref{thhierspace}}
+%\newcommand\refchapcomplexitetemps{\ref{chapcomplexitetemps}}
+%\newcommand\refdefverifun{\ref{defverifun}}
+%\newcommand\refdefverif{\ref{defverif}}
+%\newcommand\refthmachinevs{ref{thmachinevs}}
+%\newcommand\reflemnotationconfig{\ref{lemnotationconfig}}
+%\newcommand\reflemfondam{\ref{lemfondam}}
+%\newcommand\refthtroisat{\ref{thtroisat}}
+%\newcommand\refthfondam{\ref{thfondam}}
+%\newcommand\refthsansram{\ref{thsansram}}
+%\newcommand\refdefsram{\ref{defsram}}
+%!TEX encoding = UTF-8 Unicode
+
+%% TRUCS DU POLY INF561
+
+\ifnotSLIDE{
+\LANGUE{
+\spnewtheoremi{exemple}{\NDLR{ECRIT EXEMPLE AU LIEU DE
+  EXAMPLE}}{\bfseries}{\rmfamily}{theorem} 
+\spnewtheoremi{remarque}{\NDLR{ECRIT REMARQUE AU LIEU DE REMARK}}{\bfseries}{\rmfamily}{theorem} 
+}
+{
+\spnewtheoremi{exemple}{Exemple}{\bfseries}{\rmfamily}{theorem} 
+\spnewtheoremi{remarque}{Remarque}{\bfseries}{\rmfamily}{theorem} 
+}
+}
+            
+            \newcommand\PERSOSOURCEPOSSIBLE[1]{\PERSOSOURCE{#1}\PERSOCOMMENTAIRE{#1}}
+\newcommand\PERSOPOSSIBLE[1]{\POSSIBLE{#1}}
+% \newcommand\PERSOPOSSIBLEbug[1]{\NDLR{\textbf{-- possible --
+%       enleve car pb compilation}}}
+\newcommand\PERSOETAIT[1]{\NDLR{ETAIT: #1}}
+%   \begin{minipage}{10cm}
+% \NDLR{\textbf{\tiny  -- Ã©tait --      #1 -- Ã©tait
+%     --
+%   \end{minipage}
+% }}}
+
+\providecommand\nl{}
+
+\newcommand\PERSOSOURCE[1] { \SOURCETXT{#1}}
+\newcommand\PERSOCOMMENTAIRE[1]{\NDLR{#1}}
+\newcommand\PERSOCOMMENTAIREd[2]{\NDLR{#1 \textbf{#2}}}
+
+
+\newenvironment{dessinpb}
+{%\shorthandoff{:}
+%\selectlanguage{english}
+\begin{center}\begin{tikzpicture}[baseline=(current bounding
+      box.north)]
+%babelbug with tikz
+}
+{\end{tikzpicture}
+%\selectlanguage{frenchb}
+\end{center}}
+
+
+
+\newcommand\PERSOMANQUE[1]{\NDLR{\textbf{-- manque --
+      #1 --manque--}}}
+
+\newcommand\PERSOENLEVE[1]{\ENLEVE{#1}}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      MACROS POLY INF412
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\mydefref{refEEXTtruc}
+%\mydefref{refEEXTchappreliminaires}
+%\mydefref{refEEXTsecarbrebinaire}
+%\mydefref{refEEXTsectermes}
+%\mydefref{refEEXTchappredicats}
+%\mydefref{refEXTchappredicats}
+%\mydefref{refEXTchappreliminaires}
+%\mydefref{refEEXTdefTuring}
+%\mydefref{refEEXTpropnondet}
+%\mydefref{refEEXTchapcompletude}
+%\mydefref{refEEXTdefconfigalternative}
+%\mydefref{refEEXTchapmachinesdeTuring}
+%\mydefref{refEEXTpbdedecision}
+%\mydefref{refEEXTchapcalc}
+%\mydefref{refEEXTincompletude}
+%\mydefref{refEEXTthhierspace}
+%\mydefref{refEEXTchapcomplexitetemps}
+
+\tikzstyle{nd} = [shape=circle,draw]
+
+
+\newcommand\mmod{mod}
+
+  %%% VALUATIONS
+\newcommand\mmV{v}
+\newcommand\mmVb{\overline{\mmV}}
+\newcommand\mmVe{\mmVb}
+
+%%% Corrections
+
+\newcommand\exoref[1]{\ref{exo:#1-stt}}
+
+\newenvironment{correction}[1]
+{\par\medskip\noindent \label{exo:#1-cor} \hbox{\bf Exercice \ref{exo:#1-stt} 
+  \   (page \pageref{exo:#1-stt}). }}
+{\par\medskip}
+
+% PROBLEMES DE DECISION
+
+\newcommand\DECISIONint[3]{
+%Le problème de décision #1
+\begin{itemize}
+\item[\textbf{Donnée}:] #2
+\item[\textbf{Réponse}:] #3
+\end{itemize}
+}
+
+\newcommand\INDECIDABLE[5]{
+\DECISION{#1}{#2}{#3}
+
+\begin{#4} \label{#5}
+Le problème $#1$ % ATTENTION ENLEVE $#1$ en 2020. REMIS 2023
+est indécidable.
+\end{#4}
+}
+
+
+\newcommand\INDECIDABLEenglish[5]{
+\DECISIONenglish{#1}{#2}{#3}
+
+\begin{#4} \label{#5}
+The problem $#1$
+is undecidable.
+\end{#4}
+}
+
+\newcommand\INDECIDABLEq[5]{
+\DECISION{#1}{#2}{#3}
+
+\begin{#4} \label{#5}
+Le problème $#1$
+est ?
+\end{#4}
+}
+
+\newcommand\INDECIDABLEqenglish[5]{
+\DECISION{#1}{#2}{#3}
+
+\begin{#4} \label{#5}
+The problem $#1$
+is ?
+\end{#4}
+}
+
+
+
+\newcommand\DECISIONintenglish[3]{
+%Le problème de décision #1
+\begin{itemize}
+\item[\textbf{Input}:] #2
+\item[\textbf{Answer}:] #3
+\end{itemize}
+}
+
+\newcommand\DECISIONi[4]{
+\item $#1$
+%Le problème de décision #1
+\DECISIONint{#1}{#2}{#3}
+}
+
+\newcommand\DECISIONienglish[4]{
+\item $#1$
+%Le problème de décision #1
+\DECISIONintenglish{#1}{#2}{#3}
+}
+
+
+\newcommand\DECISION[3]{
+\begin{definition}[$#1$]\ 
+
+%Le problème de décision #1
+\DECISIONint{#1}{#2}{#3}
+\end{definition}
+}
+
+
+\newcommand\DECISIONenglish[3]{
+\begin{definition}[$#1$]\ 
+%
+%Le problème de décision #1
+\DECISIONintenglish{#1}{#2}{#3}
+\end{definition}
+}
+
+
+
+\newcommand\NPC[4]{ 
+\DECISION{#1}{#2}{#3}
+
+\begin{#4}
+Le problème $#1$
+est $\NP$-complet. \LANGUE{\myindex{NP-completeness}}{\myindex{NP-completude@$\NP$-complétude}}
+\end{#4}
+}
+
+
+\newcommand\NPCenglish[4]{ 
+\DECISIONenglish{#1}{#2}{#3}
+\begin{#4}
+The problem $#1$
+is $\NP$-complete. \LANGUE{\myindex{NP-completeness}}{\myindex{NP-completude@$\NP$-complétude}}
+\end{#4}
+}
+
+
+\newcommand\NPCp[5]{
+\DECISION{#1}{#2}{#3}
+
+\begin{#4}[#5]
+Le problème $#1$
+est $\NP$-complet.
+\end{#4}
+}
+
+
+\newcommand\NPCpenglish[5]{
+\DECISIONenglish{#1}{#2}{#3}
+
+\begin{#4}[#5]
+The problem $#1$
+is $\NP$-complete.
+\end{#4}
+}
+
+
+
+
+\newcommand\BRUNOCOMMENTAIRE[1]{\NDLR{Bruno commentaire: #1}}
+
+\ifnotSLIDE{
+%\spnewtheorem{exercicec}{Exercice}{\bfseries}{\rmfamily}
+%\spnewtheorem{exerciced}{Exercice}{\bfseries}{\rmfamily}
+%\spnewtheorem{exercicedc}{Exercice}{\bfseries}{\rmfamily}
+%\spnewtheorem{exercicecenglish}{Exercice}{\bfseries}{\rmfamily}
+%\spnewtheorem{exercicedenglish}{Exercice}{\bfseries}{\rmfamily}
+%\spnewtheorem{exercicedcenglish}{Exercice}{\bfseries}{\rmfamily}
+\spnewtheorem{notation}{Notation}{\bfseries}{\rmfamily}
+}
+
+%%% INDEX
+ \newcommand\motnouv[1]{\emph{#1}\index{#1}}%\SIGNALEMOTNOUV{#1}}%\index{#1}}
+\newcommand\INTmotnouv[1]{\emph{#1}}
+\newcommand\myindex[1]{\index{#1}}
+%\marginpar{-#1=}
+
+\newcommand\synonyme[2]{\kindex{#1|see{#2}}}
+\newcommand\indexM[1]{\index{$#1$}}
+\newcommand\idx[1]{#1\index{#1}}
+\newcommand\idxm[1]{#1\index{$#1$}}
+\newcommand\idxM[1]{$#1$\index{$#1$}}
+%\newcommand\idxmBUG[1]{#1}
+\newcommand\idxmm[2]{#1\index{#2@$#1$}}
+\newcommand\idxi[2]{#1\index{#2}}
+%\newcommand\motnouv[1]{\INTmotnouv{#1}\index{#1}}
+ \newcommand\motnouvi[2]{\INTmotnouv{#1}\index{#2}} % indexage manuel
+ \newcommand\motnouva[2]{\INTmotnouv{#1}\index{#2@#1}} % indexage: 2ième
+%                                 % argumet = version sans accent
+\newcommand\motnouvm[1]{\INTmotnouv{#1}} %indexage manuel fait ailleurs
+
+
+\newenvironment{PERSOVERBATIM}{}{}
+ \newcommand{\joNP}[3]{{ Problème \textbf{ { \motnouv{##1}}:}
+            \begin{itemize}
+            \item  \textbf{ Instance:} {##2} 
+            \item   \textbf{ Question:} {##3}
+            \end{itemize}
+          }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%                      POUR COMPATIBILITE AVEC SLIDES & AUTRE
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand\defin[1]{\textbf{#1}}
+
+
+%%%   COMPATIBILITE AVEC SLIDES
+
+\newcommand\soustitre[1]{\textbf{#1}}
+
+
+%% COMPATIBILITE AVEC MA THESE
+
+\providecommand\motnouv[1]{\emph{#1}}
+\providecommand\motnouvi[2]{\emph{#1}}
+
+\newcommand\papiernorm[1]{\myop{norm}}
+
+%%% OLIVIER
+\newcommand\olivier[1]{ \ATTENTION{Olivier: #1}}
