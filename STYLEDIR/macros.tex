@@ -10,8 +10,6 @@
 \newcommand\affiliationofficielleolivierslides{LIX, CNRS, École polytechnique, \\ Institut Polytechnique de Paris, Palaiseau, France}
 
 
-\providecommand\danger{}
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %
 %              begin. Switch modes compatibilités
@@ -46,10 +44,12 @@
 \newcommand\nolipics[1]{#1}
 \lipicsmode{\renewcommand\nolipics[1]{}}
 
-\providecommand\NODECORATION[1]{}
-\lipicsmode{
-\providecommand\NODECORATION[1]{#1}
-}
+%% Décorations (fourier + cadres colorés mdframed autour de definition,
+%% theorem, exercice, example, remark, ...) : actives par défaut hors slides.
+%% Pour les désactiver dans un document : \newcommand\NODECORATION[1]{}
+%% avant \input{macros}. Retirées automatiquement en mode lipics.
+\providecommand\NODECORATION[1]{\ifnotSLIDE{#1}}
+\lipicsmode{\renewcommand\NODECORATION[1]{}}
 
 \providecommand\PASSIAPXPROOF[1]{#1}
 \apxproofmode{\renewcommand\PASSIAPXPROOF[1]{}}
@@ -77,6 +77,11 @@
 \NODECORATION{
 \usepackage{fourier}
 }
+
+%% Repli si fourier (et donc fourier-orns, qui définit \danger) n'est pas
+%% chargé ; doit rester APRÈS le bloc ci-dessus, sinon fourier-orns échoue
+%% avec « \danger already defined ».
+\providecommand\danger{}
 
 %%%% Box around environment
 \usepackage[framemethod=tikz]{mdframed}
@@ -133,6 +138,14 @@ attach boxed title to top center={yshift=-2mm},
   title={#2},#1}
 \newtcolorbox{maboitetruc}[2][]{colback=red!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=red!85!black,enhanced,
 attach boxed title to top left={yshift=-2mm},
+  title={#2},#1}
+
+%% Boîte des mises en évidence CARE. Couleurs pensées pour la
+%% protanopie : l'axe bleu-jaune reste discriminant (jaune = \IMPORTANT
+%% d'Olivier, bleu = CARE), et la distinction ne repose pas que sur la
+%% couleur (cadre + bandeau étiqueté, lisibles même en niveaux de gris).
+\newtcolorbox{maboiteimportantcare}[2][]{colback=cyan!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!70!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
   title={#2},#1}
   
 
@@ -279,6 +292,18 @@ attach boxed title to top left={yshift=-2mm},
 \ENDTEMPENVCOLOR
 }
 \ifmodeDIFFUSIONFINALE{#1}
+}
+
+%% Pendant de \IMPORTANT, réservé aux mises en évidence CARE ;
+%% \IMPORTANT reste réservé aux annotations d'Olivier. Comme \IMPORTANT,
+%% redevient du texte simple en mode DIFFUSIONFINALE.
+\newcommand\IMPORTANTCARE[2][Important (CARE)]{
+\ifnotmodeDIFFUSIONFINALE{
+\begin{maboiteimportantcare}{#1}
+#2
+\end{maboiteimportantcare}
+}
+\ifmodeDIFFUSIONFINALE{#2}
 }
 
 
