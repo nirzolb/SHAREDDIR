@@ -28,3 +28,16 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 ## LaTeX
 - Conventions : /Users/bournez/public_raw/SHAREDDIR/CONVENTIONS-LATEX.md (importées
   automatiquement dans un chantier via lib/SHAREDDIR).
+- Styles personnels installés dans TEXMFHOME, soit ~/Library/texmf/tex/latex/ : le lien
+  perso pointe sur ~/lib/LaTeX/Perso, et perso-extra/ contient des liens nommés, fichier
+  par fichier. kpsewhich les trouve donc sans TEXINPUTS, y compris hors shell interactif
+  et depuis une application ouverte par le Finder, qui hérite de launchd et non du shell.
+  TEXINPUTS reste dans le .zshrc, il ne sert plus de béquille. [2 septembre 2026]
+- Ne jamais lier tout ~/lib/LaTeX dans cet arbre : TEXMFHOME est fouillé récursivement et
+  prime sur la distribution, ce qui mettrait de vieilles copies (hyperref, pgf, prosper,
+  listings, ucs, microtype) devant TeX Live pour toute la machine. Un style manquant
+  s'ajoute par un lien nommé dans perso-extra.
+- Dans ~/lib/LaTeX/Perso, olivier.sty, expose.sty et expose-new.sty sont des liens vers
+  SHAREDDIR/STYLEDIR, et beamerthemeVillers.sty est lié depuis perso-extra. Une
+  correction faite dans SHAREDDIR se propage donc sans recopie. Ne pas rétablir de copie,
+  les deux versions divergeraient en silence.
