@@ -15,9 +15,11 @@ Depuis rien :
 cd /Users/bournez/00-CHANTIERS-CARE/NOM && claude
 ```
 
-Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu.
+Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu. `--github` suppose
+`gh` connecté (`gh auth status`) ; sinon le chantier est créé, mais sans dépôt distant.
 
-Depuis un brouillon du chat : dire « on ouvre un chantier ». Claude livre `NOM.tar.gz`, puis :
+Depuis un brouillon du chat : dire « on ouvre un chantier ». Claude demande le nom, le type
+si besoin et l'éventuel répertoire finalisé, livre `NOM.tar.gz` et rappelle les commandes :
 
 ```
 cd /Users/bournez/00-CHANTIERS-CARE && tar xzf ~/Downloads/NOM.tar.gz && cd NOM
@@ -29,10 +31,10 @@ make && claude
 
 | Quoi | Comment |
 |---|---|
-| Début de session | `/reprise` : relit CLAUDE.md et NOTES.md, lance `make sha`, propose la suite |
-| Fin de session | `/passation` (ou `/passation remarque libre`) : entrée dans NOTES.md, commit, push |
+| Début de session | automatique : un hook fournit `make sha` et la fin de NOTES.md à Claude Code. `/reprise` en plus pour un résumé et une proposition |
+| Fin de session | `/passation` (ou `/passation remarque libre`) : entrée dans NOTES.md, commit, push. Quand tu arrêtes, ou avant de passer au chat ; pas après chaque petite tâche (Claude Code commite au fil de l'eau) |
 | Compiler | `make` (pdflatex, bibtex, makeindex si besoin, pdflatex x2 ; erreurs du .log affichées) |
-| Où en est-on | `make sha` : commit, branche, non commité, non poussé. À citer dans tout échange |
+| Où en est-on | `make sha` : le sha est l'identifiant du commit courant (`a351890`), plus branche, non commité, non poussé. À citer dans tout échange pour être sûrs de parler de la même version |
 | Depuis le téléphone | `claude remote-control --name NOM` dans le répertoire, puis app Claude, onglet Code, session au point vert |
 
 - Les commits de Claude Code sont signés Claude-Code ; les tiens, depuis ton terminal,
@@ -90,5 +92,8 @@ même état, rien à synchroniser.
 | Compilation étrange après un changement de style | `make distclean && make` |
 | Le hook refuse un push du finalisé | auteur ou message avec « Claude » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
 | `make am` échoue (conflit) | `git am --abort`, puis demander à Claude Code d'appliquer le patch et de résoudre |
-| `gh` refuse | `gh auth login` |
+| `gh` refuse | `gh auth login` (une fois ; code affiché dans le terminal, à saisir sur github.com) |
+| `git push` : aucun dépôt distant | `gh repo create NOM --private --source=. --remote=origin --push` |
+| `claude` demande un code par mail | connecter d'abord le navigateur à claude.ai, puis `claude auth login` |
+| Claude Code laisse un fichier « A » non commité | c'est le tien (ajouté par toi) : `git commit` depuis ton terminal, à ton nom |
 | Le chat parle d'une vieille version | comparer les commits (`make sha`), Sync now, ou passer par Remote Control |

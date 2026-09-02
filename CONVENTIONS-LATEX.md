@@ -64,11 +64,23 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
 
 ## Ouvrir un chantier depuis le chat
 Quand Olivier dit « on ouvre un chantier » à partir d'un brouillon :
-1. `git clone --depth 1 https://github.com/nirzolb/SHAREDDIR` dans le bac à sable, puis
-   `SHAREDDIR/SCRIPTS/nouveau-chantier.sh <cours|expose|doc> <nom> --dir <répertoire>`.
-2. Remplacer main.tex (et fichiers annexes) par le brouillon ; compléter CLAUDE.md
+1. Lui poser d'abord, en un seul message, trois questions : le nom du chantier (lettres,
+   chiffres, tirets, points ; ce sera aussi le nom du dépôt GitHub), le type si le brouillon
+   ne le rend pas évident (cours, expose, doc), et le chemin du répertoire finalisé s'il en
+   existe déjà un (sinon « aucun »).
+2. `git clone --depth 1 https://github.com/nirzolb/SHAREDDIR` dans le bac à sable, puis
+   `SHAREDDIR/SCRIPTS/nouveau-chantier.sh <type> <nom> --dir <répertoire>`.
+3. Remplacer main.tex (et fichiers annexes) par le brouillon ; compléter CLAUDE.md
    (rubrique « rappels propres à ce chantier ») et la première entrée de NOTES.md.
-3. Vérifier que `make` passe, `make distclean`, supprimer Makefile.local, commit (auteur
-   Claude-Code), puis livrer `<nom>.tar.gz` du répertoire. Olivier fait ensuite, dans
-   /Users/bournez/00-CHANTIERS-CARE/<nom> : `gh repo create <nom> --private --source=.
-   --remote=origin --push`.
+4. Vérifier que `make` passe, puis `make distclean`. Réécrire Makefile.local avec la seule
+   ligne `DEST = <chemin>` si un finalisé a été donné, sinon le supprimer. Commit (auteur
+   Claude-Code), puis livrer `<nom>.tar.gz` du répertoire.
+5. Dans le message de livraison, rappeler les commandes à taper, dans l'ordre :
+   `cd /Users/bournez/00-CHANTIERS-CARE && tar xzf ~/Downloads/<nom>.tar.gz && cd <nom>`
+   `gh repo create <nom> --private --source=. --remote=origin --push`
+   `hooks/install.sh <finalisé>` (seulement si un finalisé existe)
+   `make && claude`
+   et le rituel : au démarrage, Claude Code reçoit automatiquement l'état du dépôt et la fin
+   de NOTES.md (`/reprise` en plus pour un résumé et une proposition) ; `/passation` en fin
+   de session ou avant de passer au chat ; `make sha` pour dire où on en est ;
+   `make publier` pour pousser vers le finalisé.

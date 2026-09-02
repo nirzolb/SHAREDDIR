@@ -7,9 +7,11 @@ instructions générales (~/.claude/CLAUDE.md, préférences du chat).
 @lib/SHAREDDIR/CONVENTIONS-LATEX.md
 
 ## Début et fin de session
-- Début : `/reprise` (ou à la main : les deux dernières entrées de NOTES.md, puis `make sha`).
+- Au démarrage, un hook (.claude/hooks/session-start.sh) t'a fourni `make sha` et la fin de
+  NOTES.md : pars de là. `/reprise` en plus si Olivier veut un résumé et une proposition.
   Si `lib/` manque : `make deps`.
-- Fin : `/passation` (entrée dans NOTES.md, commit, push).
+- Fin de session, ou avant qu'Olivier change de surface : `/passation` (entrée dans
+  NOTES.md, commit, push).
 - Dans tout échange sur ce chantier, citer le commit courant (`make sha`).
 
 ## Commandes
