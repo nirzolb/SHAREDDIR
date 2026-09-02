@@ -1,0 +1,39 @@
+# Motifs rsync : ne partent jamais vers le répertoire finalisé, et y sont préservés
+# s'ils y existent déjà (même avec MIRROR=1). Un motif par ligne. À adapter par chantier :
+# par exemple retirer Makefile si le finalisé doit en recevoir un, ou ajouter README.md
+# pour protéger celui des tiers.
+.git
+.claude
+CLAUDE.md
+CLAUDE.local.md
+NOTES.md
+passations
+hooks
+lib
+Makefile
+Makefile.local
+Makefile.local.example
+.publier-exclude
+.gitignore
+figcommons-local.tex
+# Le PDF compilé ne part pas (retirer la ligne main.pdf si le finalisé doit le recevoir)
+main.pdf
+*.pdfsync
+.DS_Store
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.toc
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.fls
+*.fdb_latexmk

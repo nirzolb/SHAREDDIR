@@ -1,0 +1,32 @@
+# Artefacts LaTeX
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.toc
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.pdfsync
+*.bcf
+*.run.xml
+# Le PDF compilé n'est pas suivi (retirer ces deux lignes pour le suivre) ;
+# les figures PDF restent suivies.
+*.pdf
+!figures/**/*.pdf
+# Propre au chantier et à la machine
+lib/
+figcommons-local.tex
+Makefile.local
+.claude/settings.local.json
+CLAUDE.local.md
+.DS_Store

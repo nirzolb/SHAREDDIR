@@ -1,0 +1,9 @@
+# Copier en Makefile.local (non versionné) et adapter. Tout est optionnel.
+# Répertoire finalisé, pour make publier / make importer :
+# DEST = /Users/bournez/chemin/vers/le/repertoire/finalise
+# Copie locale de SHAREDDIR (sinon clone depuis GitHub) :
+# SHAREDDIR_LOCAL = /Users/bournez/public_raw/SHAREDDIR
+# Vrais logos (sinon logos factices) :
+# FIGCOMMONS_LOCAL = /Users/bournez/lib/LaTeX/Perso/FIG-COMMONS
+# Où make am cherche les patchs du chat :
+# PATCHDIR = /Users/bournez/Downloads
