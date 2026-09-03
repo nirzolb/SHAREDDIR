@@ -11,11 +11,13 @@ que des tiers peuvent voir. Le dépôt est la seule source de vérité.
 Depuis rien :
 
 ```
-/Users/bournez/public_raw/SHAREDDIR/SCRIPTS/nouveau-chantier.sh cours|expose|doc NOM --github
+/Users/bournez/public_raw/SHAREDDIR/SCRIPTS/nouveau-chantier.sh cours|expose|doc|article NOM --github
 cd /Users/bournez/00-CHANTIERS-CARE/NOM && claude
 ```
 
-Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu. `--github` suppose
+Pour un article, `--classe lipics|lncs|acm|generic` (défaut lipics) ; les règles sont dans
+CONVENTIONS-ARTICLES.md, et `make full` / `make strip` donnent les versions longue et sans
+annexe (apxproof). Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu. `--github` suppose
 `gh` connecté (`gh auth status`) ; sinon le chantier est créé, mais sans dépôt distant.
 
 Depuis un brouillon du chat : dire « on ouvre un chantier ». Claude demande le nom, le type

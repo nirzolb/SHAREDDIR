@@ -1,0 +1,92 @@
+%!TEX TS-program = pdflatex
+%% Modèle d'article Springer LNCS (Olivier Bournez). Compilation : make.
+%% llncs.cls et splncs04.bst viennent de TeX Live (texlive-publishers) ; si l'appel impose
+%% une version précise, la déposer à côté du .tex.
+\documentclass[runningheads]{llncs}
+
+%% Lu par macros.tex : LNCS définit déjà theorem, lemma, ..., macros.tex ne les redéfinit pas.
+\newcommand\nolncs[1]{}
+%% Pas de décorations (cadres colorés, fourier) dans un article LNCS.
+\newcommand\NODECORATION[1]{}
+%% splncs04 utilise \doi
+\providecommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+
+%% apxproof avec LNCS : possible (theoremrep, lemmarep, ... via macros.tex) en décommentant
+%% les quatre lignes suivantes ; sinon preuves inline, ce qui est l'usage LNCS le plus courant.
+%\providecommand\apxparameter{appendix=append}
+%\usepackage[\apxparameter]{apxproof}
+%\newcommand\apxproofmode[1]{#1}
+%\newcommand\apxproofmodesubsection[1]{#1}
+
+\newcommand\SHORTER[1]{}
+\usepackage{version}
+\excludeversion{SIDE}
+\excludeversion{PASFINALISE}
+\excludeversion{LONGUER}
+\excludeversion{AVOIR}
+
+\input{macros}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{cite}
+
+%% Macros propres à l'article
+\newcommand\ReLU{\cp{RELU}}
+
+\begin{document}
+
+\title{Titre de l'article}
+\titlerunning{Titre court}
+\author{Olivier Bournez\inst{1}\orcidID{0000-0002-9218-1130}}
+%% \author{Prénom Nom\inst{1} \and Prénom Nom\inst{2}}
+\authorrunning{O. Bournez}
+\institute{\affiliationofficielleolivier\\
+           \email{olivier.bournez@lix.polytechnique.fr}}
+%% \institute{... \and ...}
+\maketitle
+
+\begin{abstract}
+Quatre phrases : la question, pourquoi elle compte, le résultat principal, la technique.
+\keywords{Mot-clé 1 \and Mot-clé 2 \and Mot-clé 3}
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Contexte, question, résultat principal (Theorem~\ref{thm:main}), travaux
+antérieurs~\cite{JournalACM2017}, contributions, plan.
+
+\section{Preliminaries}
+\label{sec:prelim}
+
+\begin{definition}[Notion]
+\label{def:notion}
+Une définition.
+\end{definition}
+
+\section{Main results}
+\label{sec:results}
+
+\begin{theorem}[Main theorem]
+\label{thm:main}
+Énoncé du théorème principal.
+\end{theorem}
+\begin{proof}
+Preuve. Avec apxproof activé : theoremrep, puis proofsketch, puis proof.
+\end{proof}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Ce qui est fait, ce qui reste ouvert.
+
+%% \begin{credits}
+%% \subsubsection{\ackname} ...
+%% \subsubsection{\discintname} The authors have no competing interests.
+%% \end{credits}
+
+\bibliographystyle{splncs04}
+\bibliography{\BIBFILES}
+\end{document}

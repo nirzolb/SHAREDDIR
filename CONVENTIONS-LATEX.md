@@ -12,7 +12,9 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   ET expose-new.sty.
 - Modèles dans `LATEX-EXEMPLES/` : tex-minimal.tex (document simple), expose-minimal.tex
   (exposé beamer, thème Villers), cours-minimal.tex (cours, avec entete-cours.tex et
-  fin-cours.tex à côté).
+  fin-cours.tex à côté), article-{lipics,lncs,acm,generic}-minimal.tex (articles :
+  cible, apxproof, plan, voir CONVENTIONS-ARTICLES.md dans le même dépôt).
+- Classes absentes de TeX Live (LIPIcs) dans `STYLEDIR/CLASSES/`, voir son README.
 - Tout fichier .tex généré commence par `\input{macros}` puis `\input{macros-moins-propres}`.
 - En chantier, tout est accessible par `lib/SHAREDDIR/` (TEXINPUTS et BIBINPUTS réglés par
   le Makefile). Hors chantier (brouillon dans le chat), récupérer les fichiers par

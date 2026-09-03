@@ -21,7 +21,7 @@ export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
 PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error
 
-.PHONY: all pdf deps sha am publier importer clean distclean
+.PHONY: all pdf deps full strip apxversion sha am publier importer clean distclean
 
 all: pdf
 
@@ -67,6 +67,22 @@ pdf: deps
 	  echo "Avertissements : $$c citation(s) indéfinie(s), $$r référence(s) indéfinie(s), $$o overfull"; \
 	  if [ "$$c" != 0 ]; then grep "Citation .* undefined" $(MAIN).log | sed 's/.*Citation .\(.*\). on page.*/  citation manquante : \1/' | sort -u | head -20; fi
 
+# ---------- versions apxproof d'un article ----------
+# make full  : preuves à leur place (appendix=inline)   -> $(MAIN)-full.pdf
+# make strip : annexe supprimée     (appendix=strip)    -> $(MAIN)-strip.pdf
+full: deps
+	@$(MAKE) --no-print-directory apxversion APXOPT=inline APXNAME=$(MAIN)-full
+strip: deps
+	@$(MAKE) --no-print-directory apxversion APXOPT=strip APXNAME=$(MAIN)-strip
+APXTEX = "\newcommand\apxparameter{appendix=$(APXOPT)}\input{$(MAIN)}"
+apxversion:
+	@$(PDFLATEX) -jobname=$(APXNAME) $(APXTEX) >/dev/null 2>&1 || { echo "ERREUR pdflatex ($(APXNAME)) :"; grep -n -A3 '^!' $(APXNAME).log | head -40; exit 1; }
+	@bibtex $(APXNAME) >/dev/null 2>&1 || true
+	@if [ -f $(APXNAME).idx ]; then makeindex -q $(APXNAME).idx >/dev/null 2>&1 || true; fi
+	@$(PDFLATEX) -jobname=$(APXNAME) $(APXTEX) >/dev/null 2>&1 || true
+	@$(PDFLATEX) -jobname=$(APXNAME) $(APXTEX) >/dev/null 2>&1 || { echo "ERREUR pdflatex ($(APXNAME)) :"; grep -n -A3 '^!' $(APXNAME).log | head -40; exit 1; }
+	@p=$$(pdfinfo $(APXNAME).pdf 2>/dev/null | awk '/^Pages/{print $$2}'); echo "OK : $(APXNAME).pdf$${p:+ ($$p pages)} (appendix=$(APXOPT))"
+
 # ---------- où en est-on ? (à citer au début de tout échange) ----------
 sha:
 	@printf 'Chantier : %s\n' "$(NOM)"
@@ -107,7 +123,7 @@ importer:
 
 # ---------- ménage ----------
 clean:
-	@rm -f $(MAIN).aux $(MAIN).log $(MAIN).bbl $(MAIN).blg $(MAIN).out $(MAIN).toc $(MAIN).lof $(MAIN).lot \
+	@rm -f $(MAIN)-full.* $(MAIN)-strip.* $(MAIN).aux $(MAIN).log $(MAIN).bbl $(MAIN).blg $(MAIN).out $(MAIN).toc $(MAIN).lof $(MAIN).lot \
 	  $(MAIN).idx $(MAIN).ind $(MAIN).ilg $(MAIN).nav $(MAIN).snm $(MAIN).vrb $(MAIN).synctex.gz $(MAIN).fls $(MAIN).fdb_latexmk
 
 distclean: clean

@@ -1,0 +1,73 @@
+%!TEX TS-program = pdflatex
+%% Modèle d'article générique (Olivier Bournez), pour un appel qui impose sa propre classe ou
+%% aucune : remplacer \documentclass par celle de l'appel (fichier déposé à côté du .tex),
+%% garder le reste. Compilation : make ; make full / make strip pour les versions apxproof.
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\providecommand\apxparameter{appendix=append}
+\usepackage[\apxparameter]{apxproof}   %% avant macros.tex, qui le configure (theoremrep, ...)
+\newcommand\apxproofmode[1]{#1}
+\newcommand\apxproofmodesubsection[1]{#1}
+%% Cadres colorés autour des théorèmes (macros.tex) : les retirer dans un article.
+\newcommand\NODECORATION[1]{}
+\newcommand\SHORTER[1]{}
+\usepackage{version}
+\excludeversion{SIDE}
+\excludeversion{PASFINALISE}
+\excludeversion{LONGUER}
+\excludeversion{AVOIR}
+\newcommand\myparagraph[1]{\medskip\noindent\textbf{#1}.}
+
+\input{macros.tex}
+
+\usepackage{hyperref}
+
+\title{Titre de l'article}
+\author{Olivier Bournez\thanks{\affiliationofficielleolivier. \texttt{bournez@lix.polytechnique.fr}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Quatre phrases : la question, pourquoi elle compte, le résultat principal, la technique.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Contexte, question, résultat principal (Theorem~\ref{thm:main}), travaux
+antérieurs~\cite{JournalACM2017}, contributions, plan.
+
+\section{Preliminaries}
+\label{sec:prelim}
+
+\begin{definition}[Notion]
+\label{def:notion}
+Une définition.
+\end{definition}
+
+\section{Main results}
+\label{sec:results}
+
+\begin{theoremrep}[Main theorem]
+\label{thm:main}
+Énoncé du théorème principal.
+\end{theoremrep}
+\begin{proofsketch}
+L'idée en quelques lignes.
+\end{proofsketch}
+\begin{proof}
+La preuve complète, en annexe par défaut.
+\end{proof}
+
+\section{Conclusion and perspectives}
+\label{sec:conclusion}
+
+Ce qui est fait, ce qui reste ouvert.
+
+\bibliographystyle{plainurl}
+\bibliography{\BIBFILES}
+\end{document}

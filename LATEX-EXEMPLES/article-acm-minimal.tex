@@ -1,0 +1,119 @@
+%!TEX TS-program = pdflatex
+%% Modèle d'article ACM (acmart, ex. ISSAC) (Olivier Bournez). Compilation : make.
+%% acmart est trop rigide pour macros.tex : ce modèle est autonome, avec un jeu minimal
+%% de macros. Soumission anonyme : \documentclass[sigconf,screen,review,anonymous]{acmart}
+\documentclass[sigconf,screen]{acmart}
+
+%% Bascule finale : \FINAL{...} n'apparaît qu'en version finale, \PASFINAL{...} qu'avant.
+\providecommand\FINAL[1]{}
+\providecommand\PASFINAL[1]{#1}
+\FINAL{\renewcommand\PASFINAL[1]{}}
+\newcommand\SHORTER[1]{}
+\providecommand\BIBFILES{@@reference-biblio}
+
+%% Métadonnées ACM (fournies par la conférence à la camera-ready)
+\setcopyright{cc}
+\setcctype{by}
+\copyrightyear{2026}
+\acmYear{2026}
+\acmDOI{}
+\acmISBN{}
+\acmConference[ACRONYME '26]{Nom complet de la conférence}{Dates}{Lieu}
+\acmBooktitle{Nom complet de la conférence (ACRONYME '26), Dates, Lieu}
+
+\AtBeginDocument{\providecommand\BibTeX{{Bib\TeX}}}
+\let\Bbbk\relax
+\usepackage{todonotes}
+\usepackage[capitalise]{cleveref}
+\usepackage{xfrac}
+\usepackage{amsmath}
+
+%% Macros minimales (celles de macros.tex qui servent vraiment)
+\newcommand{\tu}[1]{\mathbf{#1}}
+\newcommand{\cp}[1]{\operatorname{#1}}
+\newcommand\R{\mathbb{R}}
+\newcommand\N{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand\Ptime{\cp{PTIME}}
+\newcommand\Pspace{\cp{PSPACE}}
+\newcommand\todoinline[1]{\FINAL{\todo[inline]{#1}}}
+
+%% Environnements (acmart charge amsthm)
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+%% apxproof avec acmart : possible, décommenter (theoremrep + proofsketch + proof).
+%\providecommand\apxparameter{appendix=append}
+%\usepackage[\apxparameter]{apxproof}
+%\newtheoremrep{theorem}{Theorem}
+%\newtheoremrep{lemma}[theorem]{Lemma}
+
+\begin{document}
+
+\title{Titre de l'article}
+\author{Olivier Bournez}
+\affiliation{%
+  \institution{LIX, École polytechnique, CNRS}
+  \city{Palaiseau}
+  \country{France}}
+\email{bournez@lix.polytechnique.fr}
+%% \author{Prénom Nom} \affiliation{...} \email{...}
+\renewcommand{\shortauthors}{Bournez}
+
+\begin{abstract}
+Quatre phrases : la question, pourquoi elle compte, le résultat principal, la technique.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003752.10003753</concept_id>
+<concept_desc>Theory of computation~Models of computation</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Theory of computation~Models of computation}
+\keywords{mot-clé 1, mot-clé 2, mot-clé 3}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:intro}
+
+Contexte, question, résultat principal (\cref{thm:main}), travaux antérieurs~\cite{JournalACM2017}.
+
+\section{Preliminaries}
+\label{sec:prelim}
+
+\begin{definition}[Notion]
+\label{def:notion}
+Une définition.
+\end{definition}
+
+\section{Main results}
+\label{sec:results}
+
+\begin{theorem}[Main theorem]
+\label{thm:main}
+Énoncé du théorème principal.
+\end{theorem}
+\begin{proof}
+Preuve.
+\end{proof}
+
+\section{Conclusion and perspectives}
+\label{sec:conclusion}
+
+Ce qui est fait, ce qui reste ouvert.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{\BIBFILES}
+\end{document}

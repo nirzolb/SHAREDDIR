@@ -1,11 +1,13 @@
 #!/bin/bash
 # Ouvre un chantier LaTeX (Olivier Bournez / Claude) à partir de SHAREDDIR/SQUELETTE.
 #
-#   nouveau-chantier.sh cours|expose|doc NOM [--github] [--dir BASE] [--dest FINALISE] [--no-git] [--no-make]
+#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--no-git] [--no-make]
 #
 #   cours   : modèle cours-minimal.tex (+ entete-cours.tex, fin-cours.tex)
 #   expose  : modèle expose-minimal.tex
 #   doc     : modèle tex-minimal.tex
+#   article : modèle article-<classe>-minimal.tex (défaut lipics), importe CONVENTIONS-ARTICLES.md
+#   --classe C      pour un article : lipics (défaut), lncs, acm ou generic
 #   --github        crée le dépôt privé GitHub NOM avec gh et pousse le premier commit
 #   --dir BASE      répertoire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
 #   --dest FINALISE chemin du répertoire finalisé, écrit dans Makefile.local
@@ -16,16 +18,17 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+usage() { sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
 BASE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
-GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""
+GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics
 while [ $# -gt 0 ]; do
   case "$1" in
     --github)  GITHUB=1 ;;
     --dir)     BASE="$2"; shift ;;
     --dest)    DEST="$2"; shift ;;
+    --classe)  CLASSE="$2"; shift ;;
     --no-git)  DOGIT=0 ;;
     --no-make) DOMAKE=0 ;;
     *) echo "option inconnue : $1"; usage ;;
@@ -36,7 +39,9 @@ case "$TYPE" in
   cours)  MODELE=cours-minimal ;;
   expose) MODELE=expose-minimal ;;
   doc)    MODELE=tex-minimal ;;
-  *) echo "type inconnu : $TYPE (cours, expose ou doc)"; usage ;;
+  article)
+    case "$CLASSE" in lipics|lncs|acm|generic) MODELE=article-$CLASSE-minimal ;; *) echo "classe inconnue : $CLASSE (lipics, lncs, acm, generic)"; exit 1 ;; esac ;;
+  *) echo "type inconnu : $TYPE (cours, expose, doc ou article)"; usage ;;
 esac
 case "$NOM" in *[!A-Za-z0-9._-]*|"") echo "NOM : lettres, chiffres, . _ - seulement"; exit 1 ;; esac
 
@@ -52,6 +57,9 @@ mkdir -p "$CH"
 cp -R "$SQ/." "$CH/"
 cp "$EX/$MODELE.tex" "$CH/main.tex"
 if [ "$TYPE" = cours ]; then cp "$EX/entete-cours.tex" "$EX/fin-cours.tex" "$CH/"; fi
+if [ "$TYPE" = article ]; then
+  perl -0pi -e 's/(\@lib\/SHAREDDIR\/CONVENTIONS-LATEX\.md\n)/$1\@lib\/SHAREDDIR\/CONVENTIONS-ARTICLES.md\n/' "$CH/CLAUDE.md"
+fi
 
 # \FIGCOMMONS redéfinissable avant \input{macros} : ligne insérée avant la première commande TeX
 perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/main.tex"

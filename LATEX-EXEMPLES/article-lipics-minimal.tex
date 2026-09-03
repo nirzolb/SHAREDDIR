@@ -1,0 +1,132 @@
+%!TEX TS-program = pdflatex
+%% Modèle d'article LIPIcs (Olivier Bournez). Compilation : make (pdflatex, bibtex, pdflatex x2).
+%% Trois versions du même source, selon apxproof :
+%%   make        soumission : preuves des theoremrep/lemmarep/... en annexe, sketches dans le corps
+%%   make full   version longue (arXiv, journal) : preuves à leur place        (appendix=inline)
+%%   make strip  camera-ready sans annexe : les preuves déplacées disparaissent (appendix=strip)
+%% Classe : lib/SHAREDDIR/STYLEDIR/CLASSES/lipics (hors chantier : la copier à côté du .tex).
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[a4paper,USenglish]{lipics-v2021}
+%% Soumission anonyme : \documentclass[a4paper,USenglish,anonymous]{lipics-v2021}
+
+%% apxproof : paramètre par défaut (make full / make strip le redéfinissent)
+\providecommand\apxparameter{appendix=append}
+\usepackage[\apxparameter]{apxproof}   %% avant macros.tex, qui le configure (theoremrep, ...)
+
+%% Modes lus par macros.tex : LIPIcs (pas de décorations, \nolipics{...} vide) et apxproof
+%% (macros.tex charge apxproof et définit theoremrep, lemmarep, propositionrep, corollaryrep,
+%% claimrep, resumerep). Le troisième groupe les preuves de l'annexe par section d'origine.
+\newcommand\lipicsmode[1]{#1}
+\newcommand\apxproofmode[1]{#1}
+\newcommand\apxproofmodesubsection[1]{#1}
+
+%% Texte retiré pour tenir dans la limite de pages : l'envelopper dans \SHORTER{...}
+%% plutôt que le supprimer, pour le retrouver dans la version longue.
+\newcommand\SHORTER[1]{}
+
+%% Contenus conditionnels (paquet version), exclus par défaut : \begin{SIDE}...\end{SIDE}
+%% pour les remarques annexes, PASFINALISE pour ce qui n'est pas prêt, LONGUER pour la
+%% version longue, AVOIR pour ce qui est à revoir, PASANNEXE pour une annexe manuelle.
+\usepackage{version}
+\excludeversion{SIDE}
+\excludeversion{PASFINALISE}
+\excludeversion{PASANNEXE}
+\excludeversion{LONGUER}
+\excludeversion{AVOIR}
+
+\newcommand\myparagraph[1]{\medskip\noindent\textbf{#1}.}
+
+\input{macros.tex}
+
+%% Macros propres à l'article
+\newcommand\Step{\cp{Step}}
+
+%% ---- Métadonnées LIPIcs (voir lipics-v2021-authors-guidelines.pdf) ----
+\title{Titre de l'article}
+\titlerunning{Titre court}
+\author{Olivier Bournez}{Institut Polytechnique de Paris, Ecole Polytechnique, LIX, Palaiseau, France}{bournez@lix.polytechnique.fr}{0000-0002-9218-1130}{ANR Project OTC}
+%% \author{Prénom Nom}{Affiliation}{email}{orcid}{financement}
+\authorrunning{O. Bournez}
+\Copyright{Olivier Bournez}
+\ccsdesc{Theory of computation~Models of computation}
+\keywords{mot-clé 1, mot-clé 2, mot-clé 3}
+%% \relatedversion{A full version of the paper is available at \url{https://arxiv.org/abs/...}.}
+%% \acknowledgements{...}
+%% Rempli à la camera-ready (fourni par les éditeurs) :
+\EventEditors{}
+\EventNoEds{2}
+\EventLongTitle{}
+\EventShortTitle{}
+\EventAcronym{}
+\EventYear{2026}
+\EventDate{}
+\EventLocation{}
+\EventLogo{}
+\SeriesVolume{}
+\ArticleNo{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Quatre phrases : la question, pourquoi elle compte, le résultat principal, la technique.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Contexte et question. Résultat principal en une phrase, avec renvoi à
+Theorem~\ref{thm:main}. Lien avec les travaux antérieurs, par exemple~\cite{JournalACM2017}.
+
+\myparagraph{Contributions}
+\begin{itemize}
+\item Première contribution.
+\item Deuxième contribution.
+\end{itemize}
+
+\myparagraph{Organisation of the paper}
+Section~\ref{sec:prelim} fixes the framework, Section~\ref{sec:results} states the results.
+
+\section{Preliminaries}
+\label{sec:prelim}
+
+\begin{definition}[Notion]
+\label{def:notion}
+Une définition.
+\end{definition}
+
+\section{Main results}
+\label{sec:results}
+
+%% Résultat principal : énoncé dans le corps, sketch dans le corps, preuve complète en annexe.
+\begin{theoremrep}[Main theorem]
+\label{thm:main}
+Énoncé du théorème principal.
+\end{theoremrep}
+\begin{proofsketch}
+L'idée en quelques lignes : l'ingrédient clé, le lemme qui fait le travail, où est la difficulté.
+\end{proofsketch}
+\begin{proof}
+La preuve complète, qui part en annexe (make), reste ici (make full) ou disparaît (make strip).
+\end{proof}
+
+%% Lemme court : preuve inline, environnement ordinaire.
+\begin{lemma}
+\label{lem:short}
+Un lemme dont la preuve tient en quelques lignes.
+\end{lemma}
+\begin{proof}
+Immédiat à partir de Definition~\ref{def:notion}.
+\end{proof}
+
+\SHORTER{Un paragraphe retiré pour la limite de pages, conservé pour la version longue.}
+
+\section{Conclusion and perspectives}
+\label{sec:conclusion}
+
+Ce qui est fait, ce qui reste ouvert.
+
+\bibliographystyle{plainurl}
+\bibliography{\BIBFILES}
+%% Bibliographie personnelle : \bibliography{bournez,perso} avec BIBINPUTS adapté.
+\end{document}
