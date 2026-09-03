@@ -20,8 +20,8 @@
 \newcommand\apxproofmode[1]{#1}
 \newcommand\apxproofmodesubsection[1]{#1}
 
-%% Texte retiré pour tenir dans la limite de pages : l'envelopper dans \SHORTER{...}
-%% plutôt que le supprimer, pour le retrouver dans la version longue.
+%% \SHORTER{...} : texte retiré pour la limite de pages, gardé pour la version longue.
+%% Réservé à Olivier : Claude n'en ajoute ni n'en retire.
 \newcommand\SHORTER[1]{}
 
 %% Contenus conditionnels (paquet version), exclus par défaut : \begin{SIDE}...\end{SIDE}
@@ -44,8 +44,10 @@
 %% ---- Métadonnées LIPIcs (voir lipics-v2021-authors-guidelines.pdf) ----
 \title{Titre de l'article}
 \titlerunning{Titre court}
+%% Un \author par personne, cinq accolades : {nom}{affiliation}{email}{orcid ou vide}{financement ou vide}
 \author{Olivier Bournez}{Institut Polytechnique de Paris, Ecole Polytechnique, LIX, Palaiseau, France}{bournez@lix.polytechnique.fr}{0000-0002-9218-1130}{ANR Project OTC}
-%% \author{Prénom Nom}{Affiliation}{email}{orcid}{financement}
+%\author{Prénom Nom}{Affiliation, Ville, Pays}{prenom.nom@exemple.org}{0000-0000-0000-0000}{}
+%% Avec coauteurs : \authorrunning{O. Bournez and P. Nom}  \Copyright{Olivier Bournez and Prénom Nom}
 \authorrunning{O. Bournez}
 \Copyright{Olivier Bournez}
 \ccsdesc{Theory of computation~Models of computation}
@@ -118,8 +120,6 @@ Un lemme dont la preuve tient en quelques lignes.
 \begin{proof}
 Immédiat à partir de Definition~\ref{def:notion}.
 \end{proof}
-
-\SHORTER{Un paragraphe retiré pour la limite de pages, conservé pour la version longue.}
 
 \section{Conclusion and perspectives}
 \label{sec:conclusion}

@@ -18,6 +18,7 @@
 %\newcommand\apxproofmode[1]{#1}
 %\newcommand\apxproofmodesubsection[1]{#1}
 
+%% \SHORTER{...} : texte retiré pour la limite de pages ; réservé à Olivier.
 \newcommand\SHORTER[1]{}
 \usepackage{version}
 \excludeversion{SIDE}
@@ -39,12 +40,18 @@
 
 \title{Titre de l'article}
 \titlerunning{Titre court}
+%% Auteurs séparés par \and, \inst{n} renvoie au n-ième \institute (même \inst si même labo)
 \author{Olivier Bournez\inst{1}\orcidID{0000-0002-9218-1130}}
-%% \author{Prénom Nom\inst{1} \and Prénom Nom\inst{2}}
+%\author{Olivier Bournez\inst{1}\orcidID{0000-0002-9218-1130} \and
+%        Prénom Nom\inst{2}\orcidID{0000-0000-0000-0000}}
 \authorrunning{O. Bournez}
+%\authorrunning{O. Bournez and P. Nom}
 \institute{\affiliationofficielleolivier\\
            \email{olivier.bournez@lix.polytechnique.fr}}
-%% \institute{... \and ...}
+%\institute{\affiliationofficielleolivier\\
+%           \email{olivier.bournez@lix.polytechnique.fr} \and
+%           Affiliation, Ville, Pays\\
+%           \email{prenom.nom@exemple.org}}
 \maketitle
 
 \begin{abstract}

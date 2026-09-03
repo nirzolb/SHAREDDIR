@@ -8,6 +8,7 @@
 \providecommand\FINAL[1]{}
 \providecommand\PASFINAL[1]{#1}
 \FINAL{\renewcommand\PASFINAL[1]{}}
+%% \SHORTER{...} : texte retiré pour la limite de pages ; réservé à Olivier.
 \newcommand\SHORTER[1]{}
 \providecommand\BIBFILES{@@reference-biblio}
 
@@ -64,8 +65,15 @@
   \city{Palaiseau}
   \country{France}}
 \email{bournez@lix.polytechnique.fr}
-%% \author{Prénom Nom} \affiliation{...} \email{...}
+%% Un bloc \author + \affiliation + \email par personne ; \authornote{} pour une note (contact, égalité)
+%\author{Prénom Nom}
+%\affiliation{%
+%  \institution{Affiliation}
+%  \city{Ville}
+%  \country{Pays}}
+%\email{prenom.nom@exemple.org}
 \renewcommand{\shortauthors}{Bournez}
+%\renewcommand{\shortauthors}{Bournez and Nom}
 
 \begin{abstract}
 Quatre phrases : la question, pourquoi elle compte, le résultat principal, la technique.

@@ -36,7 +36,8 @@ demande un article, et importé par le CLAUDE.md des chantiers de type article.
 - apxproof se charge avant `\input{macros.tex}` (qui le configure) : c'est ce que font
   les modèles, ne pas déplacer cette ligne. L'annexe est engendrée automatiquement,
   groupée par section d'origine ; ne pas écrire `\appendix` soi-même.
-- Texte retiré pour tenir dans la limite : `\SHORTER{...}` plutôt que supprimer. Contenus
+- `\SHORTER{...}` (texte retiré pour la limite de pages) est réservé à Olivier : Claude n'en
+  ajoute pas, n'en retire pas, et ne modifie pas ce qu'il y a dedans. Contenus
   conditionnels : environnements SIDE, PASFINALISE, LONGUER, AVOIR (paquet version),
   exclus par défaut.
 
@@ -57,9 +58,12 @@ demande un article, et importé par le CLAUDE.md des chantiers de type article.
   0000-0002-9218-1130, affiliation, financement) ; `\ccsdesc` et `\keywords`
   obligatoires pour LIPIcs et ACM ; `\EventEditors` et compagnie restent vides jusqu'à
   la camera-ready.
-- Limite de pages : `make` affiche le nombre de pages ; dépassement, dans l'ordre :
-  `\SHORTER`, passage de preuves en annexe, travaux liés resserrés, jamais de bidouille
-  de marges ou de police.
+- Limite de pages : `make` affiche le nombre de pages. En cas de dépassement, Claude
+  propose des coupes (preuves à passer en annexe, paragraphes à resserrer) et Olivier
+  tranche ; jamais de bidouille de marges ou de police.
+- Coauteurs : la syntaxe de chaque classe est dans le modèle, en commentaire sous le bloc
+  auteur d'Olivier ; la décommenter et remplir, y compris \authorrunning et \Copyright
+  (LIPIcs) ou \shortauthors (ACM).
 
 ## 4. En chantier
 - `nouveau-chantier.sh article NOM --classe lipics|lncs|acm|generic --github` ; le CLAUDE.md
