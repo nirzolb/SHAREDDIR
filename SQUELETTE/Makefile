@@ -100,18 +100,25 @@ am:
 # ---------- échanges avec le répertoire finalisé (jamais de git direct là-bas) ----------
 # make publier            : copie (ajouts et mises à jour) puis commit à mon nom dans DEST
 # make publier MIRROR=1   : idem avec suppression dans DEST de ce qui n'est plus dans le chantier
+# Si DEST est un sous-répertoire d'un dépôt (un dossier par papier dans un dépôt partagé),
+# le commit se fait dans le dépôt englobant et ne porte que sur DEST.
 publier: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make publier DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ "$(abspath $(DEST))" != "$(CURDIR)" ] || { echo "DEST est le chantier lui-même"; exit 1; }
 	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude ./ "$(DEST)/"
-	@if [ -d "$(DEST)/.git" ]; then \
-	  cd "$(DEST)" && git add -A && \
-	  if env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
-	       git commit -q -m "Mise à jour depuis le chantier $(NOM) ($$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null))"; then \
-	    echo "Commit dans $(DEST) : $$(git log -1 --format='%h  %an <%ae>  %s')"; \
-	  else echo "Rien de nouveau à committer dans $(DEST)"; fi; \
-	  case "$$(git log -1 --format='%an %cn')" in *[Cc]laude*) echo "ATTENTION : identité Claude dans le dépôt finalisé, corriger avec git commit --amend --reset-author"; exit 1;; esac; \
+	@d=$$(cd "$(DEST)" && pwd -P); top=$$(git -C "$$d" rev-parse --show-toplevel 2>/dev/null); \
+	if [ -n "$$top" ]; then \
+	  git -C "$$top" add -A -- "$$d"; \
+	  if git -C "$$top" diff --cached --quiet -- "$$d"; then \
+	    echo "Rien de nouveau à committer dans $(DEST)"; \
+	  else \
+	    env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
+	      git -C "$$top" commit -q -m "Mise à jour depuis le chantier $(NOM) ($$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null))" -- "$$d" || exit 1; \
+	    echo "Commit dans $$top : $$(git -C "$$top" log -1 --format='%h  %an <%ae>  %s')"; \
+	    [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \
+	  fi; \
+	  case "$$(git -C "$$top" log -1 --format='%an %cn')" in *[Cc]laude*) echo "ATTENTION : identité Claude dans le dépôt finalisé, corriger avec git commit --amend --reset-author"; exit 1;; esac; \
 	else echo "$(DEST) n'est pas un dépôt git : fichiers copiés, rien à committer"; fi
 
 importer:

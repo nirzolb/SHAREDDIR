@@ -35,5 +35,8 @@ main.pdf
 *.snm
 *.vrb
 *.synctex.gz
+*.axp
+*.vtc
+bu*.aux
 *.fls
 *.fdb_latexmk

@@ -63,10 +63,14 @@ même état, rien à synchroniser.
 ## Répertoire finalisé (tiers)
 
 1. `Makefile.local` du chantier : `DEST = /chemin/du/finalise`.
-2. Une fois par finalisé : `hooks/install.sh /chemin/du/finalise` (hook pre-push qui
-   refuse toute trace de Claude ; contournement volontaire : `git push --no-verify`).
+2. Une fois par finalisé, **depuis le chantier** : `hooks/install.sh /chemin/du/finalise`
+   (hook pre-push qui refuse toute trace de Claude ; contournement volontaire :
+   `git push --no-verify`). Si le finalisé est un sous-répertoire d'un dépôt partagé (un
+   dossier par papier), le hook se pose tout seul sur le dépôt qui le contient.
 3. `make publier` : compile, copie le chantier dans DEST (exclusions dans
    `.publier-exclude`), puis un commit unique **à ton nom** dans DEST, sans historique.
+   Quand DEST est un sous-répertoire d'un dépôt partagé, le commit se fait dans le dépôt
+   englobant et ne porte que sur DEST : tes modifications ailleurs restent intactes.
    `make publier MIRROR=1` supprime aussi dans DEST ce qui a disparu du chantier.
 4. `make importer` : modifications des tiers vers le chantier, puis commit. Refuse si
    l'arbre du chantier n'est pas propre.
