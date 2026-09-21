@@ -92,10 +92,30 @@ sha:
 	@n=$$(git rev-list --count @{u}..HEAD 2>/dev/null) && echo "Commits non poussés : $$n" || echo "Commits non poussés : ? (pas de branche distante)"
 
 # ---------- appliquer un patch venu du chat (auteur Claude-Code conservé) ----------
+# Un patch venu du chat n'a pas les lignes « index <sha>..<sha> » exploitables : les blobs
+# d'origine n'existent que sur la machine, et --3way seul échoue alors sur « sha1 information
+# is lacking or useless » en laissant un .git/rebase-apply qui bloque la tentative suivante.
+# On tente donc git am nu d'abord, --3way seulement en second recours, avec un abort entre
+# les deux et un autre en cas d'échec complet : l'arbre est toujours propre à la sortie.
 am:
 	@p="$(PATCH)"; [ -n "$$p" ] || p=$$(ls -t $(PATCHDIR)/chantier-*.patch 2>/dev/null | head -1); \
 	  [ -n "$$p" ] || { echo "Aucun patch : make am PATCH=fichier, ou chantier-*.patch dans $(PATCHDIR)"; exit 1; }; \
-	  echo "Application de $$p"; git am --3way "$$p" && $(MAKE) --no-print-directory sha
+	  echo "Application de $$p"; \
+	  if git am "$$p"; then \
+	    echo "Patch appliqué par git am (application directe)."; \
+	  else \
+	    git am --abort >/dev/null 2>&1 || true; \
+	    echo "Application directe impossible, seconde tentative avec --3way."; \
+	    if git am --3way "$$p"; then \
+	      echo "Patch appliqué par git am --3way (fusion à trois points)."; \
+	    else \
+	      git am --abort >/dev/null 2>&1 || true; \
+	      echo "Échec des deux voies (git am, puis git am --3way) ; arbre laissé propre."; \
+	      echo "Demander à Claude Code d'appliquer $$p et de résoudre."; \
+	      exit 1; \
+	    fi; \
+	  fi; \
+	  $(MAKE) --no-print-directory sha
 
 # ---------- échanges avec le répertoire finalisé (jamais de git direct là-bas) ----------
 # make publier            : copie (ajouts et mises à jour) puis commit à mon nom dans DEST

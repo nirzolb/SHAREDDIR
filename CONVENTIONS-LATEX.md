@@ -49,7 +49,7 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   via figcommons-local.tex), ou `\renewcommand\FIGCOMMONS` après.
 
 ## Macros et mise en évidence
-- Ne jamais utiliser \IMPORTANT, \SURLIGNE et \SURSURLIGNE (annotations personnelles
+- Ne jamais utiliser \IMPORTANT, \SURLIGNE et \SURSURLIGNE, environnement recherche (annotations personnelles
   d'Olivier), mais les préserver là où elles sont.
 - Pour une piste à creuser ou une question ouverte, l'équivalent de recherche est
   l'environnement `rechercheCARE` (bandeau « RECHERCHE (CARE) », défini dans

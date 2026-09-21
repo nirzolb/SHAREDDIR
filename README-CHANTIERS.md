@@ -55,7 +55,8 @@ tien (`make sha`). S'ils diffèrent, Sync now ou colle le fichier à jour avant 
 Ce qu'il écrit revient en patch `chantier-AAAAMMJJ-HHMM.patch` (auteur Claude-Code,
 entrée de passation incluse). Dans le chantier : `make am` (dernier patch de ~/Downloads,
 ou `make am PATCH=fichier`), ou dire à Claude Code « applique le dernier patch de
-~/Downloads ». En cas de conflit, git le dit et Claude Code le résout.
+~/Downloads ». `make am` tente l'application directe puis, en second recours, `git am --3way`,
+et dit quelle voie a réussi. En cas de conflit, git le dit et Claude Code le résout.
 
 Pour un chantier actif dans Claude Code, préférer Remote Control au chat : même session,
 même état, rien à synchroniser.
@@ -97,7 +98,9 @@ même état, rien à synchroniser.
 | `lib/` absent, styles introuvables | `make deps` |
 | Compilation étrange après un changement de style | `make distclean && make` |
 | Le hook refuse un push du finalisé | auteur ou message avec « Claude » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
-| `make am` échoue (conflit) | `git am --abort`, puis demander à Claude Code d'appliquer le patch et de résoudre |
+| `make am` échoue (conflit) | l'arbre est laissé propre : demander à Claude Code d'appliquer le patch et de résoudre |
+| `make am` : « sha1 information is lacking or useless » | patch venu du chat : les blobs d'origine manquent, donc `--3way` seul ne peut pas s'en servir. `make am` tente l'application directe d'abord et ne passe à `--3way` qu'ensuite, en disant quelle voie a réussi ; si les deux échouent, l'arbre reste propre, demander alors à Claude Code d'appliquer le patch |
+| `git am` : « previous rebase directory still exists » | reliquat d'un `--3way` interrompu : `git am --abort`, puis `make am` (qui abandonne désormais de lui-même entre deux tentatives) |
 | `gh` refuse | `gh auth login` (une fois ; code affiché dans le terminal, à saisir sur github.com) |
 | `git push` : aucun dépôt distant | `gh repo create NOM --private --source=. --remote=origin --push` |
 | `claude` demande un code par mail | connecter d'abord le navigateur à claude.ai, puis `claude auth login` |
