@@ -26,6 +26,9 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 - Jamais de git dans un répertoire finalisé : make publier et make importer seulement.
 
 ## LaTeX
+- L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
+  occurrences). Ton équivalent est rechercheCARE, défini dans macros-moins-propres.tex.
+  Vaut aussi pour les brouillons.
 - Conventions : /Users/bournez/public_raw/SHAREDDIR/CONVENTIONS-LATEX.md (importées
   automatiquement dans un chantier via lib/SHAREDDIR).
 - Styles personnels installés dans TEXMFHOME, soit ~/Library/texmf/tex/latex/ : le lien
@@ -33,6 +36,12 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   par fichier. kpsewhich les trouve donc sans TEXINPUTS, y compris hors shell interactif
   et depuis une application ouverte par le Finder, qui hérite de launchd et non du shell.
   TEXINPUTS reste dans le .zshrc, il ne sert plus de béquille. [2 septembre 2026]
+- Même principe pour bibtex : ~/Library/texmf/bibtex/bib/perso-extra contient des liens
+  nommés vers les .bib principaux de ~/bibliographie/BIBDESK-DIR= (@@reference-biblio,
+  bournez, perso, CARE, mecite...), et bibtex/bst/perso-extra un lien vers myfplain.bst.
+  BIBINPUTS et BSTINPUTS du .zshrc ne parviennent pas à TeXShop. Un .bib de plus s'ajoute
+  par un lien nommé, pas en liant tout le répertoire (ARCHIVES, OLD2, COPIE portent des
+  homonymes). [21 septembre 2026]
 - Ne jamais lier tout ~/lib/LaTeX dans cet arbre : TEXMFHOME est fouillé récursivement et
   prime sur la distribution, ce qui mettrait de vieilles copies (hyperref, pgf, prosper,
   listings, ucs, microtype) devant TeX Live pour toute la machine. Un style manquant

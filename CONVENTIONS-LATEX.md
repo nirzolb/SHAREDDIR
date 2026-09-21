@@ -51,6 +51,9 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
 ## Macros et mise en évidence
 - Ne jamais utiliser \IMPORTANT, \SURLIGNE et \SURSURLIGNE (annotations personnelles
   d'Olivier), mais les préserver là où elles sont.
+- Pour une piste à creuser ou une question ouverte, l'équivalent de recherche est
+  l'environnement `rechercheCARE` (bandeau « RECHERCHE (CARE) », défini dans
+  macros-moins-propres.tex, retiré en diffusion finale).
 - Points importants et « à retenir » : `\IMPORTANTCARE[titre optionnel]{texte}` (bandeau
   bleu, défini dans macros.tex), titres du type « Important (CARE) », « À retenir (CARE) »,
   « Point clé (CARE) ». En ligne : \emph ou \textbf ; \SOUSLIGNE pour le secondaire.

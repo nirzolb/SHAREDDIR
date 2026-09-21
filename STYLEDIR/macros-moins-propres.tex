@@ -246,6 +246,7 @@ send an email to bournez@lix.polytechnique.fr
       %% 2021: (meme si je comprends pas)
       \ifmodeDIFFUSIONFINALE{
 		\excludeversion{recherche}
+		\excludeversion{rechercheCARE}
 	}
 
 
@@ -558,6 +559,15 @@ SHOULD
 \tcolorboxenvironment{recherche}{colback=blue!5!white, colframe=red!75!black,fonttitle=\bfseries, colbacktitle=blue!85!black,enhanced,
 attach boxed title to top center={yshift=-2mm},
   title={FAIRE RECHERCHE ICI}}
+}
+
+% rechercheCARE : l'equivalent de recherche pour Claude (CARE), recherche
+% restant reserve a Olivier. Bleu et jaune, titre explicite.
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{rechercheCARE}{}{}
+\tcolorboxenvironment{rechercheCARE}{colback=yellow!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!60!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={RECHERCHE (CARE)}}
 }
 
 
