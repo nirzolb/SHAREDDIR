@@ -46,7 +46,10 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   prime sur la distribution, ce qui mettrait de vieilles copies (hyperref, pgf, prosper,
   listings, ucs, microtype) devant TeX Live pour toute la machine. Un style manquant
   s'ajoute par un lien nommé dans perso-extra.
-- Dans ~/lib/LaTeX/Perso, olivier.sty, expose.sty et expose-new.sty sont des liens vers
-  SHAREDDIR/STYLEDIR, et beamerthemeVillers.sty est lié depuis perso-extra. Une
-  correction faite dans SHAREDDIR se propage donc sans recopie. Ne pas rétablir de copie,
-  les deux versions divergeraient en silence.
+- Dans ~/lib/LaTeX/Perso, olivier.sty, expose.sty, expose-new.sty, macros.tex,
+  macros-moins-propres.tex, macros-accents.tex, macros-intitules.tex et macros-markdown.tex
+  sont des liens vers SHAREDDIR/STYLEDIR, et beamerthemeVillers.sty est lié depuis
+  perso-extra. Une correction faite dans SHAREDDIR se propage donc sans recopie. Ne pas
+  rétablir de copie, les deux versions divergeraient en silence (c'est arrivé :
+  rechercheCARE absent de la copie de macros-moins-propres.tex ; anciennes copies dans
+  ~/lib/LaTeX/Perso-copies-avant-liens-20260921). [21 septembre 2026]
