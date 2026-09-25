@@ -26,3 +26,29 @@ Commitée aussi, à la demande d'Olivier et sous son nom, sa modification de
 STYLEDIR.
 
 Base : greffe en cours, voir le commit qui suit
+
+## 2026-09-25 23h55 (passation)
+
+**Fait.** Le mode d'emploi de chantier devient une pièce du squelette.
+`SQUELETTE/=LISEZ-MOI-SUR-CE-CHANTIER.md` est un gabarit à six trous,
+`SCRIPTS/nouveau-chantier.sh` y substitue le nom, le type et la date comme il le fait déjà
+pour `CLAUDE.md` et `NOTES.md`, le `CLAUDE.md` du squelette charge Claude de le remplir à
+la première session puis de le tenir à jour, et sa `passation.md` vérifie qu'il ne reste
+pas de trou en silence.
+
+Éprouvé sur un chantier jetable créé dans un répertoire temporaire : le fichier arrive avec
+ses trois substitutions faites et ses six questions en attente.
+
+Les huit dépôts existants ont reçu le leur, écrit un par un : celui d'INF412 a été relu et
+validé par Olivier avant les autres.
+
+**Décidé.** Ce fichier s'adresse à Olivier, non à Claude. `CLAUDE.md` garde les règles de
+travail, `NOTES.md` le récit ; celui-ci répond à « qu'est-ce que je tape, et qu'est-ce que
+je risque ». Ses particularités sont celles qui ont coûté du temps, pas une liste
+théorique.
+
+**À faire.** Rien d'ouvert ici. La règle du squelette recopié et non lié vaut toujours :
+cette pièce-ci n'arrivera pas d'elle-même dans un chantier ouvert avant aujourd'hui, mais
+tous l'ont déjà reçue à la main.
+
+Base : 3fe0df0
