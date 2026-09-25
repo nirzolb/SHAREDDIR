@@ -6,6 +6,19 @@ instructions générales (~/.claude/CLAUDE.md, préférences du chat).
 
 @lib/SHAREDDIR/CONVENTIONS-LATEX.md
 
+## Le mode d'emploi du chantier
+
+`=LISEZ-MOI-SUR-CE-CHANTIER.md` s'adresse à Olivier, non à toi : où il est, ce qui se passe
+s'il publie, les particularités du lieu. Il est posé à l'ouverture avec des trous marqués
+`__A_REMPLIR__`.
+
+- **À la première session, tu le remplis**, en demandant à Olivier ce que tu ne peux pas
+  déduire, notamment le répertoire finalisé et qui le voit. N'invente pas une sortie.
+- **Ensuite tu le tiens à jour** : dès qu'une sortie, une commande ou un piège change, il
+  change aussi. Un piège qui t'a coûté du temps y a sa place, en une ligne.
+- Il reste court, une page. Les règles de travail vont dans ce fichier-ci, le récit dans
+  `NOTES.md`.
+
 ## Début et fin de session
 - Au démarrage, un hook (.claude/hooks/session-start.sh) t'a fourni `make sha` et la fin de
   NOTES.md : pars de là. `/reprise` en plus si Olivier veut un résumé et une proposition.

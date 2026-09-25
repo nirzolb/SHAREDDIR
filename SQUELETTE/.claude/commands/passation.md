@@ -11,8 +11,11 @@ Fais, dans l'ordre :
    résumé de conversation. Si un raisonnement ou un échange mérite d'être gardé tel quel,
    mets-le dans `passations/AAAA-MM-JJ-sujet.md` et cite ce fichier dans l'entrée.
    Termine l'entrée par `Base : <sha court du commit noté à l'étape 2>`.
-4. Commite uniquement les fichiers que tu as modifiés dans cette session (git add
+4. Si une sortie, une commande ou un piège a changé pendant la session, mets à jour
+   `=LISEZ-MOI-SUR-CE-CHANTIER.md`. S'il lui reste des trous `__A_REMPLIR__`, dis-le dans
+   l'entrée plutôt que de les laisser en silence.
+5. Commite uniquement les fichiers que tu as modifiés dans cette session (git add
    explicite). Si des modifications non commitées d'Olivier traînent, laisse-les et
    dis-le dans l'entrée. Message en français, première ligne courte.
-5. `git push`.
-6. Termine par la sortie de `make sha`.
+6. `git push`.
+7. Termine par la sortie de `make sha`.

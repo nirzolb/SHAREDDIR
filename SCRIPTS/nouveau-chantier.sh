@@ -67,7 +67,7 @@ perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-lo
 # Trous du squelette
 NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" \
   perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
-  "$CH/CLAUDE.md" "$CH/NOTES.md"
+  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md"
 
 # Réglages propres à cette machine
 {
@@ -100,6 +100,8 @@ fi
 echo
 echo "Chantier ouvert : $CH"
 echo "  main.tex (modèle $MODELE)  CLAUDE.md  NOTES.md  Makefile  .claude/"
+echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que Claude remplit"
+echo "        à la première session."
 echo "Suite : cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"
 [ "$GITHUB" = 1 ] || echo "        dépôt distant : gh repo create $NOM --private --source=. --remote=origin --push"
 echo "        finalisé : DEST dans Makefile.local, puis hooks/install.sh /chemin/finalise"
