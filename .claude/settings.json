@@ -1,0 +1,25 @@
+{
+  "env": {
+    "GIT_AUTHOR_NAME": "Claude (CARE)",
+    "GIT_AUTHOR_EMAIL": "claude-care@bournez.invalid",
+    "GIT_COMMITTER_NAME": "Claude (CARE)",
+    "GIT_COMMITTER_EMAIL": "claude-care@bournez.invalid"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(make:*)", "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)",
+      "Bash(git add:*)", "Bash(git commit:*)", "Bash(git push:*)", "Bash(git pull:*)",
+      "Bash(ls:*)", "Bash(find:*)", "Bash(grep:*)", "Bash(wc:*)", "Bash(kpsewhich:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)", "Bash(git push -f:*)", "Bash(git reset --hard:*)",
+      "Bash(git rebase:*)", "Bash(git filter-branch:*)", "Bash(rm -rf:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command",
+          "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh", "timeout": 20 } ] }
+    ]
+  }
+}

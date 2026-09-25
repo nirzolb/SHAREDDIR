@@ -1,0 +1,8 @@
+# Propre à la machine, pas au dépôt
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Système
+.DS_Store
+._*
+__pycache__/
