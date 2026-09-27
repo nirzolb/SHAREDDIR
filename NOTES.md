@@ -103,3 +103,12 @@ macros-care.tex si un document qui le charge doit un jour être publié. PAGE-WE
 pas outillée.
 
 Base : 2451801
+
+## 2026-09-27, plus tard le même soir (code, depuis CARE-CHANTIER-STACS2027-PRECISION)
+
+**Fait.** `STYLEDIR/macros-care.tex` définit aussi `\ARETENIR`, la même boîte sous un nom
+neutre, titre par défaut « À retenir » : c'est le nom que prend `\IMPORTANTCARE` dans INF412
+(décision d'Olivier), dont les fragments portent un `\providecommand` de repli pour kelen.
+Le renommage lui-même est dans le chantier INF412.
+
+Base : 84f1afe

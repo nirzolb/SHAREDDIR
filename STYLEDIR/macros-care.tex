@@ -23,3 +23,8 @@ attach boxed title to top center={yshift=-2mm},
 }
 \ifmodeDIFFUSIONFINALE{#2}
 }
+
+%% \ARETENIR : la même boîte sous un nom neutre, titre par défaut « À retenir ». C'est le
+%% nom employé dans INF412 (décision d'Olivier, 27 septembre 2026), dont les fragments
+%% portent un \providecommand de repli pour les tiers, qui n'ont pas ce fichier.
+\newcommand\ARETENIR[2][À retenir]{\IMPORTANTCARE[#1]{#2}}
