@@ -19,7 +19,7 @@ export TEXINPUTS := .:$(SD)/STYLEDIR//:
 export BIBINPUTS := .:$(SD)/BIBDESKDIR//:
 export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
-PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error
+PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error -recorder
 
 .PHONY: all pdf deps full strip apxversion sha am publier importer clean distclean
 
@@ -122,11 +122,29 @@ am:
 # make publier MIRROR=1   : idem avec suppression dans DEST de ce qui n'est plus dans le chantier
 # Si DEST est un sous-répertoire d'un dépôt (un dossier par papier dans un dépôt partagé),
 # le commit se fait dans le dépôt englobant et ne porte que sur DEST.
+# Le finalisé doit se compiler seul, sans lib/ ni Makefile : ce que la dernière compilation
+# a lu sous lib/ (classe, logos, macros, biblio, style bibtex), d'après $(MAIN).fls
+# (pdflatex -recorder) et $(MAIN).blg, y est recopié à plat, réécrasé à chaque publication,
+# et jamais réimporté (make importer l'exclut d'après la même liste).
+# Rien de ce qui part ne doit parler du chantier, de Claude ni de CARE : message de commit
+# neutre, lignes de commentaire des copies qui en parlent retirées, et ce qui subsiste dans
+# DEST est signalé, à relire avant de pousser. Le hook pre-push (hooks/) refuse les commits
+# dont l'auteur ou le message en parle.
+DEPS_LIB = { awk '/^INPUT /{print $$2}' $(MAIN).fls 2>/dev/null; \
+             sed -n 's/^Database file \#[0-9]*: //p; s/^The style file: //p' $(MAIN).blg 2>/dev/null \
+               | while read -r b; do kpsewhich "$$b"; done; } | sed 's,^\./,,' | grep '^$(LIB)/' | sort -u
 publier: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make publier DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ "$(abspath $(DEST))" != "$(CURDIR)" ] || { echo "DEST est le chantier lui-même"; exit 1; }
 	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude ./ "$(DEST)/"
+	@for f in $$($(DEPS_LIB)); do b=$$(basename "$$f"); \
+	  case "$$b" in *.tex|*.sty|*.cls|*.clo|*.def|*.bst) \
+	    awk '!(/^[[:space:]]*%/ && tolower($$0) ~ /claude|chantier|(^|[^a-z])care([^a-z]|$$)/)' "$$f" > "$(DEST)/$$b";; \
+	  *) cp -p "$$f" "$(DEST)/$$b";; esac; done; \
+	  echo "Copies à plat dans $(DEST) : $$($(DEPS_LIB) | while read -r f; do basename "$$f"; done | tr '\n' ' ')"
+	@t=$$(cd "$(DEST)" && { grep -rIn -i --exclude-dir=.git --exclude='*.bib' 'claude' .; grep -rIn -i --exclude-dir=.git 'chantier' .; grep -rIn -w --exclude-dir=.git 'CARE' .; } 2>/dev/null); \
+	  [ -z "$$t" ] || { echo "ATTENTION : à relire avant de pousser, traces dans $(DEST) (claude, chantier, CARE) :"; printf '%s\n' "$$t" | head -20 | sed 's/^/   /'; }
 	@d=$$(cd "$(DEST)" && pwd -P); top=$$(git -C "$$d" rev-parse --show-toplevel 2>/dev/null); \
 	if [ -n "$$top" ]; then \
 	  git -C "$$top" add -A -- "$$d"; \
@@ -134,18 +152,24 @@ publier: pdf
 	    echo "Rien de nouveau à committer dans $(DEST)"; \
 	  else \
 	    env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
-	      git -C "$$top" commit -q -m "Mise à jour depuis le chantier $(NOM) ($$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null))" -- "$$d" || exit 1; \
+	      git -C "$$top" commit -q -m "Mise à jour de $$(basename "$$d")" -- "$$d" || exit 1; \
 	    echo "Commit dans $$top : $$(git -C "$$top" log -1 --format='%h  %an <%ae>  %s')"; \
+	    echo "  (publié depuis le commit $$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null) du chantier : à noter dans NOTES.md)"; \
 	    [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \
 	  fi; \
-	  case "$$(git -C "$$top" log -1 --format='%an %cn')" in *[Cc]laude*) echo "ATTENTION : identité Claude dans le dépôt finalisé, corriger avec git commit --amend --reset-author"; exit 1;; esac; \
+	  if git -C "$$top" log -1 --format='%an %cn %B' | grep -q -i -E 'claude|chantier' || git -C "$$top" log -1 --format='%B' | grep -q -w 'CARE'; then \
+	    echo "ATTENTION : trace de Claude, du chantier ou de CARE dans le dernier commit du finalisé, corriger avec git commit --amend"; exit 1; fi; \
 	else echo "$(DEST) n'est pas un dépôt git : fichiers copiés, rien à committer"; fi
 
-importer:
+# make importer : rapporte dans le chantier ce que les tiers ont modifié dans DEST, sauf les
+# copies faites par make publier (liste DEPS_LIB, d'où la recompilation préalable).
+importer: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make importer DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ -z "$$(git status --porcelain)" ] || { echo "Arbre non propre : commiter ou remiser avant d'importer"; exit 1; }
-	rsync -a --exclude-from=.publier-exclude "$(DEST)/" ./
+	@x=$$($(DEPS_LIB) | while read -r f; do printf -- '--exclude=/%s ' "$$(basename "$$f")"; done); \
+	  [ -z "$$x" ] || echo "Copies de lib/ laissées dans $(DEST) : $$(echo $$x | sed 's,--exclude=/,,g')"; \
+	  rsync -a --exclude-from=.publier-exclude $$x "$(DEST)/" ./
 	@git add -A && git commit -q -m "Import depuis le répertoire finalisé ($$(git -C "$(DEST)" rev-parse --short HEAD 2>/dev/null || echo 'sans git'))" && echo "Import commité" || echo "Rien à importer"
 
 # ---------- ménage ----------

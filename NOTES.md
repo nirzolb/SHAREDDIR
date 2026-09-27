@@ -52,3 +52,27 @@ cette pièce-ci n'arrivera pas d'elle-même dans un chantier ouvert avant aujour
 tous l'ont déjà reçue à la main.
 
 Base : 3fe0df0
+
+## 2026-09-27 19h08 (code, depuis CARE-CHANTIER-STACS2027-PRECISION)
+
+**Fait.** Le finalisé se compile seul et ne parle plus du chantier. `SQUELETTE/Makefile` :
+`pdflatex -recorder` ; `make publier` recopie à plat dans DEST ce que la compilation a lu
+sous `lib/` (classe, logos, macros, biblio, style bibtex, d'après `.fls` et `.blg`), en
+retirant des copies les lignes de commentaire qui parlent de Claude, du chantier ou de
+CARE, signale ce qui subsiste dans DEST, et commite sous un message neutre (« Mise à jour
+de <dossier> ») ; `make importer` recompile d'abord et laisse ces copies dans DEST.
+`SQUELETTE/.publier-exclude` : le `=LISEZ-MOI` (page pour Olivier, qui partait chez les
+tiers) et `main-*.pdf`. `SQUELETTE/hooks/pre-push-finalise` refuse aussi « chantier » et
+« CARE » (mot entier). Éprouvé dans un répertoire jetable : le finalisé de STACS 2027 se
+compile sans `lib/` ni TEXMFHOME, en trois versions.
+
+**Décidé.** Olivier, 27 septembre : rien de ce qui part vers un dépôt partagé avec un
+tiers ne doit parler du chantier, de Claude ni de CARE. Le mécanisme est générique (liste
+déduite du recorder), pas une liste à tenir par chantier.
+
+**À faire.** Porter ces trois fichiers aux autres chantiers ouverts (INF412, PAGE-WEB,
+WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, COURS-POUR-MOI, CV) : seul STACS2027-PRECISION les a reçus.
+`\IMPORTANTCARE` dans `STYLEDIR/macros.tex` reste la seule trace de CARE qui parte (nom de
+macro et titre par défaut « Important (CARE) ») : à renommer si Olivier le veut.
+
+Base : f237bb4

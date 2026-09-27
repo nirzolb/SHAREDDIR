@@ -7,6 +7,7 @@
 CLAUDE.md
 CLAUDE.local.md
 NOTES.md
+=LISEZ-MOI-SUR-CE-CHANTIER.md
 passations
 hooks
 lib
@@ -18,6 +19,8 @@ Makefile.local.example
 figcommons-local.tex
 # Le PDF compilé ne part pas (retirer la ligne main.pdf si le finalisé doit le recevoir)
 main.pdf
+# ni ceux des versions full et strip (make full, make strip)
+main-*.pdf
 *.pdfsync
 .DS_Store
 *.aux
