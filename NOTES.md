@@ -76,3 +76,30 @@ WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, COURS-POUR-MOI, CV) : seul STACS2027-PRECISION l
 macro et titre par défaut « Important (CARE) ») : à renommer si Olivier le veut.
 
 Base : f237bb4
+
+## 2026-09-27 19h30 (code, depuis CARE-CHANTIER-STACS2027-PRECISION, suite)
+
+**Fait.** `\IMPORTANTCARE` et sa boîte quittent `STYLEDIR/macros.tex` pour
+`STYLEDIR/macros-care.tex`, que macros.tex charge s'il est là (lien ajouté dans
+~/lib/LaTeX/Perso pour les documents hors chantier). `make publier` assemble l'arbre à
+publier dans un répertoire temporaire, sans les fichiers de lib/ dont le nom contient
+« care » ni la ligne qui les charge, puis REFUSE sans rien copier s'il y trouve une macro ou
+un environnement CARE ou l'un des trois mots, en listant les lignes ; `CONTROLE=0` passe
+outre en connaissance de cause. Règle écrite dans SQUELETTE/CLAUDE.md, README-CHANTIERS.md,
+CONVENTIONS-LATEX.md et CLAUDE-PERSO.md. Portée à STACS2027-PRECISION et au cours « pour
+moi » (Makefile, .publier-exclude, hook, CLAUDE.md) et, sur mesure, à INF412 (crible avant
+copie, message « Cours N : mise à jour », hook réinstallé dans kelen).
+
+**Décidé.** Olivier, 27 septembre : la règle vaut pour tout projet dont le publié est un
+git. Pas de réécriture des sources à la publication ni d'import en fusion : les sources
+publiées ne contiennent simplement pas de macro CARE, et publier refuse sinon.
+
+**À faire.** INF412 : les sources déjà dans kelen portent \IMPORTANTCARE (avec un
+\providecommand de repli) et le sigle dans deux .sty ; tant qu'elles ne sont pas nettoyées,
+`make publier COURS=N` refuse et il faut CONTROLE=0. Renommer la macro côté INF412 est une
+session à part. rechercheCARE reste dans macros-moins-propres.tex, à déplacer dans
+macros-care.tex si un document qui le charge doit un jour être publié. PAGE-WEB
+(`make pousser` vers le site, pas un git) et le CV n'ont pas de publier : la règle n'y est
+pas outillée.
+
+Base : 2451801

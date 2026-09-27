@@ -24,6 +24,9 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 - Début de session : /reprise. Fin : /passation. Citer le commit courant (make sha) dans
   tout échange.
 - Jamais de git dans un répertoire finalisé : make publier et make importer seulement.
+- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE :
+  make publier refuse (macros CARE, les trois mots), le hook pre-push refuse les commits
+  qui en parlent, le message de commit est neutre. [27 septembre 2026]
 
 ## LaTeX
 - L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
@@ -47,8 +50,8 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   listings, ucs, microtype) devant TeX Live pour toute la machine. Un style manquant
   s'ajoute par un lien nommé dans perso-extra.
 - Dans ~/lib/LaTeX/Perso, olivier.sty, expose.sty, expose-new.sty, macros.tex,
-  macros-moins-propres.tex, macros-accents.tex, macros-intitules.tex et macros-markdown.tex
-  sont des liens vers SHAREDDIR/STYLEDIR, et beamerthemeVillers.sty est lié depuis
+  macros-moins-propres.tex, macros-care.tex, macros-accents.tex, macros-intitules.tex et
+  macros-markdown.tex sont des liens vers SHAREDDIR/STYLEDIR, et beamerthemeVillers.sty est lié depuis
   perso-extra. Une correction faite dans SHAREDDIR se propage donc sans recopie. Ne pas
   rétablir de copie, les deux versions divergeraient en silence (c'est arrivé :
   rechercheCARE absent de la copie de macros-moins-propres.tex ; anciennes copies dans

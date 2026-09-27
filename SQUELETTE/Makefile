@@ -120,16 +120,21 @@ am:
 # ---------- échanges avec le répertoire finalisé (jamais de git direct là-bas) ----------
 # make publier            : copie (ajouts et mises à jour) puis commit à mon nom dans DEST
 # make publier MIRROR=1   : idem avec suppression dans DEST de ce qui n'est plus dans le chantier
+# make publier CONTROLE=0 : passe outre le contrôle des traces (un « Claude Shannon » dans le
+#                           texte, par exemple), en connaissance de cause ; le hook reste.
 # Si DEST est un sous-répertoire d'un dépôt (un dossier par papier dans un dépôt partagé),
 # le commit se fait dans le dépôt englobant et ne porte que sur DEST.
 # Le finalisé doit se compiler seul, sans lib/ ni Makefile : ce que la dernière compilation
 # a lu sous lib/ (classe, logos, macros, biblio, style bibtex), d'après $(MAIN).fls
 # (pdflatex -recorder) et $(MAIN).blg, y est recopié à plat, réécrasé à chaque publication,
 # et jamais réimporté (make importer l'exclut d'après la même liste).
-# Rien de ce qui part ne doit parler du chantier, de Claude ni de CARE : message de commit
-# neutre, lignes de commentaire des copies qui en parlent retirées, et ce qui subsiste dans
-# DEST est signalé, à relire avant de pousser. Le hook pre-push (hooks/) refuse les commits
-# dont l'auteur ou le message en parle.
+# Règle (Olivier, 27 septembre 2026) : rien de ce qui part ne parle du chantier, de Claude
+# ni de CARE. L'arbre à publier est d'abord assemblé dans un répertoire temporaire : les
+# sources, puis les copies de lib/ sans les fichiers dont le nom contient « care »
+# (macros-care.tex porte \IMPORTANTCARE) et sans leurs lignes de commentaire fautives.
+# Une macro ou un environnement CARE, ou l'un des trois mots, dans cet arbre, et make
+# publier REFUSE sans rien toucher, en listant les lignes. Le message de commit est neutre,
+# et le hook pre-push (hooks/) refuse les commits dont l'auteur ou le message en parle.
 DEPS_LIB = { awk '/^INPUT /{print $$2}' $(MAIN).fls 2>/dev/null; \
              sed -n 's/^Database file \#[0-9]*: //p; s/^The style file: //p' $(MAIN).blg 2>/dev/null \
                | while read -r b; do kpsewhich "$$b"; done; } | sed 's,^\./,,' | grep '^$(LIB)/' | sort -u
@@ -137,14 +142,20 @@ publier: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make publier DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ "$(abspath $(DEST))" != "$(CURDIR)" ] || { echo "DEST est le chantier lui-même"; exit 1; }
-	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude ./ "$(DEST)/"
-	@for f in $$($(DEPS_LIB)); do b=$$(basename "$$f"); \
+	@st=$$(mktemp -d "$${TMPDIR:-/tmp}/publier.XXXXXX") || exit 1; trap 'rm -rf "$$st"' EXIT; \
+	rsync -a --exclude-from=.publier-exclude ./ "$$st/" || exit 1; \
+	copies=""; for f in $$($(DEPS_LIB)); do b=$$(basename "$$f"); \
+	  case "$$(printf '%s' "$$b" | tr '[:upper:]' '[:lower:]')" in *care*) continue;; esac; copies="$$copies $$b"; \
 	  case "$$b" in *.tex|*.sty|*.cls|*.clo|*.def|*.bst) \
-	    awk '!(/^[[:space:]]*%/ && tolower($$0) ~ /claude|chantier|(^|[^a-z])care([^a-z]|$$)/)' "$$f" > "$(DEST)/$$b";; \
-	  *) cp -p "$$f" "$(DEST)/$$b";; esac; done; \
-	  echo "Copies à plat dans $(DEST) : $$($(DEPS_LIB) | while read -r f; do basename "$$f"; done | tr '\n' ' ')"
-	@t=$$(cd "$(DEST)" && { grep -rIn -i --exclude-dir=.git --exclude='*.bib' 'claude' .; grep -rIn -i --exclude-dir=.git 'chantier' .; grep -rIn -w --exclude-dir=.git 'CARE' .; } 2>/dev/null); \
-	  [ -z "$$t" ] || { echo "ATTENTION : à relire avant de pousser, traces dans $(DEST) (claude, chantier, CARE) :"; printf '%s\n' "$$t" | head -20 | sed 's/^/   /'; }
+	    awk '!((/^[[:space:]]*%/ && tolower($$0) ~ /claude|chantier|(^|[^a-z])care([^a-z]|$$)/) || tolower($$0) ~ /\\(input|inputiffileexists)\{[^}]*care/)' "$$f" > "$$st/$$b";; \
+	  *) cp -p "$$f" "$$st/$$b";; esac; done; \
+	t=$$(cd "$$st" && { grep -rIn -i --exclude='*.bib' 'claude' .; grep -rIn -i 'chantier' .; grep -rIn -w 'CARE' .; \
+	  grep -rIn -E '\\[A-Za-z@]*CARE|\\(begin|end)\{[A-Za-z*]*CARE' .; } 2>/dev/null | sort -u); \
+	if [ -n "$$t" ] && [ "$(CONTROLE)" != 0 ]; then echo "publier REFUSÉ, rien n'a été copié : traces de Claude, du chantier ou de CARE dans ce qui partirait :"; \
+	  printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; echo "(une source se corrige ici, une copie de lib/ dans SHAREDDIR/STYLEDIR ; CONTROLE=0 passe outre, en connaissance de cause)"; exit 1; \
+	elif [ -n "$$t" ]; then echo "AVERTISSEMENT : contrôle des traces passé outre (CONTROLE=0) ; traces :"; printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; fi; \
+	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude "$$st/" "$(DEST)/" || exit 1; \
+	echo "Vérifié et copié dans $(DEST) ; copies à plat :$$copies"
 	@d=$$(cd "$(DEST)" && pwd -P); top=$$(git -C "$$d" rev-parse --show-toplevel 2>/dev/null); \
 	if [ -n "$$top" ]; then \
 	  git -C "$$top" add -A -- "$$d"; \

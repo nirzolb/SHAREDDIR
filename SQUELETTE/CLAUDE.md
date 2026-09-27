@@ -33,7 +33,12 @@ s'il publie, les particularités du lieu. Il est posé à l'ouverture avec des t
 - `make sha` : commit courant, branche, modifications non commitées, commits non poussés.
 - `make am` : applique le dernier `chantier-*.patch` venu du chat (auteur conservé).
 - `make publier` / `make importer` : échanges avec le répertoire finalisé (`DEST` dans
-  `Makefile.local`). Jamais de commande git directement dans DEST.
+  `Makefile.local`). Jamais de commande git directement dans DEST. Règle d'Olivier
+  (27 septembre 2026) : rien de ce qui part vers un finalisé ne parle du chantier, de
+  Claude ni de CARE. `make publier` refuse sans rien copier s'il trouve une macro ou un
+  environnement CARE (\IMPORTANTCARE, rechercheCARE) ou l'un des trois mots dans ce qui
+  partirait ; le hook pre-push du finalisé refuse un commit qui en parle ; retirer donc
+  les \IMPORTANTCARE des sources avant de publier. Le push reste le geste d'Olivier.
 - `make clean` / `make distclean`.
 
 ## Structure
@@ -59,5 +64,6 @@ s'il publie, les particularités du lieu. Il est posé à l'ouverture avec des t
 
 ## LaTeX, rappels propres à ce chantier
 - Macros réservées à Olivier, à préserver telles quelles : \IMPORTANT, \SURLIGNE,
-  \SURSURLIGNE. Pour mettre en évidence : \IMPORTANTCARE[titre]{texte}.
+  \SURSURLIGNE. Pour mettre en évidence : \IMPORTANTCARE[titre]{texte} (macros-care.tex,
+  jamais publié : aucune occurrence ne doit rester dans ce qui part vers un finalisé).
 - __NOTES_SPECIFIQUES__

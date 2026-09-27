@@ -1,0 +1,25 @@
+%% macros-care.tex : mises en évidence de la relecture assistée (CARE), chargé par
+%% macros.tex s'il est présent. Ce fichier ne part jamais chez les tiers : make publier
+%% écarte tout fichier de lib/ dont le nom contient « care », retire la ligne qui le
+%% charge de la copie de macros.tex, et refuse de publier une source qui utilise ces
+%% macros. Dans un document diffusé, il n'en reste donc aucune trace.
+
+%% Boîte des mises en évidence CARE. Couleurs pensées pour la
+%% protanopie : l'axe bleu-jaune reste discriminant (jaune = \IMPORTANT
+%% d'Olivier, bleu = CARE), et la distinction ne repose pas que sur la
+%% couleur (cadre + bandeau étiqueté, lisibles même en niveaux de gris).
+\newtcolorbox{maboiteimportantcare}[2][]{colback=cyan!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!70!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={#2},#1}
+
+%% Pendant de \IMPORTANT, réservé aux mises en évidence CARE ;
+%% \IMPORTANT reste réservé aux annotations d'Olivier. Comme \IMPORTANT,
+%% redevient du texte simple en mode DIFFUSIONFINALE.
+\newcommand\IMPORTANTCARE[2][Important (CARE)]{
+\ifnotmodeDIFFUSIONFINALE{
+\begin{maboiteimportantcare}{#1}
+#2
+\end{maboiteimportantcare}
+}
+\ifmodeDIFFUSIONFINALE{#2}
+}

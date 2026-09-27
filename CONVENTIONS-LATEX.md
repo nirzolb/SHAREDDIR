@@ -55,8 +55,12 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   l'environnement `rechercheCARE` (bandeau « RECHERCHE (CARE) », défini dans
   macros-moins-propres.tex, retiré en diffusion finale).
 - Points importants et « à retenir » : `\IMPORTANTCARE[titre optionnel]{texte}` (bandeau
-  bleu, défini dans macros.tex), titres du type « Important (CARE) », « À retenir (CARE) »,
-  « Point clé (CARE) ». En ligne : \emph ou \textbf ; \SOUSLIGNE pour le secondaire.
+  bleu, défini dans macros-care.tex, chargé par macros.tex et jamais publié), titres du
+  type « Important (CARE) », « À retenir (CARE) », « Point clé (CARE) ». En ligne : \emph
+  ou \textbf ; \SOUSLIGNE pour le secondaire.
+- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE
+  (Olivier, 27 septembre 2026) : `make publier` refuse tant qu'une source publiée contient
+  \IMPORTANTCARE, rechercheCARE ou l'un des trois mots. Les retirer avant de publier.
 
 ## Couleurs (daltonisme protanope)
 - Jamais rouge/vert/orange/marron seuls, dans les couleurs LaTeX comme dans les figures et

@@ -65,11 +65,13 @@ même état, rien à synchroniser.
 
 1. `Makefile.local` du chantier : `DEST = /chemin/du/finalise`.
 2. Une fois par finalisé, **depuis le chantier** : `hooks/install.sh /chemin/du/finalise`
-   (hook pre-push qui refuse toute trace de Claude ; contournement volontaire :
+   (hook pre-push qui refuse toute trace de Claude, du chantier ou de CARE ; contournement volontaire :
    `git push --no-verify`). Si le finalisé est un sous-répertoire d'un dépôt partagé (un
    dossier par papier), le hook se pose tout seul sur le dépôt qui le contient.
-3. `make publier` : compile, copie le chantier dans DEST (exclusions dans
-   `.publier-exclude`), puis un commit unique **à ton nom** dans DEST, sans historique.
+3. `make publier` : compile, assemble ce qui part (le chantier moins `.publier-exclude`,
+   plus, à plat, ce que la compilation a lu sous `lib/`, sauf `macros-care.tex`), refuse
+   s'il y trouve une macro CARE ou les mots Claude, chantier, CARE, sinon copie dans DEST
+   et fait un commit unique **à ton nom**, au message neutre, sans historique.
    Quand DEST est un sous-répertoire d'un dépôt partagé, le commit se fait dans le dépôt
    englobant et ne porte que sur DEST : tes modifications ailleurs restent intactes.
    `make publier MIRROR=1` supprime aussi dans DEST ce qui a disparu du chantier.
@@ -97,7 +99,8 @@ même état, rien à synchroniser.
 |---|---|
 | `lib/` absent, styles introuvables | `make deps` |
 | Compilation étrange après un changement de style | `make distclean && make` |
-| Le hook refuse un push du finalisé | auteur ou message avec « Claude » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
+| Le hook refuse un push du finalisé | auteur ou message avec « Claude », « chantier » ou « CARE » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
+| `make publier` refuse | une macro CARE ou l'un des trois mots dans ce qui partirait : corriger la source (ou le style, dans SHAREDDIR/STYLEDIR), puis relancer ; un « Claude Shannon » légitime dans le texte : `make publier CONTROLE=0`, en connaissance de cause |
 | `make am` échoue (conflit) | l'arbre est laissé propre : demander à Claude Code d'appliquer le patch et de résoudre |
 | `make am` : « sha1 information is lacking or useless » | patch venu du chat : les blobs d'origine manquent, donc `--3way` seul ne peut pas s'en servir. `make am` tente l'application directe d'abord et ne passe à `--3way` qu'ensuite, en disant quelle voie a réussi ; si les deux échouent, l'arbre reste propre, demander alors à Claude Code d'appliquer le patch |
 | `git am` : « previous rebase directory still exists » | reliquat d'un `--3way` interrompu : `git am --abort`, puis `make am` (qui abandonne désormais de lui-même entre deux tentatives) |
