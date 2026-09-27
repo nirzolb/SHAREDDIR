@@ -112,3 +112,14 @@ neutre, titre par défaut « À retenir » : c'est le nom que prend `\IMPORTANTC
 Le renommage lui-même est dans le chantier INF412.
 
 Base : 84f1afe
+
+## 2026-09-27, encore plus tard (code, depuis CARE-CHANTIER-STACS2027-PRECISION)
+
+**Fait.** `make publier` n'indexe plus dans DEST que les fichiers qu'il a copiés, plus les
+suppressions du miroir : ce qu'une compilation sur place y produit (main.axp, main.idx, que
+le .gitignore du dépôt partagé n'écarte pas) n'entre plus dans le commit. Constaté ce soir
+après une compilation d'Olivier dans le répertoire publié ; éprouvé sur un dépôt jetable
+(artefacts présents, reliquat suivi supprimé par MIRROR=1, republication sans changement).
+Reporté à STACS2027-PRECISION et au cours « pour moi ».
+
+Base : 16e7f0c

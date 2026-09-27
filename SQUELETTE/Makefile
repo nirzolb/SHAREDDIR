@@ -135,6 +135,9 @@ am:
 # Une macro ou un environnement CARE, ou l'un des trois mots, dans cet arbre, et make
 # publier REFUSE sans rien toucher, en listant les lignes. Le message de commit est neutre,
 # et le hook pre-push (hooks/) refuse les commits dont l'auteur ou le message en parle.
+# Seuls les fichiers copiés sont indexés dans DEST (plus les suppressions du miroir) : ce qui
+# y a été produit par une compilation sur place, main.axp ou main.idx par exemple, que le
+# .gitignore du dépôt partagé n'écarte pas forcément, n'entre jamais dans le commit.
 DEPS_LIB = { awk '/^INPUT /{print $$2}' $(MAIN).fls 2>/dev/null; \
              sed -n 's/^Database file \#[0-9]*: //p; s/^The style file: //p' $(MAIN).blg 2>/dev/null \
                | while read -r b; do kpsewhich "$$b"; done; } | sed 's,^\./,,' | grep '^$(LIB)/' | sort -u
@@ -149,28 +152,27 @@ publier: pdf
 	  case "$$b" in *.tex|*.sty|*.cls|*.clo|*.def|*.bst) \
 	    awk '!((/^[[:space:]]*%/ && tolower($$0) ~ /claude|chantier|(^|[^a-z])care([^a-z]|$$)/) || tolower($$0) ~ /\\(input|inputiffileexists)\{[^}]*care/)' "$$f" > "$$st/$$b";; \
 	  *) cp -p "$$f" "$$st/$$b";; esac; done; \
-	t=$$(cd "$$st" && { grep -rIn -i --exclude='*.bib' 'claude' .; grep -rIn -i 'chantier' .; grep -rIn -w 'CARE' .; \
+	t=$$(cd "$$st" && { grep -rIn -i --exclude-dir=.git --exclude='*.bib' 'claude' .; grep -rIn -i --exclude-dir=.git 'chantier' .; grep -rIn -w --exclude-dir=.git 'CARE' .; \
 	  grep -rIn -E '\\[A-Za-z@]*CARE|\\(begin|end)\{[A-Za-z*]*CARE' .; } 2>/dev/null | sort -u); \
 	if [ -n "$$t" ] && [ "$(CONTROLE)" != 0 ]; then echo "publier REFUSÉ, rien n'a été copié : traces de Claude, du chantier ou de CARE dans ce qui partirait :"; \
 	  printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; echo "(une source se corrige ici, une copie de lib/ dans SHAREDDIR/STYLEDIR ; CONTROLE=0 passe outre, en connaissance de cause)"; exit 1; \
 	elif [ -n "$$t" ]; then echo "AVERTISSEMENT : contrôle des traces passé outre (CONTROLE=0) ; traces :"; printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; fi; \
 	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude "$$st/" "$(DEST)/" || exit 1; \
-	echo "Vérifié et copié dans $(DEST) ; copies à plat :$$copies"
-	@d=$$(cd "$(DEST)" && pwd -P); top=$$(git -C "$$d" rev-parse --show-toplevel 2>/dev/null); \
-	if [ -n "$$top" ]; then \
-	  git -C "$$top" add -A -- "$$d"; \
-	  if git -C "$$top" diff --cached --quiet -- "$$d"; then \
-	    echo "Rien de nouveau à committer dans $(DEST)"; \
-	  else \
-	    env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
-	      git -C "$$top" commit -q -m "Mise à jour de $$(basename "$$d")" -- "$$d" || exit 1; \
-	    echo "Commit dans $$top : $$(git -C "$$top" log -1 --format='%h  %an <%ae>  %s')"; \
-	    echo "  (publié depuis le commit $$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null) du chantier : à noter dans NOTES.md)"; \
-	    [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \
-	  fi; \
-	  if git -C "$$top" log -1 --format='%an %cn %B' | grep -q -i -E 'claude|chantier' || git -C "$$top" log -1 --format='%B' | grep -q -w 'CARE'; then \
-	    echo "ATTENTION : trace de Claude, du chantier ou de CARE dans le dernier commit du finalisé, corriger avec git commit --amend"; exit 1; fi; \
-	else echo "$(DEST) n'est pas un dépôt git : fichiers copiés, rien à committer"; fi
+	echo "Vérifié et copié dans $(DEST) ; copies à plat :$$copies"; \
+	d=$$(cd "$(DEST)" && pwd -P); top=$$(git -C "$$d" rev-parse --show-toplevel 2>/dev/null); \
+	if [ -z "$$top" ]; then echo "$(DEST) n'est pas un dépôt git : fichiers copiés, rien à committer"; exit 0; fi; \
+	git -C "$$top" add -u -- "$$d" || exit 1; \
+	(cd "$$st" && find . -type f | sed 's,^\./,,') | while IFS= read -r f; do git -C "$$top" add -f -- "$$d/$$f" || exit 1; done || exit 1; \
+	if git -C "$$top" diff --cached --quiet -- "$$d"; then echo "Rien de nouveau à committer dans $(DEST)"; \
+	else \
+	  env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
+	    git -C "$$top" commit -q -m "Mise à jour de $$(basename "$$d")" -- "$$d" || exit 1; \
+	  echo "Commit dans $$top : $$(git -C "$$top" log -1 --format='%h  %an <%ae>  %s')"; \
+	  echo "  (publié depuis le commit $$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null) du chantier : à noter dans NOTES.md)"; \
+	  [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \
+	fi; \
+	if git -C "$$top" log -1 --format='%an %cn %B' | grep -q -i -E 'claude|chantier' || git -C "$$top" log -1 --format='%B' | grep -q -w 'CARE'; then \
+	  echo "ATTENTION : trace de Claude, du chantier ou de CARE dans le dernier commit du finalisé, corriger avec git commit --amend"; exit 1; fi
 
 # make importer : rapporte dans le chantier ce que les tiers ont modifié dans DEST, sauf les
 # copies faites par make publier (liste DEPS_LIB, d'où la recompilation préalable).
