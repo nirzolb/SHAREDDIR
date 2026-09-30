@@ -1,5 +1,7 @@
 %% Heure de compilation, pour « Version of \today, \HEUREVERSION » : \time est
-%% le nombre de minutes depuis minuit au lancement de la compilation.
+%% le nombre de minutes depuis minuit au lancement de la compilation. L'heure
+%% n'est ajoutee qu'en brouillon, pas en diffusion finale : elle sert a savoir
+%% quel tirage on a sous les yeux quand on recompile plusieurs fois par jour.
 \ifdefined\HEUREVERSION\else
 \newcount\VERSIONheures
 \newcount\VERSIONminutes
@@ -187,7 +189,7 @@ Please do  not distribute. \\
 \bigskip
 \begin{center}
   \textbf{
-    Version of \today, \HEUREVERSION.
+    Version of \today\ifnotmodeDIFFUSIONFINALE{\unskip, \HEUREVERSION}\unskip.
     }
 \end{center}
 
@@ -233,7 +235,7 @@ send an email to bournez@lix.polytechnique.fr
         Olivier Bournez% \inst{1}
         \\[0.5cm] %{\myaddress}
       }
-      \date{Version of \today, \HEUREVERSION}
+      \date{Version of \today\ifnotmodeDIFFUSIONFINALE{\unskip, \HEUREVERSION}\unskip}
       % \institute{\myaddress}
       
 
