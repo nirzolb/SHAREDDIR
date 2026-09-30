@@ -87,7 +87,8 @@ if [ "$DOGIT" = 1 ]; then
   IDENT=()
   if [ -z "$(git config user.name || true)" ]; then IDENT=(-c user.name=Claude-Code -c user.email=claude-code@noreply.invalid); fi
   git add -A
-  git "${IDENT[@]}" commit -q -m "Ouverture du chantier $NOM ($TYPE, modèle $MODELE)"
+  # ${IDENT[@]+"${IDENT[@]}"} : un tableau vide sous set -u est une erreur en bash 3.2 (macOS)
+  git ${IDENT[@]+"${IDENT[@]}"} commit -q -m "Ouverture du chantier $NOM ($TYPE, modèle $MODELE)"
   if [ "$GITHUB" = 1 ]; then
     if command -v gh >/dev/null 2>&1; then
       gh repo create "$NOM" --private --source=. --remote=origin --push
