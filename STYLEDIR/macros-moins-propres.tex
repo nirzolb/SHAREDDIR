@@ -1,3 +1,18 @@
+%% Heure de compilation, pour « Version of \today, \HEUREVERSION » : \time est
+%% le nombre de minutes depuis minuit au lancement de la compilation.
+\ifdefined\HEUREVERSION\else
+\newcount\VERSIONheures
+\newcount\VERSIONminutes
+\newcommand\HEUREVERSION{%
+  \VERSIONheures=\time
+  \divide\VERSIONheures by 60
+  \VERSIONminutes=\time
+  \multiply\VERSIONheures by 60
+  \advance\VERSIONminutes by -\VERSIONheures
+  \divide\VERSIONheures by 60
+  \the\VERSIONheures h\ifnum\VERSIONminutes<10 0\fi\the\VERSIONminutes}
+\fi
+
 
 %% defaults
 
@@ -172,7 +187,7 @@ Please do  not distribute. \\
 \bigskip
 \begin{center}
   \textbf{
-    Version of \today.
+    Version of \today, \HEUREVERSION.
     }
 \end{center}
 
@@ -218,7 +233,7 @@ send an email to bournez@lix.polytechnique.fr
         Olivier Bournez% \inst{1}
         \\[0.5cm] %{\myaddress}
       }
-      \date{Version of \today}
+      \date{Version of \today, \HEUREVERSION}
       % \institute{\myaddress}
       
 
