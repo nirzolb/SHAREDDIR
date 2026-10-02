@@ -27,6 +27,10 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 - Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE :
   make publier refuse (macros CARE, les trois mots), le hook pre-push refuse les commits
   qui en parlent, le message de commit est neutre. [27 septembre 2026]
+- Le document principal d'un chantier porte le nom du chantier sans le préfixe
+  CARE-CHANTIER- (CARE-CHANTIER-Raisonner-Sur-ODEs donne Raisonner-Sur-ODEs.tex et .pdf),
+  jamais main : des PDF tous appelés main.pdf ne se distinguent pas. nouveau-chantier.sh
+  le fait par défaut (--doc pour un autre nom). [2 octobre 2026]
 
 ## LaTeX
 - L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
