@@ -37,7 +37,7 @@ $(SD):
 	fi
 
 # Sur une machine sans les vrais logos, logos factices + redéfinition de \FIGCOMMONS
-# (lue par main.tex avant \input{macros}, qui fait un \providecommand).
+# (lue par $(MAIN).tex avant \input{macros}, qui fait un \providecommand).
 figcommons-local.tex:
 	@if [ -d "$(FIGCOMMONS_LOCAL)" ]; then \
 	  printf '%%%% généré par make deps : les logos sont dans %s\n' "$(FIGCOMMONS_LOCAL)" > $@; \
@@ -136,7 +136,7 @@ am:
 # publier REFUSE sans rien toucher, en listant les lignes. Le message de commit est neutre,
 # et le hook pre-push (hooks/) refuse les commits dont l'auteur ou le message en parle.
 # Seuls les fichiers copiés sont indexés dans DEST (plus les suppressions du miroir) : ce qui
-# y a été produit par une compilation sur place, main.axp ou main.idx par exemple, que le
+# y a été produit par une compilation sur place, $(MAIN).axp ou $(MAIN).idx par exemple, que le
 # .gitignore du dépôt partagé n'écarte pas forcément, n'entre jamais dans le commit.
 DEPS_LIB = { awk '/^INPUT /{print $$2}' $(MAIN).fls 2>/dev/null; \
              sed -n 's/^Database file \#[0-9]*: //p; s/^The style file: //p' $(MAIN).blg 2>/dev/null \

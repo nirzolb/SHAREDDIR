@@ -1,7 +1,7 @@
 #!/bin/bash
 # Ouvre un chantier LaTeX (Olivier Bournez / Claude) à partir de SHAREDDIR/SQUELETTE.
 #
-#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--no-git] [--no-make]
+#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--doc DOC] [--no-git] [--no-make]
 #
 #   cours   : modèle cours-minimal.tex (+ entete-cours.tex, fin-cours.tex)
 #   expose  : modèle expose-minimal.tex
@@ -11,6 +11,8 @@
 #   --github        crée le dépôt privé GitHub NOM avec gh et pousse le premier commit
 #   --dir BASE      répertoire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
 #   --dest FINALISE chemin du répertoire finalisé, écrit dans Makefile.local
+#   --doc DOC       nom du document principal, DOC.tex et DOC.pdf ; défaut : NOM sans le
+#                   préfixe CARE-CHANTIER-, pour que les PDF des chantiers se distinguent
 #   --no-git        ne pas initialiser git (pour un essai)
 #   --no-make       ne pas lancer make deps / make à la fin
 #
@@ -18,16 +20,17 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+usage() { sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
 BASE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
-GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics
+GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --github)  GITHUB=1 ;;
     --dir)     BASE="$2"; shift ;;
     --dest)    DEST="$2"; shift ;;
+    --doc)     DOC="$2"; shift ;;
     --classe)  CLASSE="$2"; shift ;;
     --no-git)  DOGIT=0 ;;
     --no-make) DOMAKE=0 ;;
@@ -44,6 +47,10 @@ case "$TYPE" in
   *) echo "type inconnu : $TYPE (cours, expose, doc ou article)"; usage ;;
 esac
 case "$NOM" in *[!A-Za-z0-9._-]*|"") echo "NOM : lettres, chiffres, . _ - seulement"; exit 1 ;; esac
+# Le document principal porte le nom du chantier sans le préfixe CARE-CHANTIER- (et non main) :
+# des PDF tous appelés main.pdf ne se distinguent pas. [2 octobre 2026]
+[ -n "$DOC" ] || DOC="${NOM#CARE-CHANTIER-}"
+case "$DOC" in *[!A-Za-z0-9._-]*|"") echo "DOC : lettres, chiffres, . _ - seulement"; exit 1 ;; esac
 
 SD=$(cd "$(dirname "$0")/.." && pwd -P)
 SQ="$SD/SQUELETTE"; EX="$SD/LATEX-EXEMPLES"
@@ -55,19 +62,20 @@ DATE=$(date +%Y-%m-%d)
 
 mkdir -p "$CH"
 cp -R "$SQ/." "$CH/"
-cp "$EX/$MODELE.tex" "$CH/main.tex"
+cp "$EX/$MODELE.tex" "$CH/$DOC.tex"
 if [ "$TYPE" = cours ]; then cp "$EX/entete-cours.tex" "$EX/fin-cours.tex" "$CH/"; fi
 if [ "$TYPE" = article ]; then
   perl -0pi -e 's/(\@lib\/SHAREDDIR\/CONVENTIONS-LATEX\.md\n)/$1\@lib\/SHAREDDIR\/CONVENTIONS-ARTICLES.md\n/' "$CH/CLAUDE.md"
 fi
 
 # \FIGCOMMONS redéfinissable avant \input{macros} : ligne insérée avant la première commande TeX
-perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/main.tex"
+perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/$DOC.tex"
 
 # Trous du squelette
-NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" \
-  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
-  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md"
+NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" \
+  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
+  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/.publier-exclude"
+DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
 # Réglages propres à cette machine
 {
@@ -79,7 +87,7 @@ NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" \
 cd "$CH"
 if [ "$DOMAKE" = 1 ]; then
   make --no-print-directory deps
-  if make --no-print-directory pdf; then :; else echo "ATTENTION : la compilation initiale échoue (voir main.log) ; le chantier est créé quand même."; fi
+  if make --no-print-directory pdf; then :; else echo "ATTENTION : la compilation initiale échoue (voir $DOC.log) ; le chantier est créé quand même."; fi
 fi
 
 if [ "$DOGIT" = 1 ]; then
@@ -100,7 +108,7 @@ fi
 
 echo
 echo "Chantier ouvert : $CH"
-echo "  main.tex (modèle $MODELE)  CLAUDE.md  NOTES.md  Makefile  .claude/"
+echo "  $DOC.tex (modèle $MODELE)  CLAUDE.md  NOTES.md  Makefile  .claude/"
 echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que Claude remplit"
 echo "        à la première session."
 echo "Suite : cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"

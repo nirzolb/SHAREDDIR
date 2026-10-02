@@ -9,7 +9,7 @@ piège change, il change ici aussi.
 
 ## Où je suis
 
-`/Users/bournez/00-CHANTIERS-CARE/__NOM__`, dépôt privé `__NOM__`.
+`__CHEMIN__`, dépôt privé `__NOM__`.
 
 On y travaille __A_REMPLIR : de quoi il s'agit, en une phrase__. Le dépôt est la source de
 vérité : tout part d'ici.
@@ -50,7 +50,7 @@ make publier    vers le répertoire finalisé
 
 | | |
 |---|---|
-| `make` | compile `main.tex` : pdflatex, bibtex, makeindex si besoin, pdflatex deux fois |
+| `make` | compile `__DOC__.tex` en `__DOC__.pdf` : pdflatex, bibtex, makeindex si besoin, pdflatex deux fois |
 | `make sha` | commit courant, branche, modifications non commitées, commits non poussés |
 | `make deps` | refait `lib/`, à lancer si les styles manquent |
 | `make am` | applique le dernier patch venu du chat |

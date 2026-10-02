@@ -79,7 +79,7 @@ Quand Olivier dit « on ouvre un chantier » à partir d'un brouillon :
    existe déjà un (sinon « aucun »).
 2. `git clone --depth 1 https://github.com/nirzolb/SHAREDDIR` dans le bac à sable, puis
    `SHAREDDIR/SCRIPTS/nouveau-chantier.sh <type> <nom> --dir <répertoire>`.
-3. Remplacer main.tex (et fichiers annexes) par le brouillon ; compléter CLAUDE.md
+3. Remplacer le document principal, `DOC.tex` (et fichiers annexes), par le brouillon ; compléter CLAUDE.md
    (rubrique « rappels propres à ce chantier ») et la première entrée de NOTES.md.
 4. Vérifier que `make` passe, puis `make distclean`. Réécrire Makefile.local avec la seule
    ligne `DEST = <chemin>` si un finalisé a été donné, sinon le supprimer. Commit (auteur

@@ -7,6 +7,6 @@ Rubriques : Fait, Décidé, À faire, Questions pour Olivier. Court et factuel.
 ## __DATE__ (olivier) : ouverture
 Fait : chantier créé depuis SHAREDDIR/SQUELETTE (type __TYPE__, modèle __MODELE__).
 Décidé : rien encore.
-À faire : remplir le titre et les premières sections de main.tex ; compléter la
+À faire : remplir le titre et les premières sections de __DOC__.tex ; compléter la
 rubrique « rappels propres à ce chantier » de CLAUDE.md.
 Questions pour Olivier : aucune.

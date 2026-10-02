@@ -17,10 +17,10 @@ Makefile.local.example
 .publier-exclude
 .gitignore
 figcommons-local.tex
-# Le PDF compilé ne part pas (retirer la ligne main.pdf si le finalisé doit le recevoir)
-main.pdf
+# Le PDF compilé ne part pas (retirer la ligne __DOC__.pdf si le finalisé doit le recevoir)
+__DOC__.pdf
 # ni ceux des versions full et strip (make full, make strip)
-main-*.pdf
+__DOC__-*.pdf
 *.pdfsync
 .DS_Store
 *.aux

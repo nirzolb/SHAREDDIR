@@ -15,6 +15,10 @@ Depuis rien :
 cd /Users/bournez/00-CHANTIERS-CARE/NOM && claude
 ```
 
+Le document principal porte le nom du chantier sans le préfixe `CARE-CHANTIER-` (option
+`--doc` pour un autre nom) : `CARE-CHANTIER-Raisonner-Sur-ODEs` compile
+`Raisonner-Sur-ODEs.tex` en `Raisonner-Sur-ODEs.pdf`, et non en un `main.pdf` de plus.
+
 Pour un article, `--classe lipics|lncs|acm|generic` (défaut lipics) ; les règles sont dans
 CONVENTIONS-ARTICLES.md, et `make full` / `make strip` donnent les versions longue et sans
 annexe (apxproof). Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu. `--github` suppose
@@ -85,7 +89,7 @@ même état, rien à synchroniser.
   style se fait dans `/Users/bournez/public_raw/SHAREDDIR`, puis
   `do-public_raw-update.command` (qui devrait faire `git add -A`).
 - Non versionnés, propres à la machine : `Makefile.local`, `figcommons-local.tex`,
-  `main.pdf`, `.claude/settings.local.json`.
+  le PDF compilé, `.claude/settings.local.json`.
 - `NOTES.md` : ajout seulement, une entrée par session. `passations/` pour les échanges
   gardés tels quels.
 - Ce que Claude doit savoir sur ce chantier précisément : rubrique « rappels propres à ce
