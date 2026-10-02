@@ -42,9 +42,9 @@ s'il publie, les particularités du lieu. Il est posé à l'ouverture avec des t
 - `make clean` / `make distclean`.
 
 ## Structure
-- `__DOC__.tex` : document principal, nommé d'après le chantier (sans le préfixe CARE-CHANTIER-)
-  pour que les PDF des chantiers se distinguent ; jamais `main.tex`. Fichiers inclus à la racine ou dans un sous-dossier ;
-  figures dans `figures/`.
+- `__DOC__.tex` : document principal, nommé d'après le chantier sans le préfixe CARE-CHANTIER-,
+  pour que les PDF des chantiers se distinguent ; jamais `main.tex`. Fichiers inclus à la
+  racine ou dans un sous-dossier ; figures dans `figures/`.
 - `lib/` : SHAREDDIR (styles, biblio, modèles) et logos, non versionné, en lecture seule.
   Une correction de style se fait dans SHAREDDIR (/Users/bournez/public_raw/SHAREDDIR sur
   le Mac d'Olivier), pas ici.
