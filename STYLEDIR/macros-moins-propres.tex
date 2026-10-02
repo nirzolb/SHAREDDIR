@@ -228,7 +228,9 @@ send an email to bournez@lix.polytechnique.fr
 		}
 	\else
 	
-      \title{ \ifnotmodeDIFFUSIONFINALE{Course  #1 -}
+      %% Plus de numéro ni de « Course ??? » : « Cours - » ou « Course - » selon la langue
+      %% (\LANGUE, réglé par \CESTDUFRANCAIS) ; #1 ne sert plus au titre. [2 octobre 2026]
+      \title{ \ifnotmodeDIFFUSIONFINALE{\LANGUE{Course}{Cours} -}
       \ifPOLYCHAPTERMODE{\LANGUE{Chapter:}{Chapitre:} }
       #2}
       \author{
