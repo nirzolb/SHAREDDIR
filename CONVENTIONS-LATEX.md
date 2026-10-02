@@ -29,7 +29,7 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
 - Nom du document : en chantier, le fichier principal s'appelle comme le chantier sans le
   préfixe CARE-CHANTIER- (`Raisonner-Sur-ODEs.tex`, d'où `Raisonner-Sur-ODEs.pdf`), jamais
   `main.tex` ; c'est le défaut de `nouveau-chantier.sh` (`--doc` pour un autre nom), et
-  `MAIN` dans le Makefile du chantier. Hors chantier, un nom parlant aussi.
+  `MAIN` dans le Makefile du chantier.
 - Paquets Ubuntu : texlive-fonts-extra, texlive-lang-french, texlive-plain-generic,
   texlive-bibtex-extra, lmodern (plus texlive-latex-extra, texlive-science,
   texlive-pictures pour les exposés).
