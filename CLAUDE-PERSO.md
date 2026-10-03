@@ -9,6 +9,9 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 - Pas de tirets cadratins ; éviter les tics d'écriture de LLM.
 - Daltonien protanope : dans tout contenu visuel, jamais rouge/vert/orange/marron seuls ;
   bleu, jaune, gris, et doubler la couleur d'un indice non coloré.
+- Jamais d'ultracode (orchestration multi-agents, outil Workflow) sans mon autorisation
+  explicite : c'est moi qui mets le mot sur la requête ; sa simple mention dans un message
+  n'autorise rien. [3 octobre 2026]
 
 ## Mes dépôts
 - SHAREDDIR, public : /Users/bournez/public_raw/SHAREDDIR, miroir de
