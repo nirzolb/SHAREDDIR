@@ -148,8 +148,7 @@ ont une copie, la correction ne leur est pas parvenue. À leur porter : INF412,
 STACS2027-PRECISION, PAGE-WEB, WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, le cours « pour moi ».
 Rien d'autre que je sache : ni `SCRIPTS/`, ni le reste du squelette.
 
-**Questions pour Olivier.** `.codex/` et `AGENTS.md` sont apparus à la racine, non suivis
-et pas de moi : à committer, à ignorer dans `.gitignore`, ou à laisser ? Le dépôt est
-public, donc la question n'est pas neutre.
+**Questions pour Olivier.** Aucune. `.codex/` et `AGENTS.md`, apparus à la racine, sont à
+Codex : Olivier les laisse non suivis, ne pas les committer ni les ignorer.
 
 Base : c887fcc
