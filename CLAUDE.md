@@ -19,6 +19,7 @@ prime sur les instructions générales.
 | `STYLEDIR/` | les styles et macros. `~/lib/LaTeX/Perso` y renvoie par des liens : une correction arrive dans le CV et les exposés sans recopie |
 | `SQUELETTE/` | le modèle de chantier : CLAUDE.md, NOTES.md, Makefile, hooks, `.claude/` |
 | `SCRIPTS/nouveau-chantier.sh` | ouvre un chantier à partir du squelette |
+| `SCRIPTS/etat-chantiers.sh` | dresse le registre de tous les chantiers à partir de git et de leur fiche `CHANTIER.md` ; il l'écrit hors de ce dépôt |
 | `LATEX-EXEMPLES/` | les modèles de document que le script recopie |
 | `BIBDESKDIR/` | la bibliographie de référence, dont `@@reference-biblio.bib` |
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |

@@ -8,6 +8,11 @@ CLAUDE.md
 CLAUDE.local.md
 NOTES.md
 =LISEZ-MOI-SUR-CE-CHANTIER.md
+# Fiche du chantier, lue par le registre des chantiers, jamais publiée
+CHANTIER.md
+# Fichiers d'Olivier pour un autre assistant, jamais publiés
+.codex
+AGENTS.md
 passations
 hooks
 lib

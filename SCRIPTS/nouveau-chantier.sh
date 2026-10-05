@@ -1,7 +1,7 @@
 #!/bin/bash
 # Ouvre un chantier LaTeX (Olivier Bournez / Claude) à partir de SHAREDDIR/SQUELETTE.
 #
-#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--doc DOC] [--no-git] [--no-make]
+#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
 #
 #   cours   : modèle cours-minimal.tex (+ entete-cours.tex, fin-cours.tex)
 #   expose  : modèle expose-minimal.tex
@@ -13,6 +13,9 @@
 #   --dest FINALISE chemin du répertoire finalisé, écrit dans Makefile.local
 #   --doc DOC       nom du document principal, DOC.tex et DOC.pdf ; défaut : NOM sans le
 #                   préfixe CARE-CHANTIER-, pour que les PDF des chantiers se distinguent
+#   --parent NOM    chantier dont celui-ci est né, écrit dans sa fiche CHANTIER.md ; défaut :
+#                   le chantier où se trouve le répertoire courant, s'il y en a un
+#   --sans-parent   ne pas déduire de parent : le chantier est une racine
 #   --no-git        ne pas initialiser git (pour un essai)
 #   --no-make       ne pas lancer make deps / make à la fin
 #
@@ -20,11 +23,11 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+usage() { sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
 BASE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
-GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""
+GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""; PARENT=""; SANSPARENT=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --github)  GITHUB=1 ;;
@@ -32,6 +35,8 @@ while [ $# -gt 0 ]; do
     --dest)    DEST="$2"; shift ;;
     --doc)     DOC="$2"; shift ;;
     --classe)  CLASSE="$2"; shift ;;
+    --parent)  PARENT="$2"; shift ;;
+    --sans-parent) SANSPARENT=1 ;;
     --no-git)  DOGIT=0 ;;
     --no-make) DOMAKE=0 ;;
     *) echo "option inconnue : $1"; usage ;;
@@ -58,6 +63,21 @@ SQ="$SD/SQUELETTE"; EX="$SD/LATEX-EXEMPLES"
 [ -f "$EX/$MODELE.tex" ] || { echo "modèle $EX/$MODELE.tex introuvable"; exit 1; }
 CH="$BASE/$NOM"
 [ -e "$CH" ] && { echo "$CH existe déjà"; exit 1; }
+
+# Le parent : le chantier dont celui-ci est né. Par défaut, celui où se trouve le répertoire
+# courant, reconnu à sa fiche ou à son mode d'emploi ; depuis un poste (worktree), on remonte
+# au dépôt. SHAREDDIR, d'où l'on lance souvent ce script, n'est le parent de personne.
+if [ -n "$PARENT" ] && [ "$SANSPARENT" = 1 ]; then echo "--parent et --sans-parent s'excluent"; exit 1; fi
+DEDUIT=""
+if [ -z "$PARENT" ] && [ "$SANSPARENT" = 0 ]; then
+  T=$(git worktree list --porcelain 2>/dev/null | sed -n '1s/^worktree //p' || true)
+  if [ -n "$T" ] && [ "$(cd "$T" && pwd -P)" != "$SD" ] \
+     && { [ -f "$T/CHANTIER.md" ] || [ -f "$T/=LISEZ-MOI-SUR-CE-CHANTIER.md" ]; }; then
+    PARENT=$(basename "$T"); DEDUIT=" (déduit du répertoire courant ; --sans-parent pour une racine)"
+  fi
+fi
+case "$PARENT" in *[!A-Za-z0-9._=-]*) echo "--parent : un nom de chantier"; exit 1 ;; esac
+[ -n "$PARENT" ] || PARENT=aucun
 DATE=$(date +%Y-%m-%d)
 
 mkdir -p "$CH"
@@ -72,9 +92,9 @@ fi
 perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/$DOC.tex"
 
 # Trous du squelette
-NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" \
-  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
-  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/.publier-exclude"
+NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PARENT="$PARENT" \
+  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__PARENT__/$ENV{PARENT}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
+  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude"
 DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
 # Réglages propres à cette machine
@@ -111,6 +131,8 @@ echo "Chantier ouvert : $CH"
 echo "  $DOC.tex (modèle $MODELE)  CLAUDE.md  NOTES.md  Makefile  .claude/"
 echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que Claude remplit"
 echo "        à la première session."
+echo "  CHANTIER.md : la fiche du registre des chantiers ; parent : $PARENT$DEDUIT"
 echo "Suite : cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"
 [ "$GITHUB" = 1 ] || echo "        dépôt distant : gh repo create $NOM --private --source=. --remote=origin --push"
 echo "        finalisé : DEST dans Makefile.local, puis hooks/install.sh /chemin/finalise"
+echo "        registre de tous les chantiers : $SD/SCRIPTS/etat-chantiers.sh"

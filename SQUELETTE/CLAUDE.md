@@ -50,6 +50,11 @@ s'il publie, les particularités du lieu. Il est posé à l'ouverture avec des t
   le Mac d'Olivier), pas ici.
 - `NOTES.md` : cahier de chantier, ajout seulement. `passations/` : échanges conservés
   tels quels, référencés depuis NOTES.md.
+- `CHANTIER.md` : la fiche que lit le registre de tous les chantiers (`SCRIPTS/etat-chantiers.sh`
+  de SHAREDDIR) : le parent, un résumé en une ligne, un journal ouvert, clos, rouvert. Tu
+  remplis « En bref » à la première session et tu le tiens juste. Une ligne au journal
+  quand Olivier clôt ou rouvre le chantier, jamais de ta propre initiative. Elle ne part
+  jamais vers un finalisé (`.publier-exclude`).
 - `Makefile.local`, `figcommons-local.tex`, `.claude/settings.local.json` : propres à la
   machine, non versionnés.
 

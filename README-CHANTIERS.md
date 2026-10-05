@@ -24,6 +24,10 @@ CONVENTIONS-ARTICLES.md, et `make full` / `make strip` donnent les versions long
 annexe (apxproof). Option `--dest /chemin/finalise` si le répertoire finalisé est déjà connu. `--github` suppose
 `gh` connecté (`gh auth status`) ; sinon le chantier est créé, mais sans dépôt distant.
 
+Un chantier ouvert depuis un autre en est l'enfant : lancé dans le répertoire d'un chantier,
+le script écrit ce parent dans la fiche `CHANTIER.md` du nouveau. `--parent NOM` pour en
+désigner un autre, `--sans-parent` pour une racine.
+
 Depuis un brouillon du chat : dire « on ouvre un chantier ». Claude demande le nom, le type
 si besoin et l'éventuel répertoire finalisé, livre `NOM.tar.gz` et rappelle les commandes :
 
@@ -32,6 +36,22 @@ cd /Users/bournez/00-CHANTIERS-CARE && tar xzf ~/Downloads/NOM.tar.gz && cd NOM
 gh repo create NOM --private --source=. --remote=origin --push
 make && claude
 ```
+
+## Le registre de tous les chantiers
+
+```
+/Users/bournez/public_raw/SHAREDDIR/SCRIPTS/etat-chantiers.sh
+```
+
+écrit `/Users/bournez/00-CHANTIERS-CARE/CHANTIERS.md` : pour chaque chantier, son ouverture,
+sa dernière activité et qui l'a faite, ce qui n'est ni commité ni poussé, les branches en
+attente, le finalisé. Les chantiers nés d'un autre sont rangés sous lui. `--fetch` pour voir
+ce qui a été poussé depuis une autre machine.
+
+Ce fichier est engendré, on ne le modifie pas. Ce que git ne sait pas se corrige dans la
+fiche `CHANTIER.md` du chantier : le parent, un résumé en une ligne, et un journal d'une
+ligne datée par événement (`ouvert`, `clos (raison)`, `rouvert (raison)`), dont la dernière
+donne l'état. Le registre nomme des chantiers privés : il ne va jamais dans SHAREDDIR.
 
 ## Dans Claude Code (le mode normal)
 
