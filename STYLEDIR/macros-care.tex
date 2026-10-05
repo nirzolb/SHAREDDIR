@@ -28,8 +28,10 @@ attach boxed title to top center={yshift=-2mm},
 %% réservé à Olivier. Bleu et jaune, bandeau explicite. Défini ici et non dans
 %% macros-moins-propres.tex, qui part chez les tiers : son bandeau y faisait refuser make
 %% publier. Retiré en diffusion finale par l'en-tête des cours (\excludeversion).
+%% Un titre en option, \begin{rechercheCARE}[titre], s'affiche en gras au début du bloc : dans
+%% le bandeau, un titre long déborderait. Sans crochet, rien ne change.
 \ifnotmodeDIFFUSIONFINALE{
-\newenvironment{rechercheCARE}{}{}
+\newenvironment{rechercheCARE}[1][]{\if\relax\detokenize{#1}\relax\else\textbf{#1}\enspace\fi\ignorespaces}{}
 \tcolorboxenvironment{rechercheCARE}{colback=yellow!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!60!black,enhanced,
 attach boxed title to top center={yshift=-2mm},
   title={RECHERCHE (CARE)}}

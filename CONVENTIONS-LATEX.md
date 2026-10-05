@@ -57,7 +57,8 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   d'Olivier), mais les préserver là où elles sont.
 - Pour une piste à creuser ou une question ouverte, l'équivalent de recherche est
   l'environnement `rechercheCARE` (bandeau « RECHERCHE (CARE) », défini dans
-  macros-care.tex, retiré en diffusion finale). Tous les assistants s'en servent,
+  macros-care.tex, retiré en diffusion finale ; un titre en option, `\begin{rechercheCARE}[titre]`,
+  s'affiche en gras au début du bloc). Tous les assistants s'en servent,
   Claude comme Codex : chacun signe ce qu'il y écrit par `\signeCARE{Claude}` ou
   `\signeCARE{Codex}` (date en option : `\signeCARE[5 octobre 2026]{Codex}`), défini
   au même endroit. Pour répondre à ce qu'un autre a écrit, écrire dessous dans le même
