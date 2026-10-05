@@ -54,6 +54,10 @@ fiche `CHANTIER.md` du chantier : le parent, un résumé en une ligne, et un jou
 ligne datée par événement (`ouvert`, `clos (raison)`, `rouvert (raison)`), dont la dernière
 donne l'état. Le registre nomme des chantiers privés : il ne va jamais dans SHAREDDIR.
 
+La base Notion « Chantiers », sous « Suivi de projets », en est la vitrine : trois vues,
+l'arbre, ce qui est en cours, et par intervenant. `/registre`, dans une session Claude Code
+sur SHAREDDIR, régénère le registre et l'y recopie. On ne corrige rien dans Notion.
+
 ## Dans Claude Code (le mode normal)
 
 | Quoi | Comment |
