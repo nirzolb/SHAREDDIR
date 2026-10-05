@@ -123,3 +123,33 @@ après une compilation d'Olivier dans le répertoire publié ; éprouvé sur un 
 Reporté à STACS2027-PRECISION et au cours « pour moi ».
 
 Base : 16e7f0c
+
+## 2026-10-05 13h20 (code, SHAREDDIR)
+
+**Fait.** Session étalée sur plusieurs jours, tout est déjà poussé.
+`rechercheCARE` dans `STYLEDIR/macros-moins-propres.tex` (bandeau « RECHERCHE (CARE) »,
+bleu et jaune, retiré en diffusion finale) : l'équivalent de `recherche`, qui reste à
+Olivier ; règle écrite dans `CONVENTIONS-LATEX.md` et `CLAUDE-PERSO.md` (6d7531c).
+Page de garde : l'heure n'apparaît qu'en brouillon, pas sous `SAFEMODE` ; `\unskip` des
+deux côtés, sinon le corps de `\ifnotmodeDIFFUSIONFINALE` laisse une espace devant la
+virgule (dcdbe14). Hors dépôt, sur le Mac : les `.bib` principaux et `myfplain.bst` liés
+dans `~/Library/texmf/bibtex`, pour que TeXShop les trouve sans `BIBINPUTS` ; et les cinq
+`macros*.tex` de `~/lib/LaTeX/Perso`, qui étaient des copies, remplacés par des liens vers
+`STYLEDIR` (anciennes copies dans `~/lib/LaTeX/Perso-copies-avant-liens-20260921`).
+
+**Décidé.** `recherche`, `\IMPORTANT`, `\SURLIGNE`, `\SURSURLIGNE` sont à Olivier ; mes
+équivalents sont `rechercheCARE` et `\IMPORTANTCARE`, y compris dans les brouillons du
+chat. L'heure de compilation sert à distinguer deux tirages du même jour, elle n'a rien à
+faire sur un document publié.
+
+**À faire.** `SQUELETTE/Makefile` a changé le 21 septembre (`make am` tente l'application
+directe, puis `--3way`, et laisse l'arbre propre en cas d'échec) : les chantiers ouverts en
+ont une copie, la correction ne leur est pas parvenue. À leur porter : INF412,
+STACS2027-PRECISION, PAGE-WEB, WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, le cours « pour moi ».
+Rien d'autre que je sache : ni `SCRIPTS/`, ni le reste du squelette.
+
+**Questions pour Olivier.** `.codex/` et `AGENTS.md` sont apparus à la racine, non suivis
+et pas de moi : à committer, à ignorer dans `.gitignore`, ou à laisser ? Le dépôt est
+public, donc la question n'est pas neutre.
+
+Base : c887fcc
