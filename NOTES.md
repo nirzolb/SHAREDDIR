@@ -205,3 +205,52 @@ racine d'ici, sont encore la copie de Codex, non suivie : convertir SHAREDDIR co
 chantiers ?
 
 Base : 27fc83d
+
+## 2026-10-05 17h08 (code, SHAREDDIR)
+
+**Fait.** Suite de la session close à 15h42, tout est poussé.
+Les portages qui restaient : SHAREDDIR passe aux règles communes (`AGENTS.md` que
+`CLAUDE.md` importe, `.codex/` suivi, hooks relais) ; INF412, PAGE-WEB,
+WORKFLOW-OMNIFOCUS-MAIL-DT-DIR et le CV aussi, à leur façon, leur texte gardé mot pour mot
+sous le nom d'`AGENTS.md`, un bloc « Qui travaille ici » ajouté, leur hook de démarrage
+conservé ; `hooks/install.sh` relancé pour les trois répertoires finalisés, dont le hook
+installé est maintenant celui du chantier et refuse le mot Codex.
+Le crochet de `rechercheCARE` devient un titre, en gras au début du bloc. Le registre se
+recopie chaque matin dans Notion, par une tâche planifiée de l'application Claude.
+`/registre` donne le texte entier de la description de la base : le connecteur ne permet
+pas de la relire, et les premières recopies avaient retrouvé le début du texte en fouillant
+d'anciennes conversations.
+`SCRIPTS/make_bundle_from_github.sh` est refait. `latex_bundle.zip` emporte les dix styles
+(cinq manquaient, dont `macros-accents.tex`, que `macros.tex` exige, et `macros-care.tex`),
+les cinq modèles, un README et un exemple ; il se compile à l'essai sans les styles
+personnels. Le script travaille dans un répertoire temporaire et redonne le même zip tant
+que `STYLEDIR` et `LATEX-EXEMPLES` n'ont pas changé. Ses restes de juillet sont retirés :
+`SCRIPTS/READY-TO-COMPILE/`, `SCRIPTS/tmp_repo` (un clone du dépôt, entré dans git comme
+dépôt imbriqué) et une copie de `macros-markdown.tex`.
+Tour des treize dépôts à 16h40 : rien de modifié sans être commité, tout poussé, règles,
+réglages et hooks des deux assistants en place, les dix styles trouvés par TeX dans
+`STYLEDIR`.
+Hors dépôt : textes donnés à Olivier pour ses préférences de Claude chat et pour les
+instructions personnalisées de ChatGPT (adresse de la bibliographie avec `@@`,
+`macros-care.tex`, `rechercheCARE` signé `\signeCARE{ChatGPT}`).
+
+**Décidé (Olivier).** Le crochet de `rechercheCARE` est un titre. Le registre se recopie
+chaque matin. SHAREDDIR suit les mêmes règles que les chantiers. Les restes du script du zip
+sortent du dépôt.
+
+**À faire.** Rien à porter aux chantiers : le squelette n'a pas changé depuis 15h42, et le
+script du zip n'est appelé par aucun d'eux. La tâche du matin n'a pas encore tourné avec la
+consigne corrigée, et n'a jamais eu à écrire une ligne : l'application demandera sans doute
+une autorisation ce jour-là. Les conversations ouvertes dans un chantier avant sa conversion
+gardent les anciennes règles : en ouvrir de nouvelles. Codex ne fait encore confiance qu'à
+deux chantiers ; ailleurs il le demandera à la première ouverture, et rien ne dit que les
+réglages du chantier s'appliquent avant. L'application ChatGPT liste encore le second
+répertoire, retiré, d'un chantier. Dans les quatre dépôts particuliers, le texte repris mot
+pour mot parle encore à Claude seul : à récrire un jour pour les deux assistants. Trois
+chantiers ont toujours leur version à jour hors de `main`.
+
+**Questions pour Olivier.** Écrire dans `AGENTS.md` qu'un changement de style oblige à
+refaire le zip ? Le zip doit-il emporter aussi la bibliographie et les logos, que
+`expose-minimal.tex` va chercher sur le Mac ?
+
+Base : df532dd
