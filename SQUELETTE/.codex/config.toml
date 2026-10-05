@@ -1,0 +1,10 @@
+# Réglages de Codex pour ce chantier, le pendant de .claude/settings.json.
+# Codex signe ses commits de son nom (décision d'Olivier, 4 octobre 2026).
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+GIT_AUTHOR_NAME = "Codex"
+GIT_AUTHOR_EMAIL = "codex@noreply.invalid"
+GIT_COMMITTER_NAME = "Codex"
+GIT_COMMITTER_EMAIL = "codex@noreply.invalid"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ouvre un chantier LaTeX (Olivier Bournez / Claude) à partir de SHAREDDIR/SQUELETTE.
+# Ouvre un chantier LaTeX (Olivier Bournez et ses assistants) à partir de SHAREDDIR/SQUELETTE.
 #
 #   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
 #
@@ -84,17 +84,22 @@ mkdir -p "$CH"
 cp -R "$SQ/." "$CH/"
 cp "$EX/$MODELE.tex" "$CH/$DOC.tex"
 if [ "$TYPE" = cours ]; then cp "$EX/entete-cours.tex" "$EX/fin-cours.tex" "$CH/"; fi
+# Les conventions à lire : importées par CLAUDE.md pour Claude Code, nommées dans AGENTS.md
+# pour les assistants qui ne suivent pas les imports.
+CONVENTIONS='`lib/SHAREDDIR/CONVENTIONS-LATEX.md`'
 if [ "$TYPE" = article ]; then
   perl -0pi -e 's/(\@lib\/SHAREDDIR\/CONVENTIONS-LATEX\.md\n)/$1\@lib\/SHAREDDIR\/CONVENTIONS-ARTICLES.md\n/' "$CH/CLAUDE.md"
+  CONVENTIONS="$CONVENTIONS et "'`lib/SHAREDDIR/CONVENTIONS-ARTICLES.md`'
 fi
 
 # \FIGCOMMONS redéfinissable avant \input{macros} : ligne insérée avant la première commande TeX
 perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/$DOC.tex"
 
 # Trous du squelette
-NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PARENT="$PARENT" \
-  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__PARENT__/$ENV{PARENT}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
-  "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude"
+NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PARENT="$PARENT" CONVENTIONS="$CONVENTIONS" \
+  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__PARENT__/$ENV{PARENT}/g; s/__CONVENTIONS__/$ENV{CONVENTIONS}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
+  "$CH/AGENTS.md" "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude" \
+  "$CH/.codex/hooks.json"
 DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
 # Réglages propres à cette machine
@@ -128,11 +133,12 @@ fi
 
 echo
 echo "Chantier ouvert : $CH"
-echo "  $DOC.tex (modèle $MODELE)  CLAUDE.md  NOTES.md  Makefile  .claude/"
-echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que Claude remplit"
-echo "        à la première session."
+echo "  $DOC.tex (modèle $MODELE)  AGENTS.md  CLAUDE.md  NOTES.md  Makefile  .claude/  .codex/"
+echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que l'assistant de la"
+echo "        première session remplit."
 echo "  CHANTIER.md : la fiche du registre des chantiers ; parent : $PARENT$DEDUIT"
 echo "Suite : cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"
+echo "        ou ouvrir ce répertoire dans Codex : les règles sont les mêmes, dans AGENTS.md"
 [ "$GITHUB" = 1 ] || echo "        dépôt distant : gh repo create $NOM --private --source=. --remote=origin --push"
 echo "        finalisé : DEST dans Makefile.local, puis hooks/install.sh /chemin/finalise"
 echo "        registre de tous les chantiers : $SD/SCRIPTS/etat-chantiers.sh"

@@ -1,10 +1,10 @@
 # Ce chantier, en une page
 
 Pour Olivier, quand il arrive ici et ne se souvient plus. Les règles de travail détaillées
-sont dans `CLAUDE.md`, le récit des sessions dans `NOTES.md`.
+sont dans `AGENTS.md`, communes à tous mes assistants, le récit des sessions dans `NOTES.md`.
 
-Ce fichier est posé à l'ouverture du chantier, avec des trous. **Claude le remplit à la
-première session**, et le tient à jour ensuite : dès qu'une sortie, une commande ou un
+Ce fichier est posé à l'ouverture du chantier, avec des trous. **L'assistant de la
+première session le remplit**, et chacun le tient à jour ensuite : dès qu'une sortie, une commande ou un
 piège change, il change ici aussi.
 
 ## Où je suis
@@ -29,7 +29,7 @@ voient, puis y fait un commit unique à mon nom, sans l'historique du chantier.
 
 - répertoire finalisé : __A_REMPLIR : le chemin, ou « aucun pour l'instant »__
 - qui le voit : __A_REMPLIR : qui, et par quel chemin__
-- ce qui n'y va pas : ce que `.publier-exclude` écarte, dont `CLAUDE.md` et `NOTES.md`
+- ce qui n'y va pas : ce que `.publier-exclude` écarte, dont `AGENTS.md`, `CLAUDE.md` et `NOTES.md`
 
 `make publier MIRROR=1` supprime en plus là-bas ce qui a disparu ici. `make importer`
 rapatrie les modifications des tiers. **Jamais de commande git dans le finalisé** : ces
@@ -52,6 +52,7 @@ make publier    vers le répertoire finalisé
 |---|---|
 | `make` | compile `__DOC__.tex` en `__DOC__.pdf` : pdflatex, bibtex, makeindex si besoin, pdflatex deux fois |
 | `make sha` | commit courant, branche, modifications non commitées, commits non poussés |
+| `make qui` | qui travaille ici (Claude Code, Codex), les branches, qui a touché quoi en dernier |
 | `make deps` | refait `lib/`, à lancer si les styles manquent |
 | `make am` | applique le dernier patch venu du chat |
 | `make publier` / `make importer` | échanges avec le finalisé |

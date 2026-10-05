@@ -1,5 +1,5 @@
 # Makefile de chantier (Olivier Bournez / Claude). GNU make 3.81+.
-# Cibles : pdf (défaut), deps, sha, am, publier, importer, clean, distclean.
+# Cibles : pdf (défaut), deps, sha, qui, am, publier, importer, clean, distclean.
 
 MAIN ?= main
 NOM  := $(notdir $(CURDIR))
@@ -21,7 +21,7 @@ export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
 PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error -recorder
 
-.PHONY: all pdf deps full strip apxversion sha am publier importer clean distclean
+.PHONY: all pdf deps full strip apxversion sha qui am publier importer clean distclean
 
 all: pdf
 
@@ -91,7 +91,13 @@ sha:
 	@if [ -n "$$(git status --porcelain 2>/dev/null)" ]; then echo "Modifications non commitées :"; git status --short; else echo "Arbre propre."; fi
 	@n=$$(git rev-list --count @{u}..HEAD 2>/dev/null) && echo "Commits non poussés : $$n" || echo "Commits non poussés : ? (pas de branche distante)"
 
-# ---------- appliquer un patch venu du chat (auteur Claude-Code conservé) ----------
+# ---------- qui travaille ici, et où est la version la plus avancée ? ----------
+# Le chantier se travaille dans un seul répertoire, à tour de rôle entre assistants : qui a
+# été vu, quelles branches vivent, qui a touché quoi. Le script vit dans SHAREDDIR.
+qui:
+	@if [ -x $(SD)/SCRIPTS/qui.sh ]; then $(SD)/SCRIPTS/qui.sh; else echo "lib/ absent : make deps"; fi
+
+# ---------- appliquer un patch venu du chat (auteur conservé) ----------
 # Un patch venu du chat n'a pas les lignes « index <sha>..<sha> » exploitables : les blobs
 # d'origine n'existent que sur la machine, et --3way seul échoue alors sur « sha1 information
 # is lacking or useless » en laissant un .git/rebase-apply qui bloque la tentative suivante.
