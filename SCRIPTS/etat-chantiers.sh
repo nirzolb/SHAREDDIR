@@ -14,8 +14,9 @@
 # Est un chantier tout dépôt git trouvé sous DIR, jusqu'à trois niveaux, liens symboliques
 # compris ; on ne descend pas dans un dépôt. Un worktree est rattaché à son dépôt, comme poste.
 #
-# Vient de git : l'ouverture (premier commit), la dernière activité et son auteur (les commits
-# qui touchent la fiche ne comptent pas : tenir le registre n'est pas travailler), les
+# Vient de git : l'ouverture (premier commit), la dernière activité et son auteur (ne comptent
+# ni les commits qui touchent la fiche, ni ceux qu'une autre session a portés là et que le
+# cahier signale par « depuis ... » : tenir l'outillage n'est pas travailler), les
 # intervenants, la branche courante, ce qui n'est ni commité ni poussé, les branches non
 # fusionnées, les postes et les worktrees d'agents. Le finalisé vient de DEST dans Makefile.local.
 # Vient de la fiche CHANTIER.md du chantier, quand elle existe, ce que git ne sait pas :
@@ -85,9 +86,12 @@ depots "$RACINE" 0 | while IFS= read -r D; do
   BRANCHE=$(g rev-parse --abbrev-ref HEAD)
   OUVERT=$(g log --date=short --format='%at %ad' HEAD --branches --remotes | sort -n | sed -n 1p | cut -d' ' -f2)
   # L'activité : les commits de toutes les branches, du plus récent au plus ancien, sauf ceux
-  # qui touchent la fiche, car tenir le registre n'est pas travailler au chantier. Si tous la
-  # touchent (un chantier qui vient d'ouvrir), on les garde.
+  # qui touchent la fiche, car tenir le registre n'est pas travailler au chantier, et sauf
+  # ceux qu'une autre session a portés ici : leur entrée de cahier le dit, « (code, depuis
+  # SHAREDDIR) ». Si tous sont dans ce cas (un chantier qui vient d'ouvrir), on les garde.
   g log --format=%H HEAD --branches --remotes -- CHANTIER.md > "$TMP/fiches"
+  g log -60 --format=@%H -p --unified=0 HEAD --branches --remotes -- NOTES.md \
+    | awk '/^@[0-9a-f]+$/ { h = substr($0, 2); next } /^\+## .*\((code|codex), depuis / { print h }' >> "$TMP/fiches"
   g log --date=short --format='%H%x09%ct%x09%cd%x09%an' HEAD --branches --remotes > "$TMP/tous"
   awk -F'\t' -v fiches="$TMP/fiches" 'BEGIN { while ((getline h < fiches) > 0) f[h] = 1 } !($1 in f)' \
     "$TMP/tous" > "$TMP/activite"
