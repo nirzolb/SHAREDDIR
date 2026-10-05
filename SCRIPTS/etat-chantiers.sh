@@ -26,7 +26,8 @@
 #   - 2026-10-12 rouvert (révision demandée)
 #
 # « Parent : aucun » pour une racine. L'état est le premier mot de la dernière ligne du
-# journal (ouvert, clos, rouvert) ; sans fiche, le chantier est tenu pour ouvert.
+# journal (ouvert, clos, rouvert) ; sans fiche, le chantier est tenu pour ouvert. La fiche
+# est lue dans l'arbre de travail, à défaut dans la branche la plus récente qui en porte une.
 #
 # Le registre nomme des chantiers privés : il sort sous DIR, jamais dans SHAREDDIR, qui est public.
 set -euo pipefail
@@ -132,16 +133,27 @@ depots "$RACINE" 0 | while IFS= read -r D; do
     FINAL=$(tilde "$FINAL")
   fi
 
-  FICHE=0; PARENT=""; BREF=""; JOURNAL=""; EFICHE=""
-  if [ -f "$TOP/CHANTIER.md" ]; then
+  # La fiche : celle de l'arbre de travail, sinon celle de la branche la plus récente qui en
+  # porte une, pour qu'un changement de branche ne fasse pas perdre son parent au chantier.
+  FICHE=0; PARENT=""; BREF=""; JOURNAL=""; EFICHE=""; F=$TOP/CHANTIER.md
+  if [ ! -f "$F" ]; then
+    F=""
+    for ref in $(g for-each-ref --sort=-committerdate --format='%(refname)' refs/heads refs/remotes); do
+      if git -C "$TOP" cat-file -e "$ref:CHANTIER.md" 2>/dev/null; then
+        g show "$ref:CHANTIER.md" > "$TMP/fiche"; F=$TMP/fiche; break
+      fi
+    done
+  fi
+  if [ -n "$F" ]; then
     FICHE=1
-    PARENT=$(sed -n 's/^- Parent[[:space:]]*:[[:space:]]*//p' "$TOP/CHANTIER.md" | sed -n 1p | tr -d '`' | sed 's/[[:space:]]*$//')
+    PARENT=$(sed -n 's/^- Parent[[:space:]]*:[[:space:]]*//p' "$F" | sed -n 1p | tr -d '`' | sed 's/[[:space:]]*$//')
     case "$PARENT" in aucun|Aucun|aucun.) PARENT="" ;; esac
-    BREF=$(sed -n 's/^- En bref[[:space:]]*:[[:space:]]*//p' "$TOP/CHANTIER.md" | sed -n 1p)
+    BREF=$(sed -n 's/^- En bref[[:space:]]*:[[:space:]]*//p' "$F" | sed -n 1p)
+    case "$BREF" in __A_REMPLIR*) BREF="" ;; esac      # le trou du squelette, pas encore rempli
     JOURNAL=$(awk '/^## Journal/ { j = 1; next } /^## / { j = 0 }
-      j && /^- [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] / { sub(/^- /, ""); printf "%s%s", (n++ ? " ; " : ""), $0 }' "$TOP/CHANTIER.md")
+      j && /^- [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] / { sub(/^- /, ""); printf "%s%s", (n++ ? " ; " : ""), $0 }' "$F")
     EFICHE=$(awk '/^## Journal/ { j = 1; next } /^## / { j = 0 }
-      j && /^- [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] / { e = $3 } END { print e }' "$TOP/CHANTIER.md")
+      j && /^- [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] / { e = $3 } END { print e }' "$F")
   fi
 
   # Une ligne par chantier, champs séparés par des tabulations ; l'époque en dernier, pour le tri.
