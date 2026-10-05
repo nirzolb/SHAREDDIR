@@ -34,18 +34,25 @@ prime sur les instructions générales.
 **conventions** y arrive aussitôt. Mais le **squelette** est recopié à l'ouverture du
 chantier, pas lié : corriger `SQUELETTE/Makefile` ou `SQUELETTE/.claude/` ne change rien
 aux chantiers déjà ouverts. Il faut leur porter la correction, chantier par chantier, et
-dire lesquels dans l'entrée de passation.
+dire lesquels dans l'entrée de passation. Les scripts de `SCRIPTS/`, eux, sont atteints par
+le lien : ce qui peut vivre là plutôt que dans le squelette n'a pas à être porté.
 
-Les chantiers ouverts à ce jour : `00-CHANTIERS-CARE/CARE-CHANTIER-INF412`,
-`CARE-CHANTIER-STACS2027-PRECISION`, `CARE-CHANTIER-PAGE-WEB`,
-`CARE-ET-PROGRAMMATION/CARE-WORKFLOW-OMNIFOCUS-MAIL-DT-DIR`,
-`SOUS-CHANTIERS-COMPREHENSION/CARE-CHANTIER-COURS-POUR-MOI-...`, et le dépôt du CV,
-`/Users/bournez/CURRICULUM-VITAE=`, qui suit les usages sans venir du squelette.
+La liste des chantiers ouverts n'est plus tenue ici, elle vieillissait : c'est le registre
+qui la donne (`SCRIPTS/etat-chantiers.sh`, ou `/registre`), hors de ce dépôt public. Quatre
+dépôts ne se portent pas mécaniquement, leurs règles étant trop particulières : INF412,
+PAGE-WEB, WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, et le dépôt du CV, `/Users/bournez/CURRICULUM-VITAE=`,
+qui suit les usages sans venir du squelette.
+
+Un portage se fait sur l'ordre d'Olivier, chantier au repos, répété d'abord sur une copie
+jetable quand il touche aux règles. Il laisse dans le cahier du chantier une entrée
+`(code, depuis SHAREDDIR)` : le registre la reconnaît et ne compte pas ce commit comme une
+activité du chantier. [5 octobre 2026]
 
 ## Publier
 
 `./do-public_raw-update.command` : `git add -A`, commit, push. Le dépôt étant public, on
-relit le diff avant. Ce script faisait `git add * */*`, qui laissait de côté les fichiers
+relit le diff avant. Tant que `.codex/` et `AGENTS.md`, à la racine, ne sont pas suivis, ce
+script les emporterait : pousser alors par `git add` explicite puis `git push`. [5 octobre 2026] Ce script faisait `git add * */*`, qui laissait de côté les fichiers
 cachés, donc `.claude/` et `.gitignore` ; corrigé le 25 septembre 2026.
 
 ## Git
@@ -59,5 +66,5 @@ cachés, donc `.claude/` et `.gitignore` ; corrigé le 25 septembre 2026.
 ## Début et fin de session
 
 Un hook donne `make sha` et la fin de `NOTES.md` au démarrage. `/reprise` pour un résumé,
-`/passation` pour clore. `make sha` et `make am` sont les seules cibles : ce dépôt ne se
-construit pas.
+`/passation` pour clore, `/registre` pour régénérer le registre des chantiers et le recopier
+dans Notion. `make sha` et `make am` sont les seules cibles : ce dépôt ne se construit pas.

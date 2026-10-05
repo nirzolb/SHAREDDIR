@@ -152,3 +152,56 @@ Rien d'autre que je sache : ni `SCRIPTS/`, ni le reste du squelette.
 Codex : Olivier les laisse non suivis, ne pas les committer ni les ignorer.
 
 Base : c887fcc
+
+## 2026-10-05 15h42 (code, SHAREDDIR)
+
+**Fait.** Deux chantiers d'outillage, menés avec Olivier, tout est poussé.
+Le registre des chantiers : `SCRIPTS/etat-chantiers.sh` écrit `CHANTIERS.md` et
+`CHANTIERS.json` hors de ce dépôt, à partir de git (ouverture, dernière activité et son
+auteur, ce qui n'est ni commité ni poussé, branches, postes, finalisé) et de la fiche
+`CHANTIER.md` de chaque chantier (parent, résumé, journal ouvert, clos, rouvert). La fiche
+est dans le squelette, `nouveau-chantier.sh` y écrit le parent (`--parent`,
+`--sans-parent`), et les treize dépôts en ont une. Ne comptent comme activité ni les
+commits de fiche, ni ceux portés d'une autre session. La base Notion « Chantiers » en est
+la vitrine, recopiée par `/registre`.
+Le travail à plusieurs assistants : `qui.sh` (qui a été vu, branches, qui a touché quoi,
+avertissement au démarrage), `debut-session.sh`, `nouveau-poste.sh` ; dans le squelette,
+les règles passent dans `AGENTS.md`, que `CLAUDE.md` importe, `.codex/` est suivi et Codex
+y signe Codex, les hooks des deux assistants sont des relais, `make qui` s'ajoute.
+`\signeCARE` signe un bloc `rechercheCARE`. `CLAUDE-PERSO.md` s'adresse aux deux
+assistants, et `~/.codex/AGENTS.md` est devenu un lien vers lui.
+Deux corrections : `rechercheCARE` est défini dans `macros-care.tex` (dans
+`macros-moins-propres.tex`, son bandeau faisait refuser `make publier` à tout document qui
+le charge, modèle nu compris) ; `make publier` et le hook pre-push refusent aussi le mot
+Codex.
+Portages, sur l'ordre d'Olivier, chantiers au repos, une entrée « depuis SHAREDDIR » dans
+chaque cahier : la fiche dans les treize dépôts ; le Makefile (`make qui`, mot Codex,
+`make am` là où il manquait, soit `essai` et WORKFLOW-OMNIFOCUS-MAIL-DT-DIR) dans neuf ; les
+règles communes dans les huit chantiers issus du squelette, `make` vérifié dans chacun, ce
+qu'ils avaient de propre repris mot pour mot. Essai d'Olivier avec Codex dans le chantier
+pilote : message de démarrage reçu, avertissement vu, commits signés Codex. Le second
+répertoire que Codex y occupait est retiré.
+Hors dépôt : la signature de Codex corrigée dans ses réglages non suivis, ici compris ; les
+fichiers remplacés sont copiés dans `~/00-CHANTIERS-CARE/COPIES-AVANT-AGENTS-COMMUN-20261005`.
+`CLAUDE.md` : la liste des chantiers, qui n'en nommait que cinq, renvoie au registre.
+
+**Décidé (Olivier).** Un chantier, un dépôt, un seul répertoire, à tour de rôle ; le
+simultané seulement sur son ordre, dans un poste temporaire. `main` s'intègre par lui, ou
+sur son ordre. Une seule source de règles par chantier, `AGENTS.md`. `recherche` reste à
+lui, `rechercheCARE` est à tous les assistants. Le registre est engendré, Notion n'en est
+que la vitrine. SHAREDDIR, le CV et `essai` y figurent. Un seul fichier personnel pour les
+deux assistants.
+
+**À faire.** Règles communes non portées : INF412, PAGE-WEB, WORKFLOW-OMNIFOCUS-MAIL-DT-DIR
+et le CV, chacun dans une session à lui, et SHAREDDIR lui-même. Pour que les hooks déjà
+installés dans les finalisés refusent Codex : relancer `hooks/install.sh` ; un chantier a
+gardé un hook plus ancien, non touché. Les sessions ouvertes avant le portage ont encore
+l'ancien `CLAUDE.md` en mémoire. Trois chantiers ont leur version à jour hors de `main`.
+
+**Questions pour Olivier.** Le crochet que Codex écrit après `\begin{rechercheCARE}`
+s'imprime tel quel : en faire un vrai titre ? À quel rythme recopier le registre dans
+Notion : à la demande, à chaque passation, ou chaque matin ? `.codex/` et `AGENTS.md`, à la
+racine d'ici, sont encore la copie de Codex, non suivie : convertir SHAREDDIR comme les
+chantiers ?
+
+Base : 27fc83d
