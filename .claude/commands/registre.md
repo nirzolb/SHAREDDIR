@@ -26,8 +26,14 @@ Mise à jour du registre des chantiers et de sa vitrine Notion. Consigne éventu
    Un champ vide dans le JSON vide la colonne.
 4. Une ligne de la base dont le chantier n'est plus dans le JSON n'est pas supprimée :
    signale-la à Olivier.
-5. Mets à jour la description de la base : « Dernière recopie : relevé du … sur … »,
-   d'après `engendre` et `machine`.
+5. Réécris la description de la base en entier, en un seul appel, avec le texte ci-dessous
+   (une seule ligne), où `engendre` et `machine` du JSON prennent la place de `<engendre>`
+   et de `<machine>`. Le connecteur ne permet pas de relire la description : ne cherche
+   l'ancien texte nulle part, ni dans Notion ni dans d'anciennes conversations.
+
+   ```text
+   Vitrine du registre des chantiers. Ne rien corriger ici : la base est recopiée depuis ~/00-CHANTIERS-CARE/CHANTIERS.json, qu'engendre SHAREDDIR/SCRIPTS/etat-chantiers.sh à partir de git et des fiches CHANTIER.md. Ce qui est faux se corrige dans la fiche du chantier. Dernière recopie : relevé du <engendre> sur <machine>.
+   ```
 6. Termine par ce qui a changé depuis la recopie précédente, en trois lignes au plus :
    chantiers nouveaux, états changés, ce qui est « à voir ».
 
