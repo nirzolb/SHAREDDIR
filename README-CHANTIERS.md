@@ -47,6 +47,7 @@ make && claude
 sa dernière activité et qui l'a faite, ce qui n'est ni commité ni poussé, les branches en
 attente, le finalisé. Les chantiers nés d'un autre sont rangés sous lui. `--fetch` pour voir
 ce qui a été poussé depuis une autre machine.
+`CHANTIERS.json`, à côté, porte les mêmes données pour qui les recopie ailleurs.
 
 Ce fichier est engendré, on ne le modifie pas. Ce que git ne sait pas se corrige dans la
 fiche `CHANTIER.md` du chantier : le parent, un résumé en une ligne, et un journal d'une

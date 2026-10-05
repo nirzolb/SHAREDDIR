@@ -4,7 +4,9 @@
 #   etat-chantiers.sh [--racine DIR] [--sortie FICHIER] [--fetch] [--sommeil JOURS]
 #
 #   --racine DIR     répertoire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
-#   --sortie FICHIER où écrire le registre (défaut : DIR/CHANTIERS.md ; - pour la sortie standard)
+#   --sortie FICHIER où écrire le registre (défaut : DIR/CHANTIERS.md ; - pour la sortie standard).
+#                    À côté, le même nom en .json porte les mêmes données, pour qui les recopie
+#                    ailleurs sans avoir à relire le Markdown (la base Notion, par exemple)
 #   --fetch          git fetch dans chaque dépôt avant de lire, pour voir ce qui a été poussé
 #                    depuis une autre machine ; sans cette option le script ne modifie aucun dépôt
 #   --sommeil JOURS  sans commit depuis JOURS jours, un chantier est dit en sommeil (défaut : 21)
@@ -177,6 +179,18 @@ cat > "$TMP/rendu.awk" <<'AWK'
 BEGIN { FS = "\t" }
 function court(n) { sub(/^CARE-CHANTIER-/, "", n); return n }
 function pl(k) { return (k > 1 ? "s" : "") }
+# Une chaîne JSON : seuls la barre oblique inverse et le guillemet sont à protéger, les
+# champs n'ont ni tabulation ni saut de ligne.
+function js(s,   r, i, c) {
+  r = ""
+  for (i = 1; i <= length(s); i++) {
+    c = substr(s, i, 1)
+    if (c == "\\") r = r "\\\\"
+    else if (c == "\"") r = r "\\\""
+    else r = r c
+  }
+  return "\"" r "\""
+}
 function ajoute(s, t) { return (s == "" ? t : s " ; " t) }
 function etat(i) {
   if (efiche[i] ~ /^clos/) return "clos"
@@ -296,18 +310,39 @@ END {
     if (npostes[i] > 0) printf "- Postes en plus : %s\n", postes[i]
     if (nagents[i] > 0) printf "- Worktrees d'agents restés dans le dépôt : %d\n", nagents[i]
   }
+
+  if (json != "") {
+    printf "{\n  \"engendre\": %s,\n  \"machine\": %s,\n  \"chantiers\": [\n", js(quand), js(machine) > json
+    for (k = 1; k <= m; k++) {
+      i = ordre[k]
+      printf "    {\"nom\": %s, \"ordre\": %d, \"profondeur\": %d, \"parent\": %s, \"etat\": %s, \"en_bref\": %s, ", \
+        js(nom[i]), k, prof[k], js(parent[i]), js(etat(i)), js(bref[i]) > json
+      printf "\"ouvert\": %s, \"derniere_activite\": %s, \"par\": %s, \"intervenants\": %s, \"branche\": %s, ", \
+        js(ouvert[i]), js(date[i]), js(par[i]), js(interv[i]), js(branche[i]) > json
+      printf "\"fichiers_modifies\": %d, \"non_suivis\": %d, \"commits_non_pousses\": %d, \"branches_non_fusionnees\": %d, ", \
+        nmod[i], nns[i], nonp[i], nnf[i] > json
+      printf "\"branches_worktree\": %d, \"postes\": %d, \"worktrees_agents\": %d, \"finalise\": %s, \"depot_distant\": %s, ", \
+        norch[i], npostes[i], nagents[i], js(final[i]), js(url[i]) > json
+      printf "\"chemin\": %s, \"fiche\": %s, \"journal\": %s, \"a_voir\": %s}%s\n", \
+        js(chemin[i]), (fiche[i] ? "true" : "false"), js(journal[i]), js(avoir(i)), (k < m ? "," : "") > json
+    }
+    printf "  ]\n}\n" > json
+    close(json)
+  }
 }
 AWK
 
 N=$(awk 'END { print NR }' "$TMP/lignes")
 if [ "$N" = 0 ]; then echo "Aucun dépôt git sous $RACINE"; exit 1; fi
+JSON=""; if [ "$SORTIE" != - ]; then JSON=$TMP/registre.json; fi
 sort -t "$(printf '\t')" -k25,25nr "$TMP/lignes" \
   | awk -v maintenant="$(date +%s)" -v sommeil="$SOMMEIL" -v quand="$(date '+%Y-%m-%d à %Hh%M')" \
-        -v machine="$(hostname -s)" -f "$TMP/rendu.awk" > "$TMP/registre"
+        -v machine="$(hostname -s)" -v json="$JSON" -f "$TMP/rendu.awk" > "$TMP/registre"
 
 if [ "$SORTIE" = - ]; then
   cat "$TMP/registre"
 else
   mv "$TMP/registre" "$SORTIE"
-  echo "Registre écrit : $SORTIE ($N chantiers)"
+  mv "$JSON" "${SORTIE%.md}.json"
+  echo "Registre écrit : $SORTIE ($N chantiers), et ${SORTIE%.md}.json"
 fi
