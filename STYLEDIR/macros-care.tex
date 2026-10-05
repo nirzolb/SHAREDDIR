@@ -24,6 +24,17 @@ attach boxed title to top center={yshift=-2mm},
 \ifmodeDIFFUSIONFINALE{#2}
 }
 
+%% \signeCARE[date]{Nom} : la signature d'un assistant au bas de ce qu'il vient d'écrire
+%% dans un bloc rechercheCARE, l'environnement que se partagent les assistants (Claude,
+%% Codex). Dans le PDF, elle dit qui a écrit quoi. Qui répond à un bloc écrit dessous et
+%% signe à son tour, sans réécrire ce qui précède. Poussée à droite, ou à la ligne suivante
+%% faute de place ; disparaît en mode DIFFUSIONFINALE, comme le bloc qui la porte.
+\newcommand\signeCARE[2][]{%
+\ifnotmodeDIFFUSIONFINALE{%
+{\unskip\nobreak\hfil\penalty50\hskip1em\hbox{}\nobreak\hfil
+{\footnotesize\sffamily\bfseries [#2\if\relax\detokenize{#1}\relax\else, #1\fi]}%
+\parfillskip=0pt \finalhyphendemerits=0 \par}}}
+
 %% \ARETENIR : la même boîte sous un nom neutre, titre par défaut « À retenir ». C'est le
 %% nom employé dans INF412 (décision d'Olivier, 27 septembre 2026), dont les fragments
 %% portent un \providecommand de repli pour les tiers, qui n'ont pas ce fichier.
