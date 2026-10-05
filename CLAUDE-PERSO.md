@@ -1,7 +1,9 @@
-# Instructions personnelles pour Claude Code (Olivier Bournez)
+# Instructions personnelles pour mes assistants, Claude Code et Codex (Olivier Bournez)
 
-Ce fichier est lié depuis ~/.claude/CLAUDE.md sur mes machines. Il est public dans
-SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
+Ce fichier est lié depuis ~/.claude/CLAUDE.md pour Claude Code et depuis ~/.codex/AGENTS.md
+pour Codex, sur mes machines : un seul texte pour les deux, plus de copie qui diverge.
+Il est public dans SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
+[5 octobre 2026]
 
 ## Qui et comment
 - Je suis Olivier Bournez (LIX, CNRS, École polytechnique). Me répondre en français, sauf
@@ -18,26 +20,29 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   https://github.com/nirzolb/SHAREDDIR. Styles LaTeX, biblio, modèles, squelette de
   chantier. Depuis un chantier, il est en lecture seule (lib/SHAREDDIR) ; une correction de
   style se fait ici, puis se pousse.
-- Chantiers : /Users/bournez/00-CHANTIERS-CARE/<nom>, un dépôt privé chacun, avec son
-  CLAUDE.md qui prime sur ce fichier.
+- Chantiers : /Users/bournez/00-CHANTIERS-CARE/<nom>, un dépôt privé chacun, avec ses
+  règles, AGENTS.md ou CLAUDE.md, qui priment sur ce fichier.
 
-## En chantier (détails dans le CLAUDE.md du chantier)
-- Mes commits restent à mon nom ; les tiens sont signés Claude-Code, ne commite que ce que
-  tu as modifié.
-- Début de session : /reprise. Fin : /passation. Citer le commit courant (make sha) dans
-  tout échange.
-- Tu n'es pas seul dans un chantier : Codex y travaille aussi. Un chantier, un dépôt, un
+## En chantier (détails dans les règles du chantier)
+- Mes commits restent à mon nom ; les tiens sont signés de ton nom d'intervenant,
+  Claude-Code pour Claude Code, Codex pour Codex. Ne commite que ce que tu as modifié.
+- Début et fin de session : /reprise et /passation dans Claude Code, les mêmes gestes à la
+  main ailleurs, tels que les règles du chantier les décrivent. Citer le commit courant
+  (make sha) dans tout échange.
+- Tu n'es pas seul dans un chantier : Claude Code et Codex y travaillent tous les deux. Un chantier, un dépôt, un
   seul répertoire, à tour de rôle. Si le hook de démarrage ou `make qui` dit qu'un autre
   est là, ou que la version la plus avancée d'un fichier est ailleurs que dans l'arbre de
   travail, me le dire avant de modifier quoi que ce soit. Travail simultané seulement sur
-  mon ordre, dans un poste temporaire (nouveau-poste.sh). Quand le CLAUDE.md du chantier
-  importe un AGENTS.md, les règles communes sont là, et une règle nouvelle s'y écrit, pas
-  dans CLAUDE.md. Un AGENTS.md que CLAUDE.md n'importe pas est une ancienne copie faite
-  pour Codex : ne pas s'y fier, CLAUDE.md fait foi. [5 octobre 2026]
+  mon ordre, dans un poste temporaire (nouveau-poste.sh). Les règles d'un chantier sont
+  dans son AGENTS.md quand son CLAUDE.md l'importe : une règle nouvelle s'y écrit alors,
+  pas dans CLAUDE.md. Dans un chantier pas encore converti, où CLAUDE.md n'importe pas
+  AGENTS.md, c'est CLAUDE.md qui fait foi pour tous les assistants, et l'AGENTS.md qui s'y
+  trouve est une vieille copie à ne pas suivre. [5 octobre 2026]
 - Jamais de git dans un répertoire finalisé : make publier et make importer seulement.
-- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE :
-  make publier refuse (macros CARE, les trois mots), le hook pre-push refuse les commits
-  qui en parlent, le message de commit est neutre. [27 septembre 2026]
+- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude, de Codex ni de
+  CARE : make publier refuse (macros CARE, les quatre mots), le hook pre-push refuse les
+  commits qui en parlent, le message de commit est neutre. [27 septembre 2026 ; Codex
+  ajouté le 5 octobre]
 - Le document principal d'un chantier porte le nom du chantier sans le préfixe
   CARE-CHANTIER- (CARE-CHANTIER-Raisonner-Sur-ODEs donne Raisonner-Sur-ODEs.tex et .pdf),
   jamais main : des PDF tous appelés main.pdf ne se distinguent pas. nouveau-chantier.sh
@@ -45,10 +50,10 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 
 ## LaTeX
 - L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
-  occurrences). Ton équivalent est rechercheCARE, défini dans macros-moins-propres.tex.
-  Vaut aussi pour les brouillons. Les autres assistants s'en servent aussi : signer ce que
-  tu y écris par \signeCARE{Claude}, et répondre sous le texte d'un autre sans le
-  réécrire. [5 octobre 2026]
+  occurrences). Ton équivalent est rechercheCARE, défini dans macros-care.tex.
+  Vaut aussi pour les brouillons. Tous mes assistants s'en servent : signer ce que tu y
+  écris de ton nom, \signeCARE{Claude} ou \signeCARE{Codex}, et répondre sous le texte
+  d'un autre sans le réécrire. [5 octobre 2026]
 - Conventions : /Users/bournez/public_raw/SHAREDDIR/CONVENTIONS-LATEX.md (importées
   automatiquement dans un chantier via lib/SHAREDDIR).
 - Styles personnels installés dans TEXMFHOME, soit ~/Library/texmf/tex/latex/ : le lien

@@ -9,8 +9,8 @@ prime sur les instructions générales.
 - **Ce dépôt est public**, https://github.com/nirzolb/SHAREDDIR. Rien de personnel n'y
   entre au-delà de chemins et de conventions, et un diff se relit avant d'être poussé.
 - **Il est la source des chantiers.** Ce qui change ici change la façon dont les chantiers
-  futurs seront faits, et parfois le comportement de Claude partout, puisque
-  `~/.claude/CLAUDE.md` est un lien vers `CLAUDE-PERSO.md`.
+  futurs seront faits, et parfois le comportement de Claude et de Codex partout, puisque
+  `~/.claude/CLAUDE.md` et `~/.codex/AGENTS.md` sont des liens vers `CLAUDE-PERSO.md`.
 
 ## Ce que contient le dépôt
 
@@ -25,7 +25,7 @@ prime sur les instructions générales.
 | `LATEX-EXEMPLES/` | les modèles de document que le script recopie |
 | `BIBDESKDIR/` | la bibliographie de référence, dont `@@reference-biblio.bib` |
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |
-| `CLAUDE-PERSO.md` | les instructions personnelles d'Olivier, lues partout par le lien `~/.claude/CLAUDE.md` |
+| `CLAUDE-PERSO.md` | les instructions personnelles d'Olivier pour ses assistants, lues partout par les liens `~/.claude/CLAUDE.md` (Claude Code) et `~/.codex/AGENTS.md` (Codex) |
 | `README-CHANTIERS.md` | l'aide-mémoire d'ensemble |
 
 ## Le squelette ne se propage pas tout seul
