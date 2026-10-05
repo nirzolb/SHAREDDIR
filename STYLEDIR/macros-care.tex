@@ -24,6 +24,17 @@ attach boxed title to top center={yshift=-2mm},
 \ifmodeDIFFUSIONFINALE{#2}
 }
 
+%% rechercheCARE : l'équivalent, pour les assistants, de l'environnement recherche, qui reste
+%% réservé à Olivier. Bleu et jaune, bandeau explicite. Défini ici et non dans
+%% macros-moins-propres.tex, qui part chez les tiers : son bandeau y faisait refuser make
+%% publier. Retiré en diffusion finale par l'en-tête des cours (\excludeversion).
+\ifnotmodeDIFFUSIONFINALE{
+\newenvironment{rechercheCARE}{}{}
+\tcolorboxenvironment{rechercheCARE}{colback=yellow!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!60!black,enhanced,
+attach boxed title to top center={yshift=-2mm},
+  title={RECHERCHE (CARE)}}
+}
+
 %% \signeCARE[date]{Nom} : la signature d'un assistant au bas de ce qu'il vient d'écrire
 %% dans un bloc rechercheCARE, l'environnement que se partagent les assistants (Claude,
 %% Codex). Dans le PDF, elle dit qui a écrit quoi. Qui répond à un bloc écrit dessous et

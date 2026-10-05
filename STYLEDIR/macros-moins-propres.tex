@@ -580,14 +580,9 @@ attach boxed title to top center={yshift=-2mm},
   title={FAIRE RECHERCHE ICI}}
 }
 
-% rechercheCARE : l'equivalent de recherche pour Claude (CARE), recherche
-% restant reserve a Olivier. Bleu et jaune, titre explicite.
-\ifnotmodeDIFFUSIONFINALE{
-\newenvironment{rechercheCARE}{}{}
-\tcolorboxenvironment{rechercheCARE}{colback=yellow!10!white, colframe=blue!60!black,fonttitle=\bfseries, colbacktitle=blue!60!black,enhanced,
-attach boxed title to top center={yshift=-2mm},
-  title={RECHERCHE (CARE)}}
-}
+% rechercheCARE, l'environnement des assistants, est defini dans macros-care.tex, qui ne
+% part jamais chez les tiers : sa definition, ici, faisait refuser make publier a tout
+% document qui charge ce fichier. Seul son retrait en diffusion finale reste ici, plus haut.
 
 
 
