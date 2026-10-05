@@ -1,70 +1,12 @@
 # SHAREDDIR
 
-Le fonds commun d'Olivier Bournez : styles LaTeX, bibliographie, modèles, conventions,
-et le squelette dont sortent les chantiers. Travail à deux, Olivier et Claude. Ce fichier
-prime sur les instructions générales.
+Les règles de ce dépôt sont dans `AGENTS.md`, importé ci-dessous : elles valent pour tous
+les assistants d'Olivier. Ce fichier n'ajoute que ce qui est propre à Claude Code. Une règle
+nouvelle s'écrit dans `AGENTS.md`, pas ici, sinon les autres assistants l'ignorent.
 
-## Deux choses à savoir avant de toucher à quoi que ce soit
+@AGENTS.md
 
-- **Ce dépôt est public**, https://github.com/nirzolb/SHAREDDIR. Rien de personnel n'y
-  entre au-delà de chemins et de conventions, et un diff se relit avant d'être poussé.
-- **Il est la source des chantiers.** Ce qui change ici change la façon dont les chantiers
-  futurs seront faits, et parfois le comportement de Claude et de Codex partout, puisque
-  `~/.claude/CLAUDE.md` et `~/.codex/AGENTS.md` sont des liens vers `CLAUDE-PERSO.md`.
-
-## Ce que contient le dépôt
-
-| | |
-|---|---|
-| `STYLEDIR/` | les styles et macros. `~/lib/LaTeX/Perso` y renvoie par des liens : une correction arrive dans le CV et les exposés sans recopie |
-| `SQUELETTE/` | le modèle de chantier : AGENTS.md (les règles, communes aux assistants), CLAUDE.md qui l'importe, NOTES.md, Makefile, hooks, `.claude/`, `.codex/` |
-| `SCRIPTS/nouveau-chantier.sh` | ouvre un chantier à partir du squelette |
-| `SCRIPTS/etat-chantiers.sh` | dresse le registre de tous les chantiers à partir de git et de leur fiche `CHANTIER.md` ; il l'écrit hors de ce dépôt |
-| `SCRIPTS/qui.sh`, `debut-session.sh` | qui travaille dans un chantier, où est la version la plus avancée ; appelés par `make qui` et par les hooks de démarrage. Les chantiers les atteignent par `lib/SHAREDDIR` : une correction y arrive sans portage |
-| `SCRIPTS/nouveau-poste.sh` | ouvre et retire un poste temporaire, pour le cas rare où deux assistants travaillent en même temps au même chantier |
-| `LATEX-EXEMPLES/` | les modèles de document que le script recopie |
-| `BIBDESKDIR/` | la bibliographie de référence, dont `@@reference-biblio.bib` |
-| `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |
-| `CLAUDE-PERSO.md` | les instructions personnelles d'Olivier pour ses assistants, lues partout par les liens `~/.claude/CLAUDE.md` (Claude Code) et `~/.codex/AGENTS.md` (Codex) |
-| `README-CHANTIERS.md` | l'aide-mémoire d'ensemble |
-
-## Le squelette ne se propage pas tout seul
-
-`lib/SHAREDDIR` d'un chantier est un lien : une correction de **style** ou de
-**conventions** y arrive aussitôt. Mais le **squelette** est recopié à l'ouverture du
-chantier, pas lié : corriger `SQUELETTE/Makefile` ou `SQUELETTE/.claude/` ne change rien
-aux chantiers déjà ouverts. Il faut leur porter la correction, chantier par chantier, et
-dire lesquels dans l'entrée de passation. Les scripts de `SCRIPTS/`, eux, sont atteints par
-le lien : ce qui peut vivre là plutôt que dans le squelette n'a pas à être porté.
-
-La liste des chantiers ouverts n'est plus tenue ici, elle vieillissait : c'est le registre
-qui la donne (`SCRIPTS/etat-chantiers.sh`, ou `/registre`), hors de ce dépôt public. Quatre
-dépôts ne se portent pas mécaniquement, leurs règles étant trop particulières : INF412,
-PAGE-WEB, WORKFLOW-OMNIFOCUS-MAIL-DT-DIR, et le dépôt du CV, `/Users/bournez/CURRICULUM-VITAE=`,
-qui suit les usages sans venir du squelette.
-
-Un portage se fait sur l'ordre d'Olivier, chantier au repos, répété d'abord sur une copie
-jetable quand il touche aux règles. Il laisse dans le cahier du chantier une entrée
-`(code, depuis SHAREDDIR)` : le registre la reconnaît et ne compte pas ce commit comme une
-activité du chantier. [5 octobre 2026]
-
-## Publier
-
-`./do-public_raw-update.command` : `git add -A`, commit, push. Le dépôt étant public, on
-relit le diff avant. Tant que `.codex/` et `AGENTS.md`, à la racine, ne sont pas suivis, ce
-script les emporterait : pousser alors par `git add` explicite puis `git push`. [5 octobre 2026] Ce script faisait `git add * */*`, qui laissait de côté les fichiers
-cachés, donc `.claude/` et `.gitignore` ; corrigé le 25 septembre 2026.
-
-## Git
-
-- Tes commits sont signés `Claude (CARE)`, ceux d'Olivier restent à son nom. Quand il te
-  demande de commiter une modification à lui, garde-le comme auteur (`--author`) et ne
-  prends que la place de celui qui a passé la commande.
-- Ne commite que ce que tu as modifié. Petits commits, messages en français.
-- Jamais de force-push, de rebase, de `reset --hard`, ni de réécriture d'historique.
-
-## Début et fin de session
-
-Un hook donne `make sha` et la fin de `NOTES.md` au démarrage. `/reprise` pour un résumé,
-`/passation` pour clore, `/registre` pour régénérer le registre des chantiers et le recopier
-dans Notion. `make sha` et `make am` sont les seules cibles : ce dépôt ne se construit pas.
+## Propre à Claude Code
+- Ton nom d'intervenant est `Claude (CARE)` : `.claude/settings.json` en signe tes commits,
+  et les hooks de `.claude/hooks/` notent ta présence au démarrage et à chaque message.
+- `/reprise`, `/passation` et `/registre` sont dans `.claude/commands/`.

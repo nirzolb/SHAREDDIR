@@ -1,7 +1,7 @@
 # Ce dépôt, en une page
 
 Pour Olivier, quand il arrive ici et ne se souvient plus. Les règles de travail détaillées
-sont dans `CLAUDE.md`, le récit des sessions dans `NOTES.md`, la logique d'ensemble des
+sont dans `AGENTS.md`, communes à Claude Code et à Codex, le récit des sessions dans `NOTES.md`, la logique d'ensemble des
 chantiers dans `README-CHANTIERS.md`.
 
 ## Où je suis

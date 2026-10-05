@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/bournez/public_raw/SHAREDDIR/.codex/hooks/session-start.sh'",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/bournez/public_raw/SHAREDDIR/.codex/hooks/vu.sh'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

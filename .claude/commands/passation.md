@@ -10,7 +10,7 @@ Fais, dans l'ordre :
 3. Ajoute à la fin de NOTES.md une entrée `## AAAA-MM-JJ HHhMM` avec quatre rubriques :
    Fait, Décidé, À faire, Questions pour Olivier. Court et factuel.
    Termine par `Base : <sha court>`.
-4. Ce qui est une règle durable va dans CLAUDE.md, pas dans NOTES.md.
+4. Ce qui est une règle durable va dans AGENTS.md, pas dans NOTES.md.
 5. Commite uniquement ce que tu as modifié (git add explicite). Les modifications
    d'Olivier restent les siennes : ne pas les emporter, le signaler dans l'entrée.
 6. `git push`. Le dépôt est public : relis le diff avant.
