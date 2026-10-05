@@ -134,11 +134,11 @@ am:
 # a lu sous lib/ (classe, logos, macros, biblio, style bibtex), d'après $(MAIN).fls
 # (pdflatex -recorder) et $(MAIN).blg, y est recopié à plat, réécrasé à chaque publication,
 # et jamais réimporté (make importer l'exclut d'après la même liste).
-# Règle (Olivier, 27 septembre 2026) : rien de ce qui part ne parle du chantier, de Claude
-# ni de CARE. L'arbre à publier est d'abord assemblé dans un répertoire temporaire : les
+# Règle (Olivier, 27 septembre 2026 ; Codex ajouté le 5 octobre) : rien de ce qui part ne parle
+# du chantier, de Claude, de Codex ni de CARE. L'arbre à publier est d'abord assemblé dans un répertoire temporaire : les
 # sources, puis les copies de lib/ sans les fichiers dont le nom contient « care »
 # (macros-care.tex porte \IMPORTANTCARE) et sans leurs lignes de commentaire fautives.
-# Une macro ou un environnement CARE, ou l'un des trois mots, dans cet arbre, et make
+# Une macro ou un environnement CARE, ou l'un des quatre mots, dans cet arbre, et make
 # publier REFUSE sans rien toucher, en listant les lignes. Le message de commit est neutre,
 # et le hook pre-push (hooks/) refuse les commits dont l'auteur ou le message en parle.
 # Seuls les fichiers copiés sont indexés dans DEST (plus les suppressions du miroir) : ce qui
@@ -156,11 +156,11 @@ publier: pdf
 	copies=""; for f in $$($(DEPS_LIB)); do b=$$(basename "$$f"); \
 	  case "$$(printf '%s' "$$b" | tr '[:upper:]' '[:lower:]')" in *care*) continue;; esac; copies="$$copies $$b"; \
 	  case "$$b" in *.tex|*.sty|*.cls|*.clo|*.def|*.bst) \
-	    awk '!((/^[[:space:]]*%/ && tolower($$0) ~ /claude|chantier|(^|[^a-z])care([^a-z]|$$)/) || tolower($$0) ~ /\\(input|inputiffileexists)\{[^}]*care/)' "$$f" > "$$st/$$b";; \
+	    awk '!((/^[[:space:]]*%/ && tolower($$0) ~ /claude|codex|chantier|(^|[^a-z])care([^a-z]|$$)/) || tolower($$0) ~ /\\(input|inputiffileexists)\{[^}]*care/)' "$$f" > "$$st/$$b";; \
 	  *) cp -p "$$f" "$$st/$$b";; esac; done; \
-	t=$$(cd "$$st" && { grep -rIn -i --exclude-dir=.git --exclude='*.bib' 'claude' .; grep -rIn -i --exclude-dir=.git 'chantier' .; grep -rIn -w --exclude-dir=.git 'CARE' .; \
+	t=$$(cd "$$st" && { grep -rIn -i --exclude-dir=.git --exclude='*.bib' -e 'claude' -e 'codex' .; grep -rIn -i --exclude-dir=.git 'chantier' .; grep -rIn -w --exclude-dir=.git 'CARE' .; \
 	  grep -rIn -E '\\[A-Za-z@]*CARE|\\(begin|end)\{[A-Za-z*]*CARE' .; } 2>/dev/null | sort -u); \
-	if [ -n "$$t" ] && [ "$(CONTROLE)" != 0 ]; then echo "publier REFUSÉ, rien n'a été copié : traces de Claude, du chantier ou de CARE dans ce qui partirait :"; \
+	if [ -n "$$t" ] && [ "$(CONTROLE)" != 0 ]; then echo "publier REFUSÉ, rien n'a été copié : traces de Claude, de Codex, du chantier ou de CARE dans ce qui partirait :"; \
 	  printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; echo "(une source se corrige ici, une copie de lib/ dans SHAREDDIR/STYLEDIR ; CONTROLE=0 passe outre, en connaissance de cause)"; exit 1; \
 	elif [ -n "$$t" ]; then echo "AVERTISSEMENT : contrôle des traces passé outre (CONTROLE=0) ; traces :"; printf '%s\n' "$$t" | head -30 | sed 's/^/   /'; fi; \
 	rsync -a $(if $(MIRROR),--delete,) --exclude-from=.publier-exclude "$$st/" "$(DEST)/" || exit 1; \
@@ -177,8 +177,8 @@ publier: pdf
 	  echo "  (publié depuis le commit $$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null) du chantier : à noter dans NOTES.md)"; \
 	  [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \
 	fi; \
-	if git -C "$$top" log -1 --format='%an %cn %B' | grep -q -i -E 'claude|chantier' || git -C "$$top" log -1 --format='%B' | grep -q -w 'CARE'; then \
-	  echo "ATTENTION : trace de Claude, du chantier ou de CARE dans le dernier commit du finalisé, corriger avec git commit --amend"; exit 1; fi
+	if git -C "$$top" log -1 --format='%an %cn %B' | grep -q -i -E 'claude|codex|chantier' || git -C "$$top" log -1 --format='%B' | grep -q -w 'CARE'; then \
+	  echo "ATTENTION : trace de Claude, de Codex, du chantier ou de CARE dans le dernier commit du finalisé, corriger avec git commit --amend"; exit 1; fi
 
 # make importer : rapporte dans le chantier ce que les tiers ont modifié dans DEST, sauf les
 # copies faites par make publier (liste DEPS_LIB, d'où la recompilation préalable).

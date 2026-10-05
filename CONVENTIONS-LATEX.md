@@ -57,18 +57,18 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   d'Olivier), mais les préserver là où elles sont.
 - Pour une piste à creuser ou une question ouverte, l'équivalent de recherche est
   l'environnement `rechercheCARE` (bandeau « RECHERCHE (CARE) », défini dans
-  macros-moins-propres.tex, retiré en diffusion finale). Tous les assistants s'en servent,
+  macros-care.tex, retiré en diffusion finale). Tous les assistants s'en servent,
   Claude comme Codex : chacun signe ce qu'il y écrit par `\signeCARE{Claude}` ou
   `\signeCARE{Codex}` (date en option : `\signeCARE[5 octobre 2026]{Codex}`), défini
-  dans macros-care.tex. Pour répondre à ce qu'un autre a écrit, écrire dessous dans le même
+  au même endroit. Pour répondre à ce qu'un autre a écrit, écrire dessous dans le même
   bloc et signer à son tour ; ne jamais réécrire en silence le texte d'un autre. [5 octobre 2026]
 - Points importants et « à retenir » : `\IMPORTANTCARE[titre optionnel]{texte}` (bandeau
   bleu, défini dans macros-care.tex, chargé par macros.tex et jamais publié), titres du
   type « Important (CARE) », « À retenir (CARE) », « Point clé (CARE) ». En ligne : \emph
   ou \textbf ; \SOUSLIGNE pour le secondaire.
-- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE
-  (Olivier, 27 septembre 2026) : `make publier` refuse tant qu'une source publiée contient
-  \IMPORTANTCARE, rechercheCARE, \signeCARE ou l'un des trois mots. Les retirer avant de
+- Rien de ce qui part vers un finalisé ne parle du chantier, de Claude, de Codex ni de CARE
+  (Olivier, 27 septembre 2026 ; Codex ajouté le 5 octobre) : `make publier` refuse tant qu'une source publiée contient
+  \IMPORTANTCARE, rechercheCARE, \signeCARE ou l'un des quatre mots. Les retirer avant de
   publier.
 
 ## Couleurs (daltonisme protanope)

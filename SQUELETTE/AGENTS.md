@@ -79,7 +79,7 @@ main.
   (27 septembre 2026) : rien de ce qui part vers un finalisé ne parle du chantier, d'un
   assistant ni de CARE. `make publier` refuse sans rien copier s'il trouve une macro ou un
   environnement CARE (\IMPORTANTCARE, rechercheCARE, \signeCARE) ou l'un des mots Claude,
-  chantier, CARE dans ce qui partirait ; le hook pre-push du finalisé refuse un commit qui
+  Codex, chantier, CARE dans ce qui partirait ; le hook pre-push du finalisé refuse un commit qui
   en parle ; retirer donc ces macros des sources avant de publier. Le push reste le geste
   d'Olivier.
 - `make clean` / `make distclean`.
