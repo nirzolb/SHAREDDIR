@@ -80,7 +80,8 @@ un fichier non suivi qui traîne part avec : regarder `git status` avant de le l
 
 Au démarrage, un hook donne `make sha`, la fin de `NOTES.md`, et dit si le dépôt est libre.
 Claude Code a `/reprise` pour un résumé, `/passation` pour clore, `/registre` pour régénérer
-le registre des chantiers et le recopier dans Notion. Un autre assistant fait les mêmes
+le registre des chantiers et le recopier dans Notion ; une tâche planifiée de l'application le
+fait aussi chaque matin, sur ce Mac. Un autre assistant fait les mêmes
 gestes à la main : résumer et attendre l'accord d'Olivier au début ; à la fin, une entrée
 dans `NOTES.md` (Fait, Décidé, À faire, Questions pour Olivier, puis `Base : <sha court>`),
 commit des seuls fichiers qu'il a modifiés, relecture du diff, push. `make sha` et `make am`
