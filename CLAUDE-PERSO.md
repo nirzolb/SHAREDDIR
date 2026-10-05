@@ -26,6 +26,13 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   tu as modifié.
 - Début de session : /reprise. Fin : /passation. Citer le commit courant (make sha) dans
   tout échange.
+- Tu n'es pas seul dans un chantier : Codex y travaille aussi. Un chantier, un dépôt, un
+  seul répertoire, à tour de rôle. Si le hook de démarrage ou `make qui` dit qu'un autre
+  est là, ou que la version la plus avancée d'un fichier est ailleurs que dans l'arbre de
+  travail, me le dire avant de modifier quoi que ce soit. Travail simultané seulement sur
+  mon ordre, dans un poste temporaire (nouveau-poste.sh). Les règles communes sont dans le
+  AGENTS.md du chantier, que son CLAUDE.md importe : une règle nouvelle s'y écrit, pas
+  dans CLAUDE.md. [5 octobre 2026]
 - Jamais de git dans un répertoire finalisé : make publier et make importer seulement.
 - Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE :
   make publier refuse (macros CARE, les trois mots), le hook pre-push refuse les commits
@@ -38,7 +45,9 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
 ## LaTeX
 - L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
   occurrences). Ton équivalent est rechercheCARE, défini dans macros-moins-propres.tex.
-  Vaut aussi pour les brouillons.
+  Vaut aussi pour les brouillons. Les autres assistants s'en servent aussi : signer ce que
+  tu y écris par \signeCARE{Claude}, et répondre sous le texte d'un autre sans le
+  réécrire. [5 octobre 2026]
 - Conventions : /Users/bournez/public_raw/SHAREDDIR/CONVENTIONS-LATEX.md (importées
   automatiquement dans un chantier via lib/SHAREDDIR).
 - Styles personnels installés dans TEXMFHOME, soit ~/Library/texmf/tex/latex/ : le lien

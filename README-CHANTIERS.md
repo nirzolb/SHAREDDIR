@@ -58,6 +58,35 @@ La base Notion « Chantiers », sous « Suivi de projets », en est la vitrine :
 l'arbre, ce qui est en cours, et par intervenant. `/registre`, dans une session Claude Code
 sur SHAREDDIR, régénère le registre et l'y recopie. On ne corrige rien dans Notion.
 
+## À plusieurs assistants
+
+Claude Code et Codex travaillent dans le même chantier : un dépôt, **un seul répertoire**,
+à tour de rôle. Les règles sont dans `AGENTS.md`, que Codex lit et que `CLAUDE.md` importe ;
+chacun signe ses commits de son nom (`Claude-Code`, `Codex`).
+
+```
+make qui        qui a été vu ici, les branches, qui a touché quoi en dernier
+```
+
+Au début d'une session, le hook de chaque assistant dit si le chantier est libre : un autre
+vu depuis moins d'une heure, des fichiers modifiés non commités, un commit tout récent.
+Dans ce cas l'assistant me prévient avant de toucher à quoi que ce soit. `make qui` dit
+aussi quand la version la plus récente d'un fichier est sur une autre branche que celle de
+l'arbre de travail.
+
+Pour faire travailler deux assistants en même temps, ce qui reste l'exception :
+
+```
+lib/SHAREDDIR/SCRIPTS/nouveau-poste.sh Codex SUJET       depuis le chantier
+lib/SHAREDDIR/SCRIPTS/nouveau-poste.sh --retirer POSTE   une fois la branche intégrée
+```
+
+Le poste est un second répertoire du même dépôt, rangé dans
+`/Users/bournez/00-CHANTIERS-CARE/POSTES-TEMPORAIRES`, sur sa branche `Codex/SUJET`.
+
+Dans un bloc `rechercheCARE`, chaque assistant signe ce qu'il écrit par `\signeCARE{Nom}`
+et répond sous le texte de l'autre sans le réécrire.
+
 ## Dans Claude Code (le mode normal)
 
 | Quoi | Comment |
