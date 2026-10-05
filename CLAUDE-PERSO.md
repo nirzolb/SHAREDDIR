@@ -30,9 +30,10 @@ SHAREDDIR : rien de personnel au-delà de chemins et de conventions.
   seul répertoire, à tour de rôle. Si le hook de démarrage ou `make qui` dit qu'un autre
   est là, ou que la version la plus avancée d'un fichier est ailleurs que dans l'arbre de
   travail, me le dire avant de modifier quoi que ce soit. Travail simultané seulement sur
-  mon ordre, dans un poste temporaire (nouveau-poste.sh). Les règles communes sont dans le
-  AGENTS.md du chantier, que son CLAUDE.md importe : une règle nouvelle s'y écrit, pas
-  dans CLAUDE.md. [5 octobre 2026]
+  mon ordre, dans un poste temporaire (nouveau-poste.sh). Quand le CLAUDE.md du chantier
+  importe un AGENTS.md, les règles communes sont là, et une règle nouvelle s'y écrit, pas
+  dans CLAUDE.md. Un AGENTS.md que CLAUDE.md n'importe pas est une ancienne copie faite
+  pour Codex : ne pas s'y fier, CLAUDE.md fait foi. [5 octobre 2026]
 - Jamais de git dans un répertoire finalisé : make publier et make importer seulement.
 - Rien de ce qui part vers un finalisé ne parle du chantier, de Claude ni de CARE :
   make publier refuse (macros CARE, les trois mots), le hook pre-push refuse les commits
