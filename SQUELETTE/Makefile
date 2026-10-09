@@ -1,5 +1,5 @@
 # Makefile de chantier (Olivier Bournez / Claude). GNU make 3.81+.
-# Cibles : pdf (défaut), deps, sha, qui, am, publier, importer, clean, distclean.
+# Cibles : pdf (défaut), texroot, deps, sha, qui, am, publier, importer, clean, distclean.
 
 MAIN ?= main
 NOM  := $(notdir $(CURDIR))
@@ -21,7 +21,7 @@ export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
 PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error -recorder
 
-.PHONY: all pdf deps full strip apxversion sha qui am publier importer clean distclean
+.PHONY: all pdf texroot deps full strip apxversion sha qui am publier importer clean distclean
 
 all: pdf
 
@@ -66,6 +66,11 @@ pdf: deps
 	@c=$$(grep -c "Citation .* undefined" $(MAIN).log); r=$$(grep -c "Reference .* undefined" $(MAIN).log); o=$$(grep -c "^Overfull" $(MAIN).log); \
 	  echo "Avertissements : $$c citation(s) indéfinie(s), $$r référence(s) indéfinie(s), $$o overfull"; \
 	  if [ "$$c" != 0 ]; then grep "Citation .* undefined" $(MAIN).log | sed 's/.*Citation .\(.*\). on page.*/  citation manquante : \1/' | sort -u | head -20; fi
+	@if [ -f $(SD)/SCRIPTS/tex-root.py ]; then python3 $(SD)/SCRIPTS/tex-root.py --verifier $(MAIN).tex || true; fi
+
+# ---------- % !TEX root en tête des fichiers inclus (compiler depuis TeXShop) ----------
+texroot: deps
+	@python3 $(SD)/SCRIPTS/tex-root.py $(MAIN).tex
 
 # ---------- versions apxproof d'un article ----------
 # make full  : preuves à leur place (appendix=inline)   -> $(MAIN)-full.pdf

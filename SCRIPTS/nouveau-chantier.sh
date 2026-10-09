@@ -102,6 +102,9 @@ NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PA
   "$CH/.codex/hooks.json"
 DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
+# % !TEX root en tête des fichiers inclus (entete-cours.tex, fin-cours.tex d'un cours)
+( cd "$CH" && python3 "$SD/SCRIPTS/tex-root.py" "$DOC.tex" >/dev/null ) || echo "ATTENTION : tex-root.py a échoué ; make texroot plus tard."
+
 # Réglages propres à cette machine
 {
   echo "# Généré par nouveau-chantier.sh le $DATE (non versionné)."

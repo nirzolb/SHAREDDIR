@@ -30,6 +30,11 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
   préfixe CARE-CHANTIER- (`Raisonner-Sur-ODEs.tex`, d'où `Raisonner-Sur-ODEs.pdf`), jamais
   `main.tex` ; c'est le défaut de `nouveau-chantier.sh` (`--doc` pour un autre nom), et
   `MAIN` dans le Makefile du chantier.
+- Tout fichier inclus par `\input` ou `\include` commence par la ligne
+  `% !TEX root = <document principal>.tex` (chemin relatif au fichier inclus :
+  `../Raisonner-Sur-ODEs.tex` depuis un sous-dossier). TeXShop compile alors le document
+  principal depuis le fichier inclus. En chantier, `make` signale les lignes absentes ou
+  fausses et `make texroot` les pose (`lib/SHAREDDIR/SCRIPTS/tex-root.py`). [9 octobre 2026]
 - Paquets Ubuntu : texlive-fonts-extra, texlive-lang-french, texlive-plain-generic,
   texlive-bibtex-extra, lmodern (plus texlive-latex-extra, texlive-science,
   texlive-pictures pour les exposés).

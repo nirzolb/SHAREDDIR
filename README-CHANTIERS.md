@@ -158,6 +158,8 @@ même état, rien à synchroniser.
 |---|---|
 | `lib/` absent, styles introuvables | `make deps` |
 | Compilation étrange après un changement de style | `make distclean && make` |
+| `make` : « % !TEX root absent » | `make texroot` pose la ligne en tête des fichiers inclus |
+| TeXShop : compiler depuis un fichier inclus ramène la racine ou le PDF devant | `defaults write TeXShop BringPdfFrontOnTypeset NO`, puis quitter et relancer TeXShop |
 | Le hook refuse un push du finalisé | auteur ou message avec « Claude », « chantier » ou « CARE » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
 | `make publier` refuse | une macro CARE ou l'un des trois mots dans ce qui partirait : corriger la source (ou le style, dans SHAREDDIR/STYLEDIR), puis relancer ; un « Claude Shannon » légitime dans le texte : `make publier CONTROLE=0`, en connaissance de cause |
 | `make am` échoue (conflit) | l'arbre est laissé propre : demander à Claude Code d'appliquer le patch et de résoudre |

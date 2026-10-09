@@ -71,6 +71,8 @@ main.
 ## Commandes
 - `make` (= `make pdf`) : pdflatex, bibtex, makeindex si .idx, pdflatex deux fois. Doit
   passer avant tout commit. En cas d'erreur, les lignes fautives du .log sont affichées.
+- `make texroot` : pose `% !TEX root = <document principal>` en tête des fichiers inclus,
+  pour compiler depuis TeXShop ; `make` signale ceux qui n'ont pas la ligne.
 - `make sha` : commit courant, branche, modifications non commitées, commits non poussés.
 - `make qui` : qui travaille ici, les branches, qui a touché quoi.
 - `make am` : applique le dernier `chantier-*.patch` venu du chat (auteur conservé).
