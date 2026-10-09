@@ -277,3 +277,18 @@ Codex/representations-et-limites), ANR-2026 (un fichier non commité, aucun fich
 **Questions pour Olivier.** Aucune.
 
 Base : 325219a
+
+## 2026-10-09 20h15 (code)
+**Fait.** `make publier MSG="..."` : le commit du finalisé prend ce message. Sans MSG, la
+commande le demande dans un terminal (Entrée garde « Mise à jour de ... ») et refuse
+ailleurs ; le message passe le contrôle des traces avant toute copie. Essayé sur un
+chantier jetable (refus, mot interdit, apostrophe, terminal par `expect`). Règle dans
+CLAUDE-PERSO.md, SQUELETTE/AGENTS.md et README-CHANTIERS.md. Porté dans STACS2027-PRECISION
+et Odes-et-statistiques.
+**Décidé (Olivier).** Message très court, jamais le même, à la manière du `git log` du
+finalisé ; demander à Olivier si on ne voit pas.
+**À faire.** ANR-2026 a un finalisé : porter quand il sera au repos. INF412, dépôt
+particulier, a aussi un finalisé : à voir avec Olivier. Les autres chantiers n'en ont pas.
+**Questions pour Olivier.** Aucune.
+
+Base : 9863ec2
