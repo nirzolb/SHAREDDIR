@@ -254,3 +254,26 @@ refaire le zip ? Le zip doit-il emporter aussi la bibliographie et les logos, qu
 `expose-minimal.tex` va chercher sur le Mac ?
 
 Base : df532dd
+
+## 2026-10-09 19h40 (code)
+**Fait.** Règle nouvelle d'Olivier : tout fichier inclus commence par
+`% !TEX root = <document principal>.tex`, pour compiler depuis TeXShop. Écrite dans
+CONVENTIONS-LATEX.md. `SCRIPTS/tex-root.py` suit les `\input` et `\include` et pose la
+ligne (`--verifier` pour seulement lister). Le Makefile du squelette vérifie à chaque `make`
+et offre `make texroot` ; `nouveau-chantier.sh` pose les lignes à l'ouverture (essayé sur un
+cours jetable : entete-cours.tex et fin-cours.tex les reçoivent). Portage, Makefile et
+lignes, commité et poussé dans Raisonner-Sur-ODEs, COURS-POUR-MOI-PETITES-CLASSES et
+STACS2027-PRECISION ; fait dans Odes-et-statistiques, à commiter à sa passation.
+Hors dépôt : TeXShop réglé chez Olivier par `defaults write TeXShop BringPdfFrontOnTypeset NO`
+(noté au dépannage de README-CHANTIERS.md), sans quoi le PDF passe devant le fichier inclus.
+
+**Décidé (Olivier).** La règle, le script, la cible, et le portage aux chantiers libres.
+
+**À faire.** Porter quand ils seront au repos : Information-Et-Precision (branche
+claude/entropie-trajet, deux fichiers non commités), Abstraire-Une-Dynamique (sur la branche
+Codex/representations-et-limites), ANR-2026 (un fichier non commité, aucun fichier inclus
+à compléter), STOC2027 (branche Codex). Les quatre dépôts particuliers ne sont pas touchés.
+
+**Questions pour Olivier.** Aucune.
+
+Base : 325219a
