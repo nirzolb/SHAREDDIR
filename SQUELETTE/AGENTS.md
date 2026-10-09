@@ -76,14 +76,15 @@ main.
 - `make sha` : commit courant, branche, modifications non commitées, commits non poussés.
 - `make qui` : qui travaille ici, les branches, qui a touché quoi.
 - `make am` : applique le dernier `chantier-*.patch` venu du chat (auteur conservé).
-- `make publier MSG="..."` / `make importer` : échanges avec le répertoire finalisé (`DEST`
-  dans `Makefile.local`). Le message du commit du finalisé est court, dit ce qui a changé
-  depuis la dernière publication, et imite ceux du `git log` du finalisé ; sans `MSG`, un
-  assistant voit la commande refuser. Si tu ne vois pas quoi écrire, demande à Olivier.
-  Jamais de commande git directement dans DEST. Règle d'Olivier (27 septembre 2026) : rien
-  de ce qui part vers un finalisé ne parle du chantier, d'un assistant ni de CARE. `make publier` refuse sans rien copier s'il trouve une macro ou un
-  environnement CARE (\IMPORTANTCARE, rechercheCARE, \signeCARE) ou l'un des mots Claude,
-  Codex, chantier, CARE dans ce qui partirait ; le hook pre-push du finalisé refuse un commit qui
+- `make publier MSG="..."` / `make importer` : échanges avec le répertoire finalisé
+  (`DEST` dans `Makefile.local`). Le message du commit du finalisé est court, dit ce qui a
+  changé depuis la dernière publication, et imite ceux du `git log` du finalisé ; sans
+  `MSG`, un assistant voit la commande refuser. Si tu ne vois pas quoi écrire, demande à
+  Olivier. Jamais de commande git directement dans DEST. Règle d'Olivier (27 septembre
+  2026) : rien de ce qui part vers un finalisé ne parle du chantier, d'un assistant ni de
+  CARE. `make publier` refuse sans rien copier s'il trouve une macro ou un environnement
+  CARE (\IMPORTANTCARE, rechercheCARE, \signeCARE) ou l'un des mots Claude, Codex,
+  chantier, CARE dans ce qui partirait ; le hook pre-push du finalisé refuse un commit qui
   en parle ; retirer donc ces macros des sources avant de publier. Le push reste le geste
   d'Olivier.
 - `make clean` / `make distclean`.
