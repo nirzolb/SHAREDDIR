@@ -130,7 +130,9 @@ même état, rien à synchroniser.
 3. `make publier` : compile, assemble ce qui part (le chantier moins `.publier-exclude`,
    plus, à plat, ce que la compilation a lu sous `lib/`, sauf `macros-care.tex`), refuse
    s'il y trouve une macro CARE ou les mots Claude, chantier, CARE, sinon copie dans DEST
-   et fait un commit unique **à ton nom**, au message neutre, sans historique.
+   et fait un commit unique **à ton nom**, sans historique. Son message : `make publier
+   MSG="intro relue, y_1 défini"`, ou la commande le demande (Entrée : « Mise à jour de
+   ... ») ; un assistant doit en écrire un, la commande refuse sinon.
    Quand DEST est un sous-répertoire d'un dépôt partagé, le commit se fait dans le dépôt
    englobant et ne porte que sur DEST : tes modifications ailleurs restent intactes.
    `make publier MIRROR=1` supprime aussi dans DEST ce qui a disparu du chantier.

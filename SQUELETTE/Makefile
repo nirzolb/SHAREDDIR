@@ -129,7 +129,10 @@ am:
 	  $(MAKE) --no-print-directory sha
 
 # ---------- échanges avec le répertoire finalisé (jamais de git direct là-bas) ----------
-# make publier            : copie (ajouts et mises à jour) puis commit à mon nom dans DEST
+# make publier MSG="..."  : copie (ajouts et mises à jour) puis commit à mon nom dans DEST,
+#                           avec ce message : court, et qui dit ce qui a changé. Sans MSG, la
+#                           commande le demande dans un terminal (Entrée : « Mise à jour de
+#                           <DEST> ») et refuse ailleurs, pour qu'un assistant en écrive un.
 # make publier MIRROR=1   : idem avec suppression dans DEST de ce qui n'est plus dans le chantier
 # make publier CONTROLE=0 : passe outre le contrôle des traces (un « Claude Shannon » dans le
 #                           texte, par exemple), en connaissance de cause ; le hook reste.
@@ -156,7 +159,13 @@ publier: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make publier DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ "$(abspath $(DEST))" != "$(CURDIR)" ] || { echo "DEST est le chantier lui-même"; exit 1; }
-	@st=$$(mktemp -d "$${TMPDIR:-/tmp}/publier.XXXXXX") || exit 1; trap 'rm -rf "$$st"' EXIT; \
+	@if [ -n "$$MSG" ]; then m="$$MSG"; \
+	elif [ -t 0 ]; then printf 'Message du commit dans le finalisé (Entrée : « Mise à jour de %s ») : ' "$$(basename "$(DEST)")"; read -r m; \
+	else echo "publier : MSG manquant, rien n'a été copié. make publier MSG=\"ce qui a changé, en quelques mots\""; exit 1; fi; \
+	[ -n "$$m" ] || m="Mise à jour de $$(basename "$(DEST)")"; \
+	if printf '%s' "$$m" | grep -q -i -E 'claude|codex|chantier' || printf '%s' "$$m" | grep -q -w 'CARE'; then \
+	  echo "publier REFUSÉ, rien n'a été copié : le message parle de Claude, de Codex, du chantier ou de CARE"; exit 1; fi; \
+	st=$$(mktemp -d "$${TMPDIR:-/tmp}/publier.XXXXXX") || exit 1; trap 'rm -rf "$$st"' EXIT; \
 	rsync -a --exclude-from=.publier-exclude ./ "$$st/" || exit 1; \
 	copies=""; for f in $$($(DEPS_LIB)); do b=$$(basename "$$f"); \
 	  case "$$(printf '%s' "$$b" | tr '[:upper:]' '[:lower:]')" in *care*) continue;; esac; copies="$$copies $$b"; \
@@ -177,7 +186,7 @@ publier: pdf
 	if git -C "$$top" diff --cached --quiet -- "$$d"; then echo "Rien de nouveau à committer dans $(DEST)"; \
 	else \
 	  env -u GIT_AUTHOR_NAME -u GIT_AUTHOR_EMAIL -u GIT_COMMITTER_NAME -u GIT_COMMITTER_EMAIL \
-	    git -C "$$top" commit -q -m "Mise à jour de $$(basename "$$d")" -- "$$d" || exit 1; \
+	    git -C "$$top" commit -q -m "$$m" -- "$$d" || exit 1; \
 	  echo "Commit dans $$top : $$(git -C "$$top" log -1 --format='%h  %an <%ae>  %s')"; \
 	  echo "  (publié depuis le commit $$(git -C $(CURDIR) rev-parse --short HEAD 2>/dev/null) du chantier : à noter dans NOTES.md)"; \
 	  [ "$$top" = "$$d" ] || echo "  (dépôt englobant : seul $$d a été commité)"; \

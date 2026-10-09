@@ -43,6 +43,11 @@ Il est public dans SHAREDDIR : rien de personnel au-delà de chemins et de conve
   CARE : make publier refuse (macros CARE, les quatre mots), le hook pre-push refuse les
   commits qui en parlent, le message de commit est neutre. [27 septembre 2026 ; Codex
   ajouté le 5 octobre]
+- Le commit d'un finalisé, `make publier MSG="..."`, part à mon nom : son message est très
+  court, à la manière des miens ou de ceux de mes coauteurs dans ce dépôt (`git log` du
+  finalisé), et dit ce qui a changé depuis la dernière publication, d'après les commits du
+  chantier. Jamais deux fois le même, jamais « Mise à jour de ... ». Si tu ne vois pas quoi
+  écrire, demande-moi. [9 octobre 2026]
 - Le document principal d'un chantier porte le nom du chantier sans le préfixe
   CARE-CHANTIER- (CARE-CHANTIER-Raisonner-Sur-ODEs donne Raisonner-Sur-ODEs.tex et .pdf),
   jamais main : des PDF tous appelés main.pdf ne se distinguent pas. nouveau-chantier.sh

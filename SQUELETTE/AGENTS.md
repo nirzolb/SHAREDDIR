@@ -76,8 +76,10 @@ main.
 - `make sha` : commit courant, branche, modifications non commitées, commits non poussés.
 - `make qui` : qui travaille ici, les branches, qui a touché quoi.
 - `make am` : applique le dernier `chantier-*.patch` venu du chat (auteur conservé).
-- `make publier` / `make importer` : échanges avec le répertoire finalisé (`DEST` dans
-  `Makefile.local`). Jamais de commande git directement dans DEST. Règle d'Olivier
+- `make publier MSG="..."` / `make importer` : échanges avec le répertoire finalisé (`DEST`
+  dans `Makefile.local`). Le message du commit du finalisé est court, dit ce qui a changé
+  depuis la dernière publication, et imite ceux du `git log` du finalisé ; sans `MSG`, un
+  assistant voit la commande refuser. Si tu ne vois pas quoi écrire, demande à Olivier. Jamais de commande git directement dans DEST. Règle d'Olivier
   (27 septembre 2026) : rien de ce qui part vers un finalisé ne parle du chantier, d'un
   assistant ni de CARE. `make publier` refuse sans rien copier s'il trouve une macro ou un
   environnement CARE (\IMPORTANTCARE, rechercheCARE, \signeCARE) ou l'un des mots Claude,
