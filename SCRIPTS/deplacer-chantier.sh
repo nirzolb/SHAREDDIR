@@ -182,7 +182,7 @@ if [ "$APRES" = 1 ]; then
     else
       echo "Claude Code : mémoire et conversations restées sous un ancien nom,"
       echo "  $(tilde "$O")"
-      if verse "$O" "$N"; then FAIT=1
+      if verse "$O" "$N"; then FAIT=1; echo "  rangées maintenant sous $(tilde "$N")"
       else echo "ATTENTION : renommage refusé. À la main, application fermée :"; echo "  mv '$O' '$N'"; fi
     fi
   done
