@@ -63,6 +63,10 @@ jetable quand il touche aux règles. Il laisse dans le cahier du chantier une en
 `(code, depuis SHAREDDIR)` : le registre la reconnaît et ne compte pas ce commit comme une
 activité du chantier. [5 octobre 2026]
 
+Un portage en profite pour retirer du `=LISEZ-MOI-SUR-CE-CHANTIER.md` du chantier son chemin
+absolu, que le squelette n'écrit plus : la ligne devient celle du squelette. Un chemin écrit
+dans le dépôt est faux au premier déplacement. [10 octobre 2026]
+
 ## Publier
 
 `./do-public_raw-update.command` : `git add -A`, commit, push. Le dépôt étant public, on

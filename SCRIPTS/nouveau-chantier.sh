@@ -110,8 +110,8 @@ fi
 perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-local}}{}\n$1/m' "$CH/$DOC.tex"
 
 # Trous du squelette
-NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PARENT="$PARENT" CONVENTIONS="$CONVENTIONS" \
-  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__PARENT__/$ENV{PARENT}/g; s/__CONVENTIONS__/$ENV{CONVENTIONS}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
+NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" PARENT="$PARENT" CONVENTIONS="$CONVENTIONS" \
+  perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__PARENT__/$ENV{PARENT}/g; s/__CONVENTIONS__/$ENV{CONVENTIONS}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
   "$CH/AGENTS.md" "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude"
 DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
