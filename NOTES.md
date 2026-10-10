@@ -328,3 +328,29 @@ que je n'ai pas le droit d'écrire. Restent les portages des deux entrées préc
 d'ouverture : le corriger au fil des portages, comme fait dans Odes-et-statistiques ?
 
 Base : efca26e
+
+## 2026-10-10 20h15 (code)
+**Fait.** Suite de la session précédente, après trois déplacements faits à la main par
+Olivier (ANR-2026, Odes-et-statistiques une seconde fois, STACS2027-PRECISION).
+`deplacer-chantier.sh --apres CHANTIER` rattrape un déplacement déjà fait : il retrouve
+l'ancien répertoire de `~/.claude/projects` par le nom du chantier, le renomme ou le verse
+dans le nouveau sans rien écraser, retire un lien de l'annuaire qui ne mène plus nulle part
+et en pose un si le registre n'atteint plus le chantier. Le script refuse aussi, sans
+`--force`, une destination que `~/.claude/settings.json` interdit de lire à Claude Code. Le
+=LISEZ-MOI du squelette ne donne plus l'emplacement du chantier. Essayé sur des chantiers
+jetables, et à blanc sur ANR-2026 et Odes-et-statistiques.
+
+**Décidé (Olivier).** Le =LISEZ-MOI des chantiers ouverts se corrige au fil des portages
+(règle dans AGENTS.md). Olivier range ses chantiers dans des répertoires de projet et pose
+dans l'annuaire un lien vers le répertoire du projet : le registre le suit.
+
+**À faire.** À Olivier, dans son terminal, sessions fermées : `deplacer-chantier.sh --apres`
+sur Odes-et-statistiques et sur ANR-2026. STACS2027-PRECISION est rangé sous un répertoire
+interdit de lecture à Claude Code : ni session, ni portage, ni registre dressé par Claude
+Code tant qu'il y est ; son hooks.json de Codex porte l'ancien chemin. Odes-et-statistiques :
+=LISEZ-MOI à corriger (chemin faux), hors de portée d'écriture d'ici. Le reste de l'entrée
+précédente tient.
+
+**Questions pour Olivier.** Aucune.
+
+Base : 6b7a1a5
