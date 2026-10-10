@@ -70,13 +70,18 @@ liens symboliques compris. Un chantier rangé ailleurs y a donc un lien, comme l
 nouveau-chantier.sh doc NOM --dir ~/2027-PROJET         l'ouvrir ailleurs : le lien est posé
 deplacer-chantier.sh -n NOM ~/2027-PROJET               ce que ferait un déplacement
 deplacer-chantier.sh NOM ~/2027-PROJET                  le déplacer
+deplacer-chantier.sh --apres ~/2027-PROJET/NOM          rattraper un déplacement fait à la main
 ```
 
 `deplacer-chantier.sh` se lance depuis ton terminal, sessions fermées sur ce chantier (il
 refuse sinon, de même si le chantier a des postes). Il déplace le répertoire, tient le lien
 de l'annuaire, et renomme le répertoire où Claude Code range la mémoire et les conversations
 du chantier, `~/.claude/projects/<chemin>`, pour qu'une session ouverte au nouvel endroit
-les retrouve. Un `mv` à la main fait perdre cette mémoire et sort le chantier du registre.
+les retrouve. Un `mv` à la main fait perdre cette mémoire et peut sortir le chantier du
+registre : `--apres`, lancé ensuite sur le chantier là où il est, retrouve l'ancien
+répertoire de mémoire par le nom du chantier, le renomme ou le verse dans le nouveau, et
+pose le lien de l'annuaire si le registre n'atteint plus le chantier (un lien vers le
+répertoire qui le contient suffit, jusqu'à trois niveaux).
 
 Rien dans le chantier ne dépend de son emplacement : git, `lib/`, le finalisé, les hooks de
 Claude Code et de Codex suivent. Ce qui ne suit pas tient aux applications, qui rangent tout
