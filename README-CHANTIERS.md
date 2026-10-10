@@ -4,7 +4,9 @@ Deux modes. **Brouillon** : document jetable, produit dans le chat, avec les mod
 SHAREDDIR. **Chantier** : document qui vit dans un dépôt git privé sous
 `/Users/bournez/00-CHANTIERS-CARE/NOM`, travaillé à deux (Olivier et Claude) dans Claude
 Code, parfois depuis le chat, et publié de temps en temps vers un répertoire *finalisé*
-que des tiers peuvent voir. Le dépôt est la seule source de vérité.
+que des tiers peuvent voir. Le dépôt est la seule source de vérité. Un chantier peut aussi
+être rangé ailleurs, avec les autres documents du projet qu'il sert : voir « Ranger un
+chantier ailleurs ».
 
 ## Ouvrir un chantier
 
@@ -58,6 +60,31 @@ La base Notion « Chantiers », sous « Suivi de projets », en est la vitrine :
 l'arbre, ce qui est en cours, et par intervenant. `/registre`, dans une session Claude Code
 sur SHAREDDIR, régénère le registre et l'y recopie ; une tâche planifiée de l'application
 Claude le fait aussi chaque matin. On ne corrige rien dans Notion.
+
+## Ranger un chantier ailleurs
+
+`/Users/bournez/00-CHANTIERS-CARE` est l'annuaire : le registre y cherche les chantiers,
+liens symboliques compris. Un chantier rangé ailleurs y a donc un lien, comme le CV.
+
+```
+nouveau-chantier.sh doc NOM --dir ~/2027-PROJET         l'ouvrir ailleurs : le lien est posé
+deplacer-chantier.sh -n NOM ~/2027-PROJET               ce que ferait un déplacement
+deplacer-chantier.sh NOM ~/2027-PROJET                  le déplacer
+```
+
+`deplacer-chantier.sh` se lance depuis ton terminal, sessions fermées sur ce chantier (il
+refuse sinon, de même si le chantier a des postes). Il déplace le répertoire, tient le lien
+de l'annuaire, et renomme le répertoire où Claude Code range la mémoire et les conversations
+du chantier, `~/.claude/projects/<chemin>`, pour qu'une session ouverte au nouvel endroit
+les retrouve. Un `mv` à la main fait perdre cette mémoire et sort le chantier du registre.
+
+Rien dans le chantier ne dépend de son emplacement : git, `lib/`, le finalisé, les hooks de
+Claude Code et de Codex suivent. Ce qui ne suit pas tient aux applications, qui rangent tout
+par chemin : elles redemandent la confiance du répertoire, et les conversations déjà listées
+dans l'application de bureau gardent l'ancien chemin. On rouvre le chantier par son vrai
+chemin, pas par le lien. Enfin, pour qu'une session ouverte dans SHAREDDIR puisse porter une
+correction dans un chantier rangé hors de l'annuaire, le répertoire qui le contient s'ajoute
+à `additionalDirectories` et à `allowWrite` dans `SHAREDDIR/.claude/settings.local.json`.
 
 ## À plusieurs assistants
 
@@ -161,6 +188,7 @@ même état, rien à synchroniser.
 | `lib/` absent, styles introuvables | `make deps` |
 | Compilation étrange après un changement de style | `make distclean && make` |
 | `make` : « % !TEX root absent » | `make texroot` pose la ligne en tête des fichiers inclus |
+| Après un déplacement, Codex ne lance plus ses hooks | `.codex/hooks.json` du chantier porte encore un chemin absolu (chantier ouvert avant le 10 octobre 2026) : y recopier celui de `SQUELETTE/.codex/`, puis accepter les hooks dans Codex |
 | TeXShop : compiler depuis un fichier inclus ramène la racine ou le PDF devant | `defaults write TeXShop BringPdfFrontOnTypeset NO`, puis quitter et relancer TeXShop |
 | Le hook refuse un push du finalisé | auteur ou message avec « Claude », « chantier » ou « CARE » : `git commit --amend --reset-author` ; si c'est voulu, `--no-verify` |
 | `make publier` refuse | une macro CARE ou l'un des trois mots dans ce qui partirait : corriger la source (ou le style, dans SHAREDDIR/STYLEDIR), puis relancer ; un « Claude Shannon » légitime dans le texte : `make publier CONTROLE=0`, en connaissance de cause |

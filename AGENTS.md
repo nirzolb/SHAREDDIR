@@ -30,7 +30,8 @@ Code : une règle nouvelle s'écrit ici, sinon les autres assistants l'ignorent.
 |---|---|
 | `STYLEDIR/` | les styles et macros. `~/lib/LaTeX/Perso` y renvoie par des liens : une correction arrive dans le CV et les exposés sans recopie |
 | `SQUELETTE/` | le modèle de chantier : AGENTS.md (les règles, communes aux assistants), CLAUDE.md qui l'importe, NOTES.md, Makefile, hooks, `.claude/`, `.codex/` |
-| `SCRIPTS/nouveau-chantier.sh` | ouvre un chantier à partir du squelette |
+| `SCRIPTS/nouveau-chantier.sh` | ouvre un chantier à partir du squelette ; `--dir` pour le ranger ailleurs que dans l'annuaire, où il reçoit alors un lien |
+| `SCRIPTS/deplacer-chantier.sh` | déplace un chantier dans un autre répertoire : lien dans l'annuaire `~/00-CHANTIERS-CARE`, où le registre cherche, et renommage du répertoire où Claude Code range sa mémoire. Lancé par Olivier, sessions fermées |
 | `SCRIPTS/etat-chantiers.sh` | dresse le registre de tous les chantiers à partir de git et de leur fiche `CHANTIER.md` ; il l'écrit hors de ce dépôt |
 | `SCRIPTS/qui.sh`, `debut-session.sh` | qui travaille dans un chantier, où est la version la plus avancée ; appelés par `make qui` et par les hooks de démarrage. Les chantiers les atteignent par `lib/SHAREDDIR` : une correction y arrive sans portage |
 | `SCRIPTS/tex-root.py` | pose `% !TEX root` en tête des fichiers inclus d'un chantier ; appelé par `make` (vérification) et `make texroot` (correction), et par `nouveau-chantier.sh` |
