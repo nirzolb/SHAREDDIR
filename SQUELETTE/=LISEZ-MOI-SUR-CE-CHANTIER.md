@@ -9,7 +9,10 @@ piège change, il change ici aussi.
 
 ## Où je suis
 
-`__CHEMIN__`, dépôt privé `__NOM__`.
+Dépôt privé `__NOM__`, ouvert dans
+`__CHEMIN__`.
+S'il a été déplacé depuis (`lib/SHAREDDIR/SCRIPTS/deplacer-chantier.sh`), rien ici n'en
+dépend, et le registre des chantiers dit où il est.
 
 On y travaille __A_REMPLIR : de quoi il s'agit, en une phrase__. Le dépôt est la source de
 vérité : tout part d'ici.

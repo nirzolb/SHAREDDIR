@@ -1,7 +1,7 @@
 #!/bin/bash
 # Ouvre un chantier LaTeX (Olivier Bournez et ses assistants) à partir de SHAREDDIR/SQUELETTE.
 #
-#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
+#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--sans-lien] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
 #
 #   cours   : modèle cours-minimal.tex (+ entete-cours.tex, fin-cours.tex)
 #   expose  : modèle expose-minimal.tex
@@ -9,7 +9,11 @@
 #   article : modèle article-<classe>-minimal.tex (défaut lipics), importe CONVENTIONS-ARTICLES.md
 #   --classe C      pour un article : lipics (défaut), lncs, acm ou generic
 #   --github        crée le dépôt privé GitHub NOM avec gh et pousse le premier commit
-#   --dir BASE      répertoire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
+#   --dir BASE      répertoire où ranger le chantier, créé au besoin (défaut : l'annuaire,
+#                   $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE). Rangé ailleurs, le
+#                   chantier reçoit un lien symbolique dans l'annuaire : c'est là que le
+#                   registre le cherche. Le déplacer plus tard : deplacer-chantier.sh
+#   --sans-lien     pas de lien dans l'annuaire (un essai ; --no-git n'en pose pas non plus)
 #   --dest FINALISE chemin du répertoire finalisé, écrit dans Makefile.local
 #   --doc DOC       nom du document principal, DOC.tex et DOC.pdf ; défaut : NOM sans le
 #                   préfixe CARE-CHANTIER-, pour que les PDF des chantiers se distinguent
@@ -23,15 +27,17 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+usage() { sed -n '2,27p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
-BASE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
-GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""; PARENT=""; SANSPARENT=0
+ANNUAIRE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
+BASE="$ANNUAIRE"
+GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""; PARENT=""; SANSPARENT=0; LIEN=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --github)  GITHUB=1 ;;
     --dir)     BASE="$2"; shift ;;
+    --sans-lien) LIEN=0 ;;
     --dest)    DEST="$2"; shift ;;
     --doc)     DOC="$2"; shift ;;
     --classe)  CLASSE="$2"; shift ;;
@@ -61,8 +67,16 @@ SD=$(cd "$(dirname "$0")/.." && pwd -P)
 SQ="$SD/SQUELETTE"; EX="$SD/LATEX-EXEMPLES"
 [ -d "$SQ" ] && [ -d "$EX" ] || { echo "SQUELETTE ou LATEX-EXEMPLES introuvable à côté de $0"; exit 1; }
 [ -f "$EX/$MODELE.tex" ] || { echo "modèle $EX/$MODELE.tex introuvable"; exit 1; }
+mkdir -p "$BASE"; BASE=$(cd "$BASE" && pwd -P)
 CH="$BASE/$NOM"
 [ -e "$CH" ] && { echo "$CH existe déjà"; exit 1; }
+# Hors de l'annuaire, le chantier y aura un lien, pour que le registre le trouve.
+POSER=""
+if [ "$LIEN" = 1 ] && [ "$DOGIT" = 1 ] && [ -d "$ANNUAIRE" ]; then
+  A=$(cd "$ANNUAIRE" && pwd -P)
+  case "$CH/" in "$A"/*) ;; *) POSER="$A/$NOM" ;; esac
+fi
+if [ -n "$POSER" ] && { [ -e "$POSER" ] || [ -L "$POSER" ]; }; then echo "$POSER existe déjà dans l'annuaire"; exit 1; fi
 
 # Le parent : le chantier dont celui-ci est né. Par défaut, celui où se trouve le répertoire
 # courant, reconnu à sa fiche ou à son mode d'emploi ; depuis un poste (worktree), on remonte
@@ -98,8 +112,7 @@ perl -0pi -e 's/^(\\)/\\IfFileExists{figcommons-local.tex}{\\input{figcommons-lo
 # Trous du squelette
 NOM="$NOM" TYPE="$TYPE" MODELE="$MODELE" DATE="$DATE" DOC="$DOC" CHEMIN="$CH" PARENT="$PARENT" CONVENTIONS="$CONVENTIONS" \
   perl -pi -e 's/__NOM__/$ENV{NOM}/g; s/__TYPE__/$ENV{TYPE}/g; s/__MODELE__/$ENV{MODELE}/g; s/__DATE__/$ENV{DATE}/g; s/__DOC__/$ENV{DOC}/g; s/__CHEMIN__/$ENV{CHEMIN}/g; s/__PARENT__/$ENV{PARENT}/g; s/__CONVENTIONS__/$ENV{CONVENTIONS}/g; s/__NOTES_SPECIFIQUES__/(à compléter)/g' \
-  "$CH/AGENTS.md" "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude" \
-  "$CH/.codex/hooks.json"
+  "$CH/AGENTS.md" "$CH/CLAUDE.md" "$CH/NOTES.md" "$CH/=LISEZ-MOI-SUR-CE-CHANTIER.md" "$CH/CHANTIER.md" "$CH/.publier-exclude"
 DOC="$DOC" perl -pi -e 's/^MAIN \?= main$/MAIN ?= $ENV{DOC}/' "$CH/Makefile"
 
 # % !TEX root en tête des fichiers inclus (entete-cours.tex, fin-cours.tex d'un cours)
@@ -125,6 +138,7 @@ if [ "$DOGIT" = 1 ]; then
   git add -A
   # ${IDENT[@]+"${IDENT[@]}"} : un tableau vide sous set -u est une erreur en bash 3.2 (macOS)
   git ${IDENT[@]+"${IDENT[@]}"} commit -q -m "Ouverture du chantier $NOM ($TYPE, modèle $MODELE)"
+  if [ -n "$POSER" ]; then ln -s "$CH" "$POSER"; fi
   if [ "$GITHUB" = 1 ]; then
     if command -v gh >/dev/null 2>&1; then
       gh repo create "$NOM" --private --source=. --remote=origin --push
@@ -136,6 +150,7 @@ fi
 
 echo
 echo "Chantier ouvert : $CH"
+[ -z "$POSER" ] || echo "  lien dans l'annuaire, pour le registre : $POSER"
 echo "  $DOC.tex (modèle $MODELE)  AGENTS.md  CLAUDE.md  NOTES.md  Makefile  .claude/  .codex/"
 echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que l'assistant de la"
 echo "        première session remplit."

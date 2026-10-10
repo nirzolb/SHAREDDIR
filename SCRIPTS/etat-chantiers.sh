@@ -3,7 +3,7 @@
 #
 #   etat-chantiers.sh [--racine DIR] [--sortie FICHIER] [--fetch] [--sommeil JOURS]
 #
-#   --racine DIR     répertoire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
+#   --racine DIR     l'annuaire des chantiers (défaut : $CHANTIERS_DIR ou /Users/bournez/00-CHANTIERS-CARE)
 #   --sortie FICHIER où écrire le registre (défaut : DIR/CHANTIERS.md ; - pour la sortie standard).
 #                    À côté, le même nom en .json porte les mêmes données, pour qui les recopie
 #                    ailleurs sans avoir à relire le Markdown (la base Notion, par exemple)
@@ -13,6 +13,8 @@
 #
 # Est un chantier tout dépôt git trouvé sous DIR, jusqu'à trois niveaux, liens symboliques
 # compris ; on ne descend pas dans un dépôt. Un worktree est rattaché à son dépôt, comme poste.
+# Un chantier rangé ailleurs que sous DIR y a donc un lien, posé par nouveau-chantier.sh --dir
+# ou par deplacer-chantier.sh : sans ce lien, le registre ne le voit pas.
 #
 # Vient de git : l'ouverture (premier commit), la dernière activité et son auteur (ne comptent
 # ni les commits qui touchent la fiche, ni ceux qu'une autre session a portés là et que le
