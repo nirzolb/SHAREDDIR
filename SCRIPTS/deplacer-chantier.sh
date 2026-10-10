@@ -8,7 +8,8 @@
 #   DESTINATION  le répertoire où le ranger, créé au besoin : le chantier devient
 #                DESTINATION/<son nom>
 #   -n           dit ce qui serait fait, sans rien faire
-#   --force      déplace même si une session Claude Code ou Codex y est ouverte
+#   --force      déplace même si une session Claude Code ou Codex y est ouverte, ou vers un
+#                répertoire que Claude Code n'a pas le droit de lire
 #   --sans-lien  ne pose pas de lien dans l'annuaire
 #
 # L'annuaire est $CHANTIERS_DIR, à défaut /Users/bournez/00-CHANTIERS-CARE : c'est là que le
@@ -17,7 +18,9 @@
 #
 # Ce que fait le script :
 #   1. refuse si CHANTIER n'est pas un dépôt git, s'il a des postes (un worktree note le
-#      chemin de son dépôt), si DESTINATION/<nom> existe, ou si une session y est ouverte ;
+#      chemin de son dépôt), si DESTINATION/<nom> existe, si une session y est ouverte, ou
+#      si ~/.claude/settings.json interdit à Claude Code de lire sous DESTINATION : il ne
+#      pourrait plus y travailler, ni le registre l'y voir quand c'est lui qui le dresse ;
 #   2. déplace le répertoire ;
 #   3. tient l'annuaire : le chantier qui en sort y laisse un lien à sa place, un lien qui
 #      pointait sur l'ancien emplacement est refait, ou retiré si le chantier y revient ;
@@ -60,7 +63,9 @@ code() { printf '%s' "$1" | sed 's/[^A-Za-z0-9]/-/g'; }
 SRC=${ARGS[0]}
 if [ ! -d "$SRC" ] && [ -n "$A" ]; then
   case "$SRC" in */*) ;; *)
-    TROUVES=$(find "$A" -maxdepth 3 -name "$SRC" \( -type d -o -type l \) 2>/dev/null || true)
+    TROUVES=$(find "$A" -maxdepth 3 -name "$SRC" \( -type d -o -type l \) 2>/dev/null | while IFS= read -r c; do
+      if [ -e "$c/.git" ]; then printf '%s\n' "$c"; fi   # un dépôt, pas une vieille copie
+    done || true)
     case "$(printf '%s' "$TROUVES" | grep -c . || true)" in
       0) ;;
       1) SRC=$TROUVES ;;
@@ -85,6 +90,19 @@ DEST=${DEST%/}
 NEW="$DEST/$NOM"
 [ "$NEW" != "$SRC" ] || refus "le chantier est déjà dans $(tilde "$DEST")"
 case "$DEST/" in "$SRC"/*) refus "la destination est dans le chantier lui-même" ;; esac
+
+# Une destination que les réglages de Claude Code lui interdisent de lire, Read(~/X/**).
+REGLAGES="$HOME/.claude/settings.json"
+if [ -f "$REGLAGES" ]; then
+  INTERDIT=$(sed -n 's|.*"Read(~/\(.*\)/\*\*)".*|\1|p' "$REGLAGES" | while IFS= read -r r; do
+    case "$NEW/" in ("$HOME/$r"/*) printf '~/%s\n' "$r" ;; esac   # ( ouvrante : bash 3.2, dans $(...)
+  done)
+  if [ -n "$INTERDIT" ]; then
+    echo "Claude Code n'a pas le droit de lire sous $INTERDIT (~/.claude/settings.json) :"
+    echo "  rangé là, le chantier lui est fermé, et le registre qu'il dresse ne le voit plus."
+    [ "$FORCE" = 1 ] || refus "choisir un autre répertoire, ou --force pour l'y archiver"
+  fi
+fi
 
 # Les liens de l'annuaire qui visent le chantier, jusqu'à trois niveaux comme le registre.
 LIENS=()

@@ -86,6 +86,11 @@ chemin, pas par le lien. Enfin, pour qu'une session ouverte dans SHAREDDIR puiss
 correction dans un chantier rangé hors de l'annuaire, le répertoire qui le contient s'ajoute
 à `additionalDirectories` et à `allowWrite` dans `SHAREDDIR/.claude/settings.local.json`.
 
+Un chantier rangé sous un répertoire que `~/.claude/settings.json` interdit de lire à Claude
+Code (les règles `Read(...)` de `deny`) lui est fermé : aucune session ne peut plus y
+travailler, et le registre dressé par Claude Code, celui du matin compris, ne le voit plus.
+C'est un archivage, pas un rangement ; `deplacer-chantier.sh` le refuse sans `--force`.
+
 ## À plusieurs assistants
 
 Claude Code et Codex travaillent dans le même chantier : un dépôt, **un seul répertoire**,
