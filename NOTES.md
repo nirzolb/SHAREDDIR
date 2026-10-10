@@ -292,3 +292,39 @@ particulier, a aussi un finalisé : à voir avec Olivier. Les autres chantiers n
 **Questions pour Olivier.** Aucune.
 
 Base : 9863ec2
+
+## 2026-10-10 19h45 (code)
+**Fait.** Un chantier ne dépend plus de son emplacement. `SQUELETTE/.codex/hooks.json` ne
+porte plus son chemin absolu : la commande calcule la racine du dépôt au lancement, et
+`nouveau-chantier.sh` n'a plus ce trou à remplir. `nouveau-chantier.sh --dir` range un
+chantier hors de l'annuaire `~/00-CHANTIERS-CARE` et y pose un lien, que le registre suit
+(`--sans-lien` et `--no-git` n'en posent pas). Nouveau `SCRIPTS/deplacer-chantier.sh` :
+refuse si une session est ouverte, si le chantier a des postes ou si la destination est
+prise ; déplace, tient le lien de l'annuaire, renomme `~/.claude/projects/<chemin>` ; `-n`
+montre sans faire. Textes : README-CHANTIERS.md (« Ranger un chantier ailleurs », une ligne
+au dépannage), AGENTS.md, en-tête d'etat-chantiers.sh, =LISEZ-MOI du squelette. Essayé sur
+des chantiers jetables (ouverture, déplacements dans les deux sens, registre) ; le refus
+pour session ouverte, à blanc sur un chantier réel.
+Hors dépôt : Olivier a déplacé ANR-2026 hors de l'annuaire à la main, lien posé, mémoire de
+Claude Code renommée ; mémoire renommée aussi pour Odes-et-statistiques, déplacé plus tôt.
+Portage du hooks.json dans Odes-et-statistiques (c9b39ed, poussé), où les hooks de Codex ne
+tournaient plus.
+
+**Décidé (Olivier).** `~/00-CHANTIERS-CARE` est l'annuaire : un chantier rangé ailleurs y a
+un lien. Un chantier se déplace par `deplacer-chantier.sh`, lancé par Olivier.
+
+**À faire.** La nouvelle commande du hook n'a pas été vue tourner dans Codex : le vérifier
+dans Odes-et-statistiques avant de la porter ailleurs. Puis porter hooks.json : ANR-2026
+d'abord, dont le chemin absolu est faux depuis le déplacement et ne tient que par le lien
+(il faut d'abord que son nouveau répertoire soit ajouté à `.claude/settings.local.json`
+d'ici) ; ensuite, au repos, Raisonner-Sur-ODEs, COURS-POUR-MOI-PETITES-CLASSES,
+STACS2027-PRECISION, Abstraire-Une-Dynamique (branche Codex), Information-Et-Precision
+(branche claude), STOC2027 (branche Codex), où le chemin est juste et rien ne presse tant
+qu'ils ne bougent pas. Les quatre dépôts particuliers et SHAREDDIR ont aussi un chemin
+absolu, juste. À Olivier : la ligne « Chantiers » de CLAUDE-PERSO.md, proposée en session,
+que je n'ai pas le droit d'écrire. Restent les portages des deux entrées précédentes.
+
+**Questions pour Olivier.** Le =LISEZ-MOI des chantiers ouverts donne leur chemin
+d'ouverture : le corriger au fil des portages, comme fait dans Odes-et-statistiques ?
+
+Base : efca26e
