@@ -132,7 +132,7 @@ et répond sous le texte de l'autre sans le réécrire.
 | Début de session | automatique : un hook fournit `make sha` et la fin de NOTES.md à Claude Code. `/reprise` en plus pour un résumé et une proposition |
 | Fin de session | `/passation` (ou `/passation remarque libre`) : entrée dans NOTES.md, commit, push. Quand tu arrêtes, ou avant de passer au chat ; pas après chaque petite tâche (Claude Code commite au fil de l'eau) |
 | Compiler | `make` (pdflatex, bibtex, makeindex si besoin, pdflatex x2 ; erreurs du .log affichées) |
-| L'anglais face à ton style | `make style` : rapport de `style-anglais.py` sur le document principal, rien n'est modifié (`FICHIER=`, `PROFIL=solo`, `MOTS=`). Chantiers ouverts après le 16 octobre 2026, ou portés |
+| L'anglais face à ton style | `=README-STYLE.md` dit quoi demander. `make style` : rapport de `style-anglais.py` sur le document principal, rien n'est modifié (`FICHIER=`, `PROFIL=solo`, `MOTS=`). Chantiers ouverts après le 16 octobre 2026, ou portés |
 | Où en est-on | `make sha` : le sha est l'identifiant du commit courant (`a351890`), plus branche, non commité, non poussé. À citer dans tout échange pour être sûrs de parler de la même version |
 | Depuis le téléphone | `claude remote-control --name NOM` dans le répertoire, puis app Claude, onglet Code, session au point vert |
 
