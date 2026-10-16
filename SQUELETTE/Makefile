@@ -1,5 +1,5 @@
 # Makefile de chantier (Olivier Bournez / Claude). GNU make 3.81+.
-# Cibles : pdf (défaut), texroot, deps, sha, qui, am, publier, importer, clean, distclean.
+# Cibles : pdf (défaut), texroot, style, deps, sha, qui, am, publier, importer, clean, distclean.
 
 MAIN ?= main
 NOM  := $(notdir $(CURDIR))
@@ -21,7 +21,7 @@ export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
 PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error -recorder
 
-.PHONY: all pdf texroot deps full strip apxversion sha qui am publier importer clean distclean
+.PHONY: all pdf texroot style deps full strip apxversion sha qui am publier importer clean distclean
 
 all: pdf
 
@@ -71,6 +71,16 @@ pdf: deps
 # ---------- % !TEX root en tête des fichiers inclus (compiler depuis TeXShop) ----------
 texroot: deps
 	@python3 $(SD)/SCRIPTS/tex-root.py $(MAIN).tex
+
+# ---------- l'anglais face au style d'Olivier (lib/SHAREDDIR/STYLE-ANGLAIS.md) ----------
+# make style : rapport sur le document principal, rien n'est modifié ; pour un texte anglais.
+# FICHIER=notes/x.tex pour un autre fichier (.tex, .md, .txt), PROFIL=solo pour comparer à ses
+# textes écrits seul, MOTS=liste.txt pour une liste personnelle de tournures à chercher.
+FICHIER ?= $(MAIN).tex
+PROFIL  ?=
+MOTS    ?=
+style: deps
+	@python3 $(SD)/SCRIPTS/style-anglais.py $(if $(PROFIL),--profil $(PROFIL)) $(if $(MOTS),--mots $(MOTS)) $(FICHIER)
 
 # ---------- versions apxproof d'un article ----------
 # make full  : preuves à leur place (appendix=inline)   -> $(MAIN)-full.pdf
