@@ -36,9 +36,11 @@ Code : une règle nouvelle s'écrit ici, sinon les autres assistants l'ignorent.
 | `SCRIPTS/qui.sh`, `debut-session.sh` | qui travaille dans un chantier, où est la version la plus avancée ; appelés par `make qui` et par les hooks de démarrage. Les chantiers les atteignent par `lib/SHAREDDIR` : une correction y arrive sans portage |
 | `SCRIPTS/tex-root.py` | pose `% !TEX root` en tête des fichiers inclus d'un chantier ; appelé par `make` (vérification) et `make texroot` (correction), et par `nouveau-chantier.sh` |
 | `SCRIPTS/nouveau-poste.sh` | ouvre et retire un poste temporaire, pour le cas rare où deux assistants travaillent en même temps au même chantier |
+| `SCRIPTS/style-anglais.py` | compare un texte anglais (.tex, .md, .txt) à la fiche `STYLE-ANGLAIS.md` : mesures contre la plage habituelle d'Olivier, tournures d'assistant, fautes et calques, phrases de plus de 40 mots. Sans dépendance ; atteint des chantiers par `lib/SHAREDDIR` |
 | `LATEX-EXEMPLES/` | les modèles de document que le script recopie |
 | `BIBDESKDIR/` | la bibliographie de référence, dont `@@reference-biblio.bib` |
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |
+| `STYLE-ANGLAIS.md` | la fiche de style pour l'anglais d'Olivier, à laquelle les deux conventions renvoient |
 | `CLAUDE-PERSO.md` | les instructions personnelles d'Olivier pour ses assistants, lues partout par les liens `~/.claude/CLAUDE.md` (Claude Code) et `~/.codex/AGENTS.md` (Codex) |
 | `README-CHANTIERS.md` | l'aide-mémoire d'ensemble |
 | `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.codex/` | les règles de ce dépôt et les réglages des deux assistants, suivis par git |

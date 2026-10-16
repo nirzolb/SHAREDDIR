@@ -49,8 +49,12 @@ demande un article, et importé par le CLAUDE.md des chantiers de type article.
 - Anglais, « we ». Paragraphes titrés avec `\myparagraph{...}`. Renvois `Theorem~\ref{}`,
   `Section~\ref{}` (LIPIcs, LNCS, générique) ; `\cref` seulement avec acmart. Labels
   `thm:`, `lem:`, `prop:`, `cor:`, `def:`, `sec:`, `eq:`, `fig:`.
+- L'anglais suit STYLE-ANGLAIS.md, dans ce dépôt (`lib/SHAREDDIR/STYLE-ANGLAIS.md` en
+  chantier, son URL raw dans le chat) : le lire avant d'écrire, de corriger ou de reprendre
+  un passage. Par défaut, correction minimale ; jamais de « polissage ». [16 octobre 2026]
 - Pas de tics de LLM : pas de phrases creuses, pas de listes à puces hors contributions,
-  pas de résumé de section en fin de section, pas de tirets cadratins.
+  pas de résumé de section en fin de section, pas de tirets cadratins (la liste complète
+  est au §4 de STYLE-ANGLAIS.md).
 - Clés `\cite` : règle de CONVENTIONS-LATEX.md (exactement celles de
   @@reference-biblio.bib quand elles y sont). `\bibliography{\BIBFILES}` ; la biblio
   personnelle d'Olivier (`bournez,perso`) se substitue chez lui.

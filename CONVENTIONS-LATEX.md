@@ -85,6 +85,10 @@ CLAUDE.md de chaque chantier). Source de vérité : ce fichier, dans SHAREDDIR
 ## Écriture
 - Pas de tirets cadratins ; éviter ce qui trahit un texte de LLM (formules creuses,
   listes à puces systématiques, résumés finaux inutiles). Français par défaut.
+- En anglais : STYLE-ANGLAIS.md, dans ce dépôt
+  (https://raw.githubusercontent.com/nirzolb/SHAREDDIR/main/STYLE-ANGLAIS.md), la voix
+  d'Olivier, ses fautes à corriger et ce qu'un assistant ne doit pas écrire ;
+  `SCRIPTS/style-anglais.py` vérifie un texte. [16 octobre 2026]
 
 ## Ouvrir un chantier depuis le chat
 Quand Olivier dit « on ouvre un chantier » à partir d'un brouillon :

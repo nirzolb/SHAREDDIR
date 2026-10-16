@@ -354,3 +354,34 @@ précédente tient.
 **Questions pour Olivier.** Aucune.
 
 Base : 6b7a1a5
+
+## 2026-10-16 15h41 (chat)
+**Fait.** `STYLE-ANGLAIS.md`, la fiche de style pour l'anglais d'Olivier : la cible (sa voix,
+fautes corrigées, phrases de plus de 40 mots coupées), trois façons de travailler (correction
+minimale par défaut, reprise sur demande, rédaction), ce qui fait sa voix, chiffres à l'appui,
+ce qu'il ne faut pas écrire, ses fautes récurrentes, des gabarits, deux exemples, une
+vérification en six étapes. Elle vient d'une analyse de ses articles depuis 1996, gardée hors
+de ce dépôt, et a été relue contre les données par un second lecteur.
+`SCRIPTS/style-anglais.py`, bibliothèque standard seule : compare un .tex (avec ses `\input`),
+un .md ou un .txt à la plage habituelle de ses textes, ou de ses textes écrits seul avec
+`--profil solo` ; liste les tournures d'assistant, les fautes et calques connus, les phrases
+de plus de 40 mots ; `--mots FICHIER` ajoute une liste personnelle, gardée hors du dépôt.
+Éprouvé sur onze de ses textes contre l'outil de l'analyse (écarts sous 10 % sur les mesures
+principales), sous Python 3.8 à 3.13, moins d'une seconde par article. Sur 28 paragraphes
+anciens, leurs versions polies par un assistant sortent de la plage sur 7 mesures, leurs
+corrections minimales sur 4.
+Renvois depuis CONVENTIONS-ARTICLES.md (§3) et CONVENTIONS-LATEX.md (Écriture) ; une ligne
+dans les tables d'AGENTS.md et du =LISEZ-MOI.
+
+**Décidé (Olivier).** La cible est sa voix, fautes corrigées et phrases de plus de 40 mots
+coupées : il l'a préférée sur trois tests de réécriture. Par défaut, correction minimale ;
+jamais de polissage.
+
+**À faire.** Rien à porter : la fiche, le script et les conventions qui y renvoient sont
+atteints par `lib/SHAREDDIR`.
+
+**Questions pour Olivier.** Importer la fiche d'office dans le CLAUDE.md des chantiers
+d'article (`@lib/SHAREDDIR/STYLE-ANGLAIS.md`), plutôt qu'un renvoi à suivre ? Une cible
+`make style` dans le squelette, qui lance le script sur le document principal ?
+
+Base : 5754df8

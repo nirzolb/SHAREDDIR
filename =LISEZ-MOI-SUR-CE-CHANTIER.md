@@ -59,6 +59,7 @@ Chantiers ouverts à ce jour : `CARE-CHANTIER-INF412`, `CARE-CHANTIER-STACS2027-
 | `LATEX-EXEMPLES/` | les modèles de document |
 | `BIBDESKDIR/` | la bibliographie de référence |
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées dans les chantiers |
+| `STYLE-ANGLAIS.md`, `SCRIPTS/style-anglais.py` | la fiche de style de mon anglais, et le script qui vérifie un texte contre elle |
 | `CLAUDE-PERSO.md` | mes instructions, lues partout par `~/.claude/CLAUDE.md` |
 | `README-CHANTIERS.md` | l'aide-mémoire d'ensemble |
 
