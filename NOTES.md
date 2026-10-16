@@ -420,3 +420,25 @@ Dans `~/.codex/config.toml`, des lignes aux anciens chemins, sans effet.
 **Questions pour Olivier.** Aucune de plus.
 
 Base : 0538f5a
+
+## 2026-10-16 16h00 (code)
+**Fait.** Entrée de rattrapage pour la fin du 10 octobre (7e1f870). Réponses aux deux
+questions de l'entrée du 16 octobre (chat) : `nouveau-chantier.sh article` importe d'office
+`STYLE-ANGLAIS.md` dans le CLAUDE.md du chantier et la nomme dans son AGENTS.md, pour Codex
+(2310139) ; le Makefile du squelette a `make style`, le rapport de `style-anglais.py` sur le
+document principal, avec `FICHIER=`, `PROFIL=solo` et `MOTS=`, hors de `make` par défaut
+(cbcd769). Essayé sur un article et un cours jetables : le cours n'importe rien de plus.
+`=README-STYLE.md`, à la racine : pour Olivier, quoi demander dans un chantier (correction
+minimale, reprise, rédaction) et comment vérifier (75e9b2b).
+
+**Décidé (Olivier).** La fiche est importée d'office dans les articles, pas en version courte.
+`make style` est une commodité, pas une vérification de `make`.
+
+**À faire.** Portages, sur ordre, chantier au repos : `make style` (Makefile) dans ANR-2026,
+STOC2027 et STACS2027-PRECISION, les chantiers qui écrivent en anglais ; l'import de la fiche
+(CLAUDE.md) dans STOC2027 et STACS2027-PRECISION, les deux articles ouverts. Le reste de
+l'entrée de 15h53 tient (hooks.json de Codex dans trois chantiers, CLAUDE-PERSO.md).
+
+**Questions pour Olivier.** Aucune.
+
+Base : 75e9b2b
