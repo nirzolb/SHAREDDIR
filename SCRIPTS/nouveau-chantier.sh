@@ -7,6 +7,7 @@
 #   expose  : modèle expose-minimal.tex
 #   doc     : modèle tex-minimal.tex
 #   article : modèle article-<classe>-minimal.tex (défaut lipics), importe CONVENTIONS-ARTICLES.md
+#             et la fiche STYLE-ANGLAIS.md
 #   --classe C      pour un article : lipics (défaut), lncs, acm ou generic
 #   --github        crée le dépôt privé GitHub NOM avec gh et pousse le premier commit
 #   --dir BASE      répertoire où ranger le chantier, créé au besoin (défaut : l'annuaire,
@@ -27,7 +28,7 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,27p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+usage() { sed -n '2,28p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
 ANNUAIRE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
@@ -102,8 +103,9 @@ if [ "$TYPE" = cours ]; then cp "$EX/entete-cours.tex" "$EX/fin-cours.tex" "$CH/
 # pour les assistants qui ne suivent pas les imports.
 CONVENTIONS='`lib/SHAREDDIR/CONVENTIONS-LATEX.md`'
 if [ "$TYPE" = article ]; then
-  perl -0pi -e 's/(\@lib\/SHAREDDIR\/CONVENTIONS-LATEX\.md\n)/$1\@lib\/SHAREDDIR\/CONVENTIONS-ARTICLES.md\n/' "$CH/CLAUDE.md"
-  CONVENTIONS="$CONVENTIONS et "'`lib/SHAREDDIR/CONVENTIONS-ARTICLES.md`'
+  # Un article s'écrit en anglais : la fiche de style est là dès le premier message.
+  perl -0pi -e 's/(\@lib\/SHAREDDIR\/CONVENTIONS-LATEX\.md\n)/$1\@lib\/SHAREDDIR\/CONVENTIONS-ARTICLES.md\n\@lib\/SHAREDDIR\/STYLE-ANGLAIS.md\n/' "$CH/CLAUDE.md"
+  CONVENTIONS="$CONVENTIONS, "'`lib/SHAREDDIR/CONVENTIONS-ARTICLES.md`'" et, pour l'anglais, "'`lib/SHAREDDIR/STYLE-ANGLAIS.md`'
 fi
 
 # \FIGCOMMONS redéfinissable avant \input{macros} : ligne insérée avant la première commande TeX
