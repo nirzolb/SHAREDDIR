@@ -385,3 +385,38 @@ d'article (`@lib/SHAREDDIR/STYLE-ANGLAIS.md`), plutôt qu'un renvoi à suivre ? 
 `make style` dans le squelette, qui lance le script sur le document principal ?
 
 Base : 5754df8
+
+## 2026-10-16 15h53 (code) : fin de la session du 10 octobre, après 20h15
+**Fait.** Le `hooks.json` de Codex sans chemin absolu est vu tourner dans Codex
+(Odes-et-statistiques) : la reprise arrive au premier message, et Codex est noté présent.
+L'accord des hooks ne se donne que dans la ligne de commande de Codex (« Hooks need
+review », puis « Trust all and continue ») ; dans l'application, `/hooks` est lu comme un
+message. Il est lié au chemin et au contenu du fichier : un portage ou un déplacement le
+redemande, et sans lui les hooks sont ignorés sans avertissement.
+Portés, avec le =LISEZ-MOI sans chemin, et poussés : Odes-et-statistiques (c9b39ed,
+dc8f3ff), ANR-2026 (7466e7d, par `make am`), Raisonner-Sur-ODEs (c9d881f),
+COURS-POUR-MOI-PETITES-CLASSES (ce108ca). Accords donnés par Olivier dans Codex pour les
+quatre. Les répertoires de projet de ces chantiers sont ajoutés aux droits d'écriture de
+`.claude/settings.local.json`, non suivi.
+`Papers=` est sorti de `~/archives=` : une règle `deny` de Claude Code n'admet pas
+d'exception. STACS2027-PRECISION redevient lisible, son lien de l'annuaire est refait, le
+registre compte treize dépôts.
+`deplacer-chantier.sh --apres` lancé par Olivier sur les sept chantiers déplacés à la main.
+Restent sous un ancien nom, pour ANR-2026 et Odes-et-statistiques, des morceaux de
+conversation présents des deux côtés, sans effet. Le script dit désormais où la mémoire est
+rangée (7dd7b78). L'application de bureau a repris une ancienne conversation depuis le
+nouvel emplacement.
+
+**Décidé (Olivier).** `~/archives=` reste interdit en entier, sous-répertoires à venir
+compris : ce que Claude Code doit lire en sort. L'accord des hooks de Codex reste à Olivier,
+pas à l'assistant qui les a écrits.
+
+**À faire.** Porter le hooks.json dans STACS2027-PRECISION (son répertoire n'est pas dans
+les droits d'écriture), Information-Et-Precision et Abstraire-Une-Dynamique (branches de
+travail, fichiers non commités), puis l'accord dans Codex pour chacun. À Olivier : la ligne
+« Chantiers » de CLAUDE-PERSO.md. Les deux questions de l'entrée du 16 octobre (chat).
+Dans `~/.codex/config.toml`, des lignes aux anciens chemins, sans effet.
+
+**Questions pour Olivier.** Aucune de plus.
+
+Base : 0538f5a
