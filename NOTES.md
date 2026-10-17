@@ -442,3 +442,28 @@ l'entrée de 15h53 tient (hooks.json de Codex dans trois chantiers, CLAUDE-PERSO
 **Questions pour Olivier.** Aucune.
 
 Base : 75e9b2b
+
+## 2026-10-17 20h03 (code)
+**Fait.** Le chat signalait des clés absentes de la bibliographie : il lit la copie de
+`BIBDESKDIR` sur GitHub, où `perso.bib` datait du 18 juillet, sans les entrées de l'automne
+(`FSTTCS2026`, `NeurIps2026`, `RP2026`). Les trois autres `.bib` publiés étaient à jour.
+`SCRIPTS/copie-bib.sh` recopie depuis BibDesk (`~/bibliographie/BIBDESK-DIR=`) les seuls
+`.bib` déjà publiés ; `--verifier` dit ce qui est en retard. Essayé : sans référence, il ne
+fait rien ; un fichier de plus dans la référence n'entre pas. `do-public_raw-update.command`
+le lance avant son commit ; `BIBDESKDIR/do-public_raw-update.command`, qui faisait encore
+`git add *`, lance désormais celui de la racine. `SCRIPTS/hook-pre-push.sh` refuse un push
+tant que la copie est en retard ; relié par Olivier dans `.git/hooks/pre-push` sur ce Mac.
+`perso.bib` recopié et commité au nom d'Olivier (670db55), poussé : GitHub sert les
+nouvelles clés. Règle pour les assistants dans AGENTS.md (Publier).
+
+**Décidé (Olivier).** La copie publique de la bibliographie suit BibDesk à chaque
+publication, et un push ne part pas sans elle. Les titres de l'automne peuvent être publics.
+
+**À faire.** Sur une autre machine, relier le hook une fois (ligne dans AGENTS.md).
+`hastad2001some` manque à toutes les bibliographies : à ajouter dans BibDesk si Olivier la
+veut dans la référence. Rien à porter aux chantiers : les deux scripts ne servent qu'ici.
+Le reste des entrées du 16 octobre tient.
+
+**Questions pour Olivier.** Aucune.
+
+Base : f55c85a
