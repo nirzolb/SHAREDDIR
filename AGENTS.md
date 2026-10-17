@@ -34,6 +34,8 @@ Code : une règle nouvelle s'écrit ici, sinon les autres assistants l'ignorent.
 | `SCRIPTS/deplacer-chantier.sh` | déplace un chantier dans un autre répertoire : lien dans l'annuaire `~/00-CHANTIERS-CARE`, où le registre cherche, et renommage du répertoire où Claude Code range sa mémoire ; `--apres` rattrape un déplacement fait à la main. Lancé par Olivier, sessions fermées |
 | `SCRIPTS/etat-chantiers.sh` | dresse le registre de tous les chantiers à partir de git et de leur fiche `CHANTIER.md` ; il l'écrit hors de ce dépôt |
 | `SCRIPTS/qui.sh`, `debut-session.sh` | qui travaille dans un chantier, où est la version la plus avancée ; appelés par `make qui` et par les hooks de démarrage. Les chantiers les atteignent par `lib/SHAREDDIR` : une correction y arrive sans portage |
+| `SCRIPTS/copie-bib.sh` | recopie dans `BIBDESKDIR` les `.bib` en retard sur BibDesk (`~/bibliographie/BIBDESK-DIR=`), seulement ceux déjà publiés ; `--verifier` dit seulement lesquels. Appelé par `do-public_raw-update.command` et par le hook pre-push |
+| `SCRIPTS/hook-pre-push.sh` | le hook pre-push de ce dépôt, posé par un lien `.git/hooks/pre-push` : refuse un push tant que la copie de la bibliographie est en retard |
 | `SCRIPTS/tex-root.py` | pose `% !TEX root` en tête des fichiers inclus d'un chantier ; appelé par `make` (vérification) et `make texroot` (correction), et par `nouveau-chantier.sh` |
 | `SCRIPTS/nouveau-poste.sh` | ouvre et retire un poste temporaire, pour le cas rare où deux assistants travaillent en même temps au même chantier |
 | `SCRIPTS/style-anglais.py` | compare un texte anglais (.tex, .md, .txt) à la fiche `STYLE-ANGLAIS.md` : mesures contre la plage habituelle d'Olivier, tournures d'assistant, fautes et calques, phrases de plus de 40 mots. Sans dépendance ; atteint des chantiers par `lib/SHAREDDIR` |
@@ -72,10 +74,18 @@ dans le dépôt est faux au premier déplacement. [10 octobre 2026]
 
 ## Publier
 
-`./do-public_raw-update.command` : `git add -A`, commit, push. Le dépôt étant public, on
-relit le diff avant. Ce script faisait `git add * */*`, qui laissait de côté les fichiers
+`./do-public_raw-update.command` : recopie de la bibliographie depuis BibDesk
+(`SCRIPTS/copie-bib.sh`), puis `git add -A`, commit, push. Le dépôt étant public, on relit
+le diff avant. Ce script faisait `git add * */*`, qui laissait de côté les fichiers
 cachés, donc `.claude/` et `.gitignore` ; corrigé le 25 septembre 2026. Comme il prend tout,
 un fichier non suivi qui traîne part avec : regarder `git status` avant de le lancer.
+
+La copie de la bibliographie dans `BIBDESKDIR` est celle que voit le chat, par GitHub ; la
+référence est BibDesk, chez Olivier. Le hook pre-push (`SCRIPTS/hook-pre-push.sh`, à relier
+une fois par machine : `ln -s ../../SCRIPTS/hook-pre-push.sh .git/hooks/pre-push`) refuse
+de pousser quand elle est en retard. Un assistant qui se voit refuser lance alors
+`SCRIPTS/copie-bib.sh` et commite `BIBDESKDIR` au nom d'Olivier (`--author`), dans un commit
+à part, avant de pousser : ce sont ses fichiers. [17 octobre 2026]
 
 ## Git
 
