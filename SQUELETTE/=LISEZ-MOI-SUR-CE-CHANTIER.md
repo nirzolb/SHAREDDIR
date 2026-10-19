@@ -53,6 +53,7 @@ make publier    vers le répertoire finalisé
 | | |
 |---|---|
 | `make` | compile `__DOC__.tex` en `__DOC__.pdf` : pdflatex, bibtex, makeindex si besoin, pdflatex deux fois |
+| `make relecture` | `__DOC__-relecture.pdf`, pour relire sur la tablette : les mêmes pages, chacune allongée d'une bande avec les références citées sur la page et les tournures à revoir, surlignées dans le texte ; il ne part pas vers le finalisé |
 | `make sha` | commit courant, branche, modifications non commitées, commits non poussés |
 | `make qui` | qui travaille ici (Claude Code, Codex), les branches, qui a touché quoi en dernier |
 | `make deps` | refait `lib/`, à lancer si les styles manquent |

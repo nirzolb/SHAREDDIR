@@ -73,6 +73,9 @@ main.
   passer avant tout commit. En cas d'erreur, les lignes fautives du .log sont affichées.
 - `make texroot` : pose `% !TEX root = <document principal>` en tête des fichiers inclus,
   pour compiler depuis TeXShop ; `make` signale ceux qui n'ont pas la ligne.
+- `make relecture` : `__DOC__-relecture.pdf`, pour la tablette : les mêmes pages, au trait
+  près, avec sous chacune les références citées et les tournures à revoir (celles de
+  `make style`), surlignées dans la page. Il ne part pas vers le finalisé.
 - `make sha` : commit courant, branche, modifications non commitées, commits non poussés.
 - `make qui` : qui travaille ici, les branches, qui a touché quoi.
 - `make am` : applique le dernier `chantier-*.patch` venu du chat (auteur conservé).

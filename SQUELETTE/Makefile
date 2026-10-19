@@ -1,5 +1,6 @@
 # Makefile de chantier (Olivier Bournez / Claude). GNU make 3.81+.
-# Cibles : pdf (défaut), texroot, style, deps, sha, qui, am, publier, importer, clean, distclean.
+# Cibles : pdf (défaut), texroot, style, relecture, deps, sha, qui, am, publier, importer, clean,
+# distclean.
 
 MAIN ?= main
 NOM  := $(notdir $(CURDIR))
@@ -21,7 +22,7 @@ export BSTINPUTS := .:$(SD)/STYLEDIR//:
 
 PDFLATEX := pdflatex -interaction=nonstopmode -file-line-error -recorder
 
-.PHONY: all pdf texroot style deps full strip apxversion sha qui am publier importer clean distclean
+.PHONY: all pdf texroot style relecture deps full strip apxversion sha qui am publier importer clean distclean
 
 all: pdf
 
@@ -81,6 +82,15 @@ PROFIL  ?=
 MOTS    ?=
 style: deps
 	@python3 $(SD)/SCRIPTS/style-anglais.py $(if $(PROFIL),--profil $(PROFIL)) $(if $(MOTS),--mots $(MOTS)) $(FICHIER)
+
+# ---------- version de relecture, pour lire sur tablette (lib/SHAREDDIR/SCRIPTS/relecture.sh) ----------
+# make relecture : $(MAIN)-relecture.pdf, les mêmes pages, chacune allongée d'une bande qui donne les
+# références citées sur la page et les tournures à revoir (celles de make style), surlignées et
+# numérotées dans la page. FICHIER=autre.tex pour un autre document, TOURNURES=non pour les
+# références seules, MOTS=liste.txt comme pour make style. Le PDF ne part pas vers le finalisé.
+TOURNURES ?= oui
+relecture: deps
+	@$(SD)/SCRIPTS/relecture.sh $(if $(filter non,$(TOURNURES)),--sans-tournures) $(if $(MOTS),--mots $(MOTS)) $(FICHIER)
 
 # ---------- versions apxproof d'un article ----------
 # make full  : preuves à leur place (appendix=inline)   -> $(MAIN)-full.pdf
@@ -218,7 +228,8 @@ importer: pdf
 # ---------- ménage ----------
 clean:
 	@rm -f $(MAIN)-full.* $(MAIN)-strip.* $(MAIN).aux $(MAIN).log $(MAIN).bbl $(MAIN).blg $(MAIN).out $(MAIN).toc $(MAIN).lof $(MAIN).lot \
-	  $(MAIN).idx $(MAIN).ind $(MAIN).ilg $(MAIN).nav $(MAIN).snm $(MAIN).vrb $(MAIN).synctex.gz $(MAIN).fls $(MAIN).fdb_latexmk
+	  $(MAIN).idx $(MAIN).ind $(MAIN).ilg $(MAIN).nav $(MAIN).snm $(MAIN).vrb $(MAIN).synctex.gz $(MAIN).fls $(MAIN).fdb_latexmk \
+	  $(filter-out $(MAIN)-relecture.pdf,$(wildcard $(MAIN)-relecture.* $(MAIN)-relecture-*))
 
 distclean: clean
-	@rm -rf $(LIB) figcommons-local.tex $(MAIN).pdf
+	@rm -rf $(LIB) figcommons-local.tex $(MAIN).pdf $(MAIN)-relecture.pdf
