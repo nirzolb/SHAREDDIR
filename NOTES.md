@@ -487,3 +487,37 @@ et du 17 octobre tient.
 **Questions pour Olivier.** Aucune.
 
 Base : 891756c
+
+## 2026-10-19 16h50 (code)
+**Fait.** La version de relecture sur tablette de CARE-CHANTIER-SURVEY-2026 devient commune
+à tous les chantiers, avec en plus les tournures surlignées (54e3350, aca3082, 5f2bbdd).
+`STYLEDIR/relecture/` (relecture.tex et .bst) : sous chaque page, une bande avec les
+références citées et les tournures à revoir. Dans la page, fond jaune pour une tournure
+d'assistant, bleu clair pour une faute ou un calque, pointillé gris pour un indice faible,
+avec un numéro dans la marge. `SCRIPTS/relecture.sh` fait les passages ;
+`SCRIPTS/relecture-tournures.py` cherche, d'après `pdftotext -bbox`, ce que connaît
+`style-anglais.py`. Rien dans la bibliographie, ni dans une page surtout en français.
+`SQUELETTE/Makefile` : `make relecture` (`FICHIER=`, `TOURNURES=non`, `MOTS=`). Essayé sur
+des copies : corps, supplément et « mécanismes » de CARE-CHANTIER-SURVEY-2026, exposé
+beamer de CARE-CHANTIER-EXPOSE-RP2026, article du modèle générique, cours. Même
+pagination, aucun mot déplacé de plus de 0,01 point. Corrigé en chemin : étiquettes beamer
+et alpha, titres de section pris pour des questions, chemins hors make. Mode d'emploi pour
+Olivier : `=README-RELECTURE.md`. Hors dépôt : une ligne `make relecture` ajoutée à
+`~/00-CHANTIERS-CARE/=README-OLIVIER`.
+
+**Décidé (Olivier).** Une seule commande, `make relecture`, pour les références et les
+tournures. Les couleurs sont doublées d'un trait et d'une raison écrite dans la bande.
+
+**À faire.** Porter `make relecture` (aca3082) aux chantiers LaTeX ouverts, sur ordre
+d'Olivier, un à la fois et au repos : SURVEY-2026, EXPOSE-RP2026, STOC2027, ANR-2026,
+Odes-et-statistiques, STACS2027-PRECISION, COURS-POUR-MOI-PETITES-CLASSES-SCHEMAS-DISCRETS-ET-CONTINUS,
+Raisonner-Sur-ODEs, Information-Et-Precision, Abstraire-Une-Dynamique (noms du registre).
+Pas INF412, PAGE-WEB, WORKFLOW-OMNIFOCUS ni le CV. SURVEY-2026 a déjà sa propre cible
+`relecture` dans `Makefile.chantier` : le portage la remplace par des appels au script
+commun. En attendant, `lib/SHAREDDIR/SCRIPTS/relecture.sh DOC.tex` marche partout.
+Proposé, sans réponse : les cadres de liens de hyperref, rouges et verts, en bleu dans la
+relecture.
+
+**Questions pour Olivier.** Aucune.
+
+Base : 5f2bbdd

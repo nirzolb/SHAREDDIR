@@ -45,6 +45,7 @@ Code : une règle nouvelle s'écrit ici, sinon les autres assistants l'ignorent.
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |
 | `STYLE-ANGLAIS.md` | la fiche de style pour l'anglais d'Olivier, à laquelle les deux conventions renvoient |
 | `=README-STYLE.md` | pour Olivier : quoi demander à un assistant, dans un chantier, pour mettre un texte anglais à son style, et comment vérifier |
+| `=README-RELECTURE.md` | pour Olivier : la version de relecture sur tablette (`make relecture`), ce que veulent dire les marques, comment s'en servir dans un chantier ancien ou nouveau |
 | `CLAUDE-PERSO.md` | les instructions personnelles d'Olivier pour ses assistants, lues partout par les liens `~/.claude/CLAUDE.md` (Claude Code) et `~/.codex/AGENTS.md` (Codex) |
 | `README-CHANTIERS.md` | l'aide-mémoire d'ensemble |
 | `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.codex/` | les règles de ce dépôt et les réglages des deux assistants, suivis par git |

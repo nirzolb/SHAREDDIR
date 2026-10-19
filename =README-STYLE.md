@@ -54,7 +54,8 @@ Pour relire sur la page même, sur la tablette : `make relecture` donne
 à leur place : fond jaune pour une tournure d'assistant, bleu clair pour une faute ou un
 calque, pointillé gris pour un indice faible. Chacune a un numéro dans la marge, repris
 avec sa raison dans une bande sous la page, avec les références citées sur cette page.
-Les mesures et les phrases longues n'y sont pas : elles restent dans `make style`.
+Les mesures et les phrases longues n'y sont pas : elles restent dans `make style`. Le mode
+d'emploi est dans `=README-RELECTURE.md`.
 
 ## Selon le chantier
 
