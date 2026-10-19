@@ -41,6 +41,12 @@ done
 [ -n "$JOB" ] || JOB=$SOURCE-relecture
 [ -z "$MOTS" ] || [ -f "$MOTS" ] || { echo "relecture : liste $MOTS introuvable"; exit 1; }
 
+# Lancé hors make (chantier qui n'a pas la cible), les chemins que le Makefile du chantier exporte.
+if [ -d lib/SHAREDDIR ]; then
+  case "${TEXINPUTS:-}" in *lib/SHAREDDIR*) ;; *) TEXINPUTS=".:lib/SHAREDDIR/STYLEDIR//:${TEXINPUTS:-}" ;; esac
+  case "${BIBINPUTS:-}" in *lib/SHAREDDIR*) ;; *) export BIBINPUTS=".:lib/SHAREDDIR/BIBDESKDIR//:${BIBINPUTS:-}" ;; esac
+  case "${BSTINPUTS:-}" in *lib/SHAREDDIR*) ;; *) BSTINPUTS=".:lib/SHAREDDIR/STYLEDIR//:${BSTINPUTS:-}" ;; esac
+fi
 # relecture.tex et relecture.bst d'abord : un fichier du même nom dans le chantier ne les cache pas.
 export TEXINPUTS="$RL:${TEXINPUTS:-.:}"
 export BSTINPUTS="$RL:${BSTINPUTS:-.:}"
