@@ -467,3 +467,23 @@ Le reste des entrées du 16 octobre tient.
 **Questions pour Olivier.** Aucune.
 
 Base : f55c85a
+
+## 2026-10-19 10h59 (code)
+**Fait.** Rien de changé dans le dépôt depuis 891756c. Deux constats. `rp26-extra.bib`, que
+citait le chat, est dans le chantier EXPOSE-RP2026 ; ses clés `BCW26neurips` et
+`BCCW26fsttcs` viennent des `.bib` des dépôts Overleaf communs avec les coauteurs, et
+`perso.bib`, maintenant publié, a les mêmes articles sous `NeurIps2026` et `FSTTCS2026`.
+Hors dépôt : la complétion de zsh insérait d'elle-même un choix depuis que `compinit`
+tourne vraiment (correction du 1er septembre), à cause d'`auto_menu` et des complétions
+`_correct _approximate` écrites autrefois par compinstall ; Olivier a mis dans `~/.zshrc`
+`unsetopt auto_menu` et un `completer` sans ces deux-là, vérifié dans un zsh neuf.
+
+**Décidé (Olivier).** La complétion de zsh liste les possibilités et ne choisit plus.
+
+**À faire.** EXPOSE-RP2026 : garder les clés des coauteurs dans `rp26-extra.bib`, ou passer
+à celles de `perso.bib` (il ne resterait que `hastad2001some`). Le reste des entrées du 16
+et du 17 octobre tient.
+
+**Questions pour Olivier.** Aucune.
+
+Base : 891756c
