@@ -49,6 +49,13 @@ Il faut quelques centaines de mots pour que les mesures veuillent dire quelque c
 dessous de 300, le script ne les donne pas et ne dresse que les listes. Une mesure hors de la
 plage signale un passage à relire, pas une faute ; un très bon texte de toi peut en sortir.
 
+Pour relire sur la page même, sur la tablette : `make relecture` donne
+`<document>-relecture.pdf`. Les tournures (2) et les fautes et calques (3) y sont surlignées
+à leur place : fond jaune pour une tournure d'assistant, bleu clair pour une faute ou un
+calque, pointillé gris pour un indice faible. Chacune a un numéro dans la marge, repris
+avec sa raison dans une bande sous la page, avec les références citées sur cette page.
+Les mesures et les phrases longues n'y sont pas : elles restent dans `make style`.
+
 ## Selon le chantier
 
 - **Article ouvert depuis le 16 octobre 2026** : la fiche est chargée d'office, `make style`

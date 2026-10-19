@@ -1,0 +1,323 @@
+%% relecture.tex : la version de relecture d'un document de chantier (make relecture), pour lire
+%% sur tablette sans aller-retour vers la bibliographie. Les pages restent celles du document, au
+%% trait près ; sous chaque page qui cite, ou qui a des tournures repérées, la page est allongée
+%% d'une bande grise qui donne :
+%%   - les références citées sur cette page : numéro (lien vers la bibliographie), auteurs, titre,
+%%     lieu, année ;
+%%   - les tournures à revoir, numérotées comme dans la marge de la page, avec leur raison.
+%% Dans la page, une tournure repérée est surlignée et soulignée, et son numéro est dans la marge :
+%% fond jaune et trait plein pour une tournure d'assistant, fond bleu clair et trait plein pour une
+%% faute ou un calque, trait pointillé gris sans fond pour un indice faible (« à vérifier »). La
+%% couleur n'est jamais seule : le trait et la bande disent aussi de quoi il s'agit.
+%%
+%% Chargé avant \documentclass par SCRIPTS/relecture.sh, qui fait les passages :
+%%   pdflatex -jobname=<job> "\AddToHook{begindocument/before}{\input{relecture}}\input{<source>}"
+%% Références : chaque citation écrit \rlcite{clé}{page} dans le .aux, à la sortie de la page, donc
+%% lu au passage suivant ; les entrées courtes viennent de <job>-refs.bbl, que bibtex produit avec
+%% relecture.bst sur les clés citées. Marche avec natbib (acmart, LIPIcs) et avec le \cite de
+%% LaTeX, hyperref chargé ou non ; pas avec biblatex.
+%% Tournures : au dernier passage seulement (\rlavectournures défini), <job>-tournures.aux, écrit
+%% par SCRIPTS/relecture-tournures.py d'après le texte du PDF (pdftotext -bbox) : des rectangles en
+%% points PostScript (bp) depuis le coin haut gauche de la page, et les lignes de la bande. Pour
+%% lui, le .aux donne la hauteur de la page sans bande (\rlhauteur) et les pages de la
+%% bibliographie (\rlbiblio), où rien n'est cherché.
+%% Ne part jamais vers le finalisé : le PDF de relecture est <document>-relecture.pdf.
+
+\providecommand\rltitre{R\'ef\'erences cit\'ees sur cette page}
+\providecommand\rltitretournures{Tournures \`a revoir}
+\providecommand\rlhauteur[1]{}
+\providecommand\rlbiblio[2]{}
+
+\RequirePackage{xcolor}
+\definecolor{rlfort}{RGB}{255,232,120}   % fond : tournure d'assistant (jaune)
+\definecolor{rlfaute}{RGB}{196,222,255}  % fond : faute ou calque (bleu clair)
+\definecolor{rltrait}{RGB}{25,55,145}    % traits pleins et numéros (bleu foncé)
+\definecolor{rlgris}{gray}{0.45}         % indice faible : pointillé, numéro et ligne de la bande
+
+\ExplSyntaxOn
+\makeatletter
+
+\prop_new:N \g__rl_entree_prop     % clé -> {Auteurs.}{Titre.}{Lieu, année.}
+\prop_new:N \g__rl_num_prop        % clé -> étiquette dans la bibliographie
+\prop_new:N \g__rl_rang_prop       % clé -> rang dans la bibliographie
+\int_new:N \g__rl_rang_int
+\box_new:N \l__rl_etiquette_box
+\prop_new:N \g__rl_page_prop       % page absolue -> clés citées, séparées par des virgules
+\prop_new:N \g__rl_dessin_prop     % page absolue -> fonds, traits et numéros des tournures
+\prop_new:N \g__rl_tournure_prop   % page absolue -> lignes « Tournures à revoir » de la bande
+\box_new:N \g__rl_bande_box
+\tl_new:N \g__rl_dessin_tl         % dessin de la page en cours de sortie
+\dim_new:N \g__rl_bande_dim        % hauteur ajoutée à la page courante
+\dim_new:N \g__rl_hauteur_dim      % hauteur de la page sans bande
+\seq_new:N \l__rl_cles_seq
+\tl_new:N \l__rl_tmp_tl
+\tl_new:N \l__rl_refs_tl
+\tl_new:N \l__rl_tour_tl
+\tl_new:N \l__rl_page_tl
+\dim_const:Nn \c__rl_marge_dim { 14pt }
+\cs_generate_variant:Nn \prop_get:NnNF { Ne }
+\cs_generate_variant:Nn \prop_get:NnNT { Ne }
+
+%% Ajoute du code à la valeur d'une clé (une page) d'une propriété globale.
+\cs_new_protected:Npn \__rl_ajouter:Nnn #1#2#3
+  {
+    \prop_get:NnNF #1 {#2} \l__rl_tmp_tl { \tl_clear:N \l__rl_tmp_tl }
+    \tl_put_right:Nn \l__rl_tmp_tl {#3}
+    \prop_gput:NnV #1 {#2} \l__rl_tmp_tl
+  }
+
+%% Les entrées courtes, lues dans <job>-refs.bbl.
+\cs_new_protected:Npn \rlentry #1#2#3#4
+  { \prop_gput:Nnn \g__rl_entree_prop {#1} { {#2} {#3} {#4} } }
+
+%% \rlcite{clé}{page}, lu dans le .aux : la clé s'ajoute aux clés de la page.
+\cs_new_protected:Npn \rlcite #1#2
+  {
+    \prop_get:NnNF \g__rl_page_prop {#2} \l__rl_tmp_tl { \tl_clear:N \l__rl_tmp_tl }
+    \clist_if_in:NnF \l__rl_tmp_tl {#1}
+      {
+        \clist_put_right:Nn \l__rl_tmp_tl {#1}
+        \prop_gput:NnV \g__rl_page_prop {#2} \l__rl_tmp_tl
+      }
+  }
+
+%% Les tournures, lues dans <job>-tournures.aux (coordonnées en bp, l'origine en haut à gauche,
+%% y vers le haut : négatif dans la page).
+%%   \rlfond{page}{couleur}{x}{y}{largeur}{hauteur}   fond sous les mots, (x, y) coin bas gauche
+%%   \rltrait{page}{x}{y}{largeur}                    trait plein sous les mots
+%%   \rlpointille{page}{x}{y}{nombre}                 trait pointillé gris, un pas tous les 3 bp
+%%   \rlnum{page}{couleur}{x}{y}{numéros}             numéros dans la marge, alignés à droite en x
+%%   \rltournure{page}{n}{genre}{texte}{raison}       ligne de la bande ; genre f, c ou v
+\cs_new_protected:Npn \rlfond #1#2#3#4#5#6
+  {
+    \__rl_ajouter:Nnn \g__rl_dessin_prop {#1}
+      { \put (#3,#4) { \textcolor {#2} { \rule {#5\unitlength} {#6\unitlength} } } }
+  }
+\cs_new_protected:Npn \rltrait #1#2#3#4
+  {
+    \__rl_ajouter:Nnn \g__rl_dessin_prop {#1}
+      { \put (#2,#3) { \textcolor {rltrait} { \rule {#4\unitlength} {0.6\unitlength} } } }
+  }
+\cs_new_protected:Npn \rlpointille #1#2#3#4
+  {
+    \__rl_ajouter:Nnn \g__rl_dessin_prop {#1}
+      { \multiput (#2,#3) (3,0) {#4} { \textcolor {rlgris} { \rule {1.6\unitlength} {0.5\unitlength} } } }
+  }
+\cs_new_protected:Npn \rlnum #1#2#3#4#5
+  {
+    \__rl_ajouter:Nnn \g__rl_dessin_prop {#1}
+      { \put (#3,#4) { \makebox (0,0) [r] { \normalfont \sffamily \bfseries \tiny \textcolor {#2} {#5} } } }
+  }
+\cs_new_protected:Npn \rltournure #1#2#3#4#5
+  { \__rl_ajouter:Nnn \g__rl_tournure_prop {#1} { \__rl_ligne_tournure:nnnn {#2} {#3} {#4} {#5} } }
+
+%% Le numéro de chaque clé, pris au passage de \bibcite dans le .aux : natbib écrit
+%% {numéro}{année}{{auteurs}}{{...}}, LaTeX l'étiquette seule (un numéro, ou ABK+06 en style
+%% alpha), beamer l'étiquette dans un \hyperlink vers sa page de bibliographie. Les \bibcite
+%% viennent dans l'ordre de la bibliographie : leur rang ordonne les lignes de la bande.
+\cs_new_eq:NN \__rl_bibcite_orig:nn \bibcite
+\cs_gset_protected:Npn \bibcite #1#2
+  {
+    \__rl_bibcite_orig:nn {#1} {#2}
+    \prop_if_in:NnF \g__rl_rang_prop {#1}
+      {
+        \int_gincr:N \g__rl_rang_int
+        \prop_gput:Nne \g__rl_rang_prop {#1} { \int_use:N \g__rl_rang_int }
+      }
+    \cs_if_exist:NTF \NAT@parse
+      { \prop_gput:Nno \g__rl_num_prop {#1} { \tl_head:n {#2} } }
+      { \prop_gput:Nnn \g__rl_num_prop {#1} {#2} }
+  }
+
+%% Écrit #1 dans le .aux à la sortie de la page, avec la page absolue en dernier argument.
+\cs_new_protected:Npn \__rl_ecrire_page:n #1
+  {
+    \protected@write \@auxout {}
+      { #1 { \exp_not:N \the \exp_not:N \ReadonlyShipoutCounter } }
+  }
+
+%% Chaque clé citée écrit \rlcite{clé}{page absolue} à la sortie de sa page.
+\cs_new_protected:Npn \__rl_note:n #1
+  {
+    \@bsphack
+    \clist_map_inline:nn {#1}
+      { \__rl_ecrire_page:n { \token_to_str:N \rlcite {##1} } }
+    \@esphack
+  }
+
+%% Branchement, une fois tous les paquets en place (natbib choisit son \@citex au début du
+%% document) : toutes les citations passent par \@citex, avec deux arguments optionnels sous
+%% natbib, un seul avec le \cite de LaTeX ; la liste des clés est le dernier argument. Les clés
+%% sont notées même indéfinies, dès le premier passage. (Dans une macro : le code d'un crochet ne
+%% dédouble pas les #.) Le .aux reçoit aussi la hauteur de la page, pour relecture-tournures.py.
+\cs_new_protected:Npn \__rl_brancher:
+  {
+    \cs_gset_eq:NN \__rl_citex_orig:w \@citex
+    \cs_if_exist:NTF \NAT@parse
+      {
+        \cs_gset_protected:Npn \@citex [##1] [##2] ##3
+          { \__rl_citex_orig:w [{##1}] [{##2}] {##3} \__rl_note:n {##3} }
+      }
+      {
+        \cs_gset_protected:Npn \@citex [##1] ##2
+          { \__rl_citex_orig:w [{##1}] {##2} \__rl_note:n {##2} }
+      }
+    \iow_now:Ne \@auxout { \token_to_str:N \rlhauteur { \dim_use:N \paperheight } }
+  }
+\AddToHook { begindocument / end } { \__rl_brancher: }
+
+%% Les pages de la bibliographie, où relecture-tournures.py ne cherche rien : la page de son
+%% premier paragraphe (le titre ou la première entrée) et celle de sa fin. Rien n'est écrit entre
+%% deux paragraphes, où une note dans la liste verticale changerait les espaces.
+\AddToHook { env / thebibliography / begin }
+  { \AddToHookNext { para / begin } { \__rl_ecrire_page:n { \token_to_str:N \rlbiblio {debut} } } }
+\AddToHook { env / thebibliography / end }
+  { \@bsphack \__rl_ecrire_page:n { \token_to_str:N \rlbiblio {fin} } \@esphack }
+
+%% La bande d'une page : les références, dans l'ordre de la bibliographie, puis les tournures.
+\cs_new:Npn \__rl_num:n #1
+  { \prop_if_in:NnTF \g__rl_rang_prop {#1} { \prop_item:Nn \g__rl_rang_prop {#1} } { 0 } }
+
+%% L'étiquette entre crochets, lien vers la bibliographie ; celle de beamer porte déjà le sien
+%% (deux liens emboîtés arrêteraient pdfTeX).
+\cs_new_protected:Npn \__rl_etiquette:n #1
+  {
+    \prop_get:NnNF \g__rl_num_prop {#1} \l__rl_tmp_tl { \tl_set:Nn \l__rl_tmp_tl { ? } }
+    \cs_if_exist:NTF \hyperlink
+      {
+        \tl_if_in:NnTF \l__rl_tmp_tl { \hyperlink }
+          { [ \l__rl_tmp_tl ] }
+          { \hyperlink { cite.#1 } { [ \l__rl_tmp_tl ] } }
+      }
+      { [ \l__rl_tmp_tl ] }
+  }
+
+\cs_new_protected:Npn \__rl_ligne:n #1
+  {
+    \hangindent = 2.9em \hangafter = 1 \noindent
+    \hbox_set:Nn \l__rl_etiquette_box { \__rl_etiquette:n {#1} }
+    \hbox_to_wd:nn { \dim_max:nn { 2.9em } { \box_wd:N \l__rl_etiquette_box + 0.5em } }
+      { \box_use_drop:N \l__rl_etiquette_box \hfil }
+    \prop_get:NnNTF \g__rl_entree_prop {#1} \l__rl_tmp_tl
+      { \exp_after:wN \__rl_entree:nnn \l__rl_tmp_tl }
+      { \texttt { \tl_to_str:n {#1} } }
+    \par
+  }
+\cs_new_protected:Npn \__rl_entree:nnn #1#2#3
+  { \tl_if_empty:nF {#1} { #1 \c_space_tl } \textit {#2} \tl_if_empty:nF {#3} { \c_space_tl #3 } }
+
+%% Une ligne des tournures : numéro (celui de la marge), texte repéré, raison ; en gris pour un
+%% indice faible.
+\cs_new_protected:Npn \__rl_ligne_tournure:nnnn #1#2#3#4
+  {
+    \group_begin:
+      \str_if_eq:nnT {#2} {v} { \color {rlgris} }
+      \hangindent = 2.9em \hangafter = 1 \noindent
+      \hbox_to_wd:nn { 2.9em }
+        { \sffamily \bfseries \str_if_eq:nnF {#2} {v} { \color {rltrait} } #1 \hfil }
+      \textit {#3} \c_space_tl : \c_space_tl #4
+      \par
+    \group_end:
+  }
+
+\cs_new_protected:Npn \__rl_bande:
+  {
+    \tl_if_empty:NF \l__rl_refs_tl
+      {
+        \exp_args:NNV \seq_set_from_clist:Nn \l__rl_cles_seq \l__rl_refs_tl
+        \seq_sort:Nn \l__rl_cles_seq
+          {
+            \int_compare:nNnTF { \__rl_num:n {##1} } > { \__rl_num:n {##2} }
+              { \sort_return_swapped: } { \sort_return_same: }
+          }
+      }
+    \vbox_gset:Nn \g__rl_bande_box
+      {
+        \hsize = \textwidth \linewidth = \textwidth
+        \normalfont \footnotesize \raggedright
+        \parindent = 0pt \parskip = 1.5pt \relax
+        \cs_set:Npn \\ { \relax \ignorespaces }
+        \tl_if_empty:NF \l__rl_refs_tl
+          {
+            \noindent \textbf { \rltitre } \par
+            \seq_map_function:NN \l__rl_cles_seq \__rl_ligne:n
+          }
+        \tl_if_empty:NF \l__rl_tour_tl
+          {
+            \tl_if_empty:NF \l__rl_refs_tl { \skip_vertical:n { 4pt } }
+            \noindent \textbf { \rltitretournures } \par
+            \l__rl_tour_tl
+          }
+      }
+  }
+
+%% Avant la sortie de chaque page (le compteur vaut alors le numéro de la page précédente) :
+%% la bande, le dessin des tournures, et la hauteur de la page.
+\AddToHook { shipout / before }
+  {
+    \dim_compare:nNnT { \g__rl_hauteur_dim } = { 0pt }
+      { \dim_gset:Nn \g__rl_hauteur_dim { \paperheight } }
+    \box_gclear:N \g__rl_bande_box
+    \dim_gzero:N \g__rl_bande_dim
+    \tl_set:Ne \l__rl_page_tl { \int_eval:n { \ReadonlyShipoutCounter + 1 } }
+    \prop_get:NeNF \g__rl_page_prop { \l__rl_page_tl } \l__rl_refs_tl { \tl_clear:N \l__rl_refs_tl }
+    \prop_get:NeNF \g__rl_tournure_prop { \l__rl_page_tl } \l__rl_tour_tl { \tl_clear:N \l__rl_tour_tl }
+    \prop_get:NeNF \g__rl_dessin_prop { \l__rl_page_tl } \l__rl_tmp_tl { \tl_clear:N \l__rl_tmp_tl }
+    \tl_gset_eq:NN \g__rl_dessin_tl \l__rl_tmp_tl
+    \bool_lazy_and:nnF { \tl_if_empty_p:N \l__rl_refs_tl } { \tl_if_empty_p:N \l__rl_tour_tl }
+      {
+        \__rl_bande:
+        \dim_gset:Nn \g__rl_bande_dim
+          { \box_ht_plus_dp:N \g__rl_bande_box + 2 \c__rl_marge_dim }
+      }
+    \cs_if_exist:NT \pdfpageheight
+      { \global \pdfpageheight = \dim_eval:n { \g__rl_hauteur_dim + \g__rl_bande_dim } \relax }
+  }
+
+%% Sous le texte de la page : les fonds et les traits des tournures, puis la bande, sur fond gris
+%% clair et sur toute la largeur, son texte aligné sur la colonne.
+\cs_new:Npn \__rl_pt:n #1 { \dim_to_decimal_in_unit:nn {#1} { 1pt } }
+\AddToHook { shipout / background }
+  {
+    \tl_if_empty:NF \g__rl_dessin_tl
+      {
+        \group_begin:
+          \setlength \unitlength { 1bp }
+          \g__rl_dessin_tl
+        \group_end:
+      }
+    \box_if_empty:NF \g__rl_bande_box
+      {
+        \setlength \unitlength { 1pt }
+        \put ( 0 , \__rl_pt:n { - \g__rl_hauteur_dim - \g__rl_bande_dim } )
+          { \textcolor { black!6 } { \rule { \paperwidth } { \g__rl_bande_dim } } }
+        \put ( 0 , \__rl_pt:n { - \g__rl_hauteur_dim } )
+          { \textcolor { black!35 } { \rule { \paperwidth } { 0.6pt } } }
+        \put
+          (
+            \__rl_pt:n
+              {
+                1in + \hoffset +
+                \bool_lazy_and:nnTF { \legacy_if_p:n { @twoside } } { \int_if_even_p:n { \c@page } }
+                  { \evensidemargin } { \oddsidemargin }
+              } ,
+            \__rl_pt:n
+              { - \g__rl_hauteur_dim - \c__rl_marge_dim - \box_ht:N \g__rl_bande_box }
+          )
+          { \box_use:N \g__rl_bande_box }
+      }
+  }
+
+\makeatother
+\ExplSyntaxOff
+
+%% Les entrées courtes (absentes au premier passage) et, au dernier passage, les tournures, lues
+%% hors de la syntaxe expl3 qui ignore les espaces. Comme pour la bibliographie, & et \\ sont
+%% neutralisés (un champ journal en contient parfois, dans la biblio de référence).
+\begingroup
+  \catcode`\&=12
+  \InputIfFileExists{\jobname-refs.bbl}{}{}
+\endgroup
+\ifdefined\rlavectournures
+  \InputIfFileExists{\jobname-tournures.aux}{}{}
+\fi

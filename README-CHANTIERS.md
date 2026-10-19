@@ -133,6 +133,7 @@ et répond sous le texte de l'autre sans le réécrire.
 | Fin de session | `/passation` (ou `/passation remarque libre`) : entrée dans NOTES.md, commit, push. Quand tu arrêtes, ou avant de passer au chat ; pas après chaque petite tâche (Claude Code commite au fil de l'eau) |
 | Compiler | `make` (pdflatex, bibtex, makeindex si besoin, pdflatex x2 ; erreurs du .log affichées) |
 | L'anglais face à ton style | `=README-STYLE.md` dit quoi demander. `make style` : rapport de `style-anglais.py` sur le document principal, rien n'est modifié (`FICHIER=`, `PROFIL=solo`, `MOTS=`). Chantiers ouverts après le 16 octobre 2026, ou portés |
+| Relire sur la tablette | `make relecture` : `<document>-relecture.pdf`, les mêmes pages, chacune allongée d'une bande grise avec les références citées sur la page et les tournures à revoir, surlignées dans le texte (jaune : tournure d'assistant ; bleu clair : faute ou calque ; pointillé gris : à vérifier) et numérotées dans la marge. `FICHIER=` pour un autre document, `TOURNURES=non` pour les références seules, `MOTS=` comme pour `make style`. Chantiers ouverts après le 19 octobre 2026, ou portés ; ailleurs, `lib/SHAREDDIR/SCRIPTS/relecture.sh DOC.tex` |
 | Où en est-on | `make sha` : le sha est l'identifiant du commit courant (`a351890`), plus branche, non commité, non poussé. À citer dans tout échange pour être sûrs de parler de la même version |
 | Depuis le téléphone | `claude remote-control --name NOM` dans le répertoire, puis app Claude, onglet Code, session au point vert |
 

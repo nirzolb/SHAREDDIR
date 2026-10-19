@@ -39,6 +39,7 @@ Code : une règle nouvelle s'écrit ici, sinon les autres assistants l'ignorent.
 | `SCRIPTS/tex-root.py` | pose `% !TEX root` en tête des fichiers inclus d'un chantier ; appelé par `make` (vérification) et `make texroot` (correction), et par `nouveau-chantier.sh` |
 | `SCRIPTS/nouveau-poste.sh` | ouvre et retire un poste temporaire, pour le cas rare où deux assistants travaillent en même temps au même chantier |
 | `SCRIPTS/style-anglais.py` | compare un texte anglais (.tex, .md, .txt) à la fiche `STYLE-ANGLAIS.md` : mesures contre la plage habituelle d'Olivier, tournures d'assistant, fautes et calques, phrases de plus de 40 mots. Sans dépendance ; atteint des chantiers par `lib/SHAREDDIR` |
+| `SCRIPTS/relecture.sh`, `relecture-tournures.py`, `STYLEDIR/relecture/` | `make relecture` : la version de relecture d'un document, pour la tablette. Les mêmes pages, au trait près, chacune allongée d'une bande avec les références citées sur la page et les tournures à revoir (celles de `style-anglais.py`), surlignées et numérotées dans la page. bibtex seulement, pas biblatex ; `pdftotext` pour les tournures. Atteints des chantiers par `lib/SHAREDDIR` |
 | `LATEX-EXEMPLES/` | les modèles de document que le script recopie |
 | `BIBDESKDIR/` | la bibliographie de référence, dont `@@reference-biblio.bib` |
 | `CONVENTIONS-LATEX.md`, `CONVENTIONS-ARTICLES.md` | importées automatiquement dans les chantiers par `lib/SHAREDDIR` |
