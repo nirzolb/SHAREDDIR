@@ -552,3 +552,18 @@ Le reste des entrées du 19 octobre tient.
 **Questions pour Olivier.** Aucune.
 
 Base : b9725c2
+
+## 2026-11-24 11h27 (code)
+**Fait.** Rien de changé dans le dépôt depuis abdf0b2. Olivier a créé le finalisé
+`~/2026-EXPOSE-ENS-LYON-PASCALINE/ENS-LYON-PASCALINE`, à côté du chantier : le mkdir de
+l'entrée précédente est fait, l'exposé est prêt pour `make publier`.
+
+**Décidé (Olivier).** Rien de nouveau.
+
+**À faire.** Remplir `=LISEZ-MOI-SUR-CE-CHANTIER.md` et `CHANTIER.md` de
+`CARE-CHANTIER-ENS-LYON-PASCALINE` à sa première session. Le reste de l'entrée de 10h49
+tient.
+
+**Questions pour Olivier.** Aucune.
+
+Base : abdf0b2
