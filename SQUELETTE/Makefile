@@ -175,10 +175,18 @@ am:
 DEPS_LIB = { awk '/^INPUT /{print $$2}' $(MAIN).fls 2>/dev/null; \
              sed -n 's/^Database file \#[0-9]*: //p; s/^The style file: //p' $(MAIN).blg 2>/dev/null \
                | while read -r b; do kpsewhich "$$b"; done; } | sed 's,^\./,,' | grep '^$(LIB)/' | sort -u
+# Le chantier et son finalisé vont côte à côte, jamais l'un dans l'autre : rangé dans DEST, le
+# chantier partirait avec toute copie du finalisé, publier MIRROR=1 effacerait ses sources et
+# importer le recopierait en lui-même. publier et importer refusent alors. [24 novembre 2026]
+COTE_A_COTE = d=$$(cd "$(DEST)" && pwd -P) || exit 1; \
+  case "$(CURDIR)/" in "$$d"/*) echo "Le chantier est rangé dans son finalisé $$d : publier et importer y feraient des dégâts."; \
+    echo "Les mettre côte à côte (lib/SHAREDDIR/SCRIPTS/deplacer-chantier.sh), puis corriger DEST dans Makefile.local."; exit 1;; esac; \
+  case "$$d/" in "$(CURDIR)"/*) echo "Le finalisé $$d est dans le chantier : le mettre à côté, puis corriger DEST dans Makefile.local."; exit 1;; esac
 publier: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make publier DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
 	@[ "$(abspath $(DEST))" != "$(CURDIR)" ] || { echo "DEST est le chantier lui-même"; exit 1; }
+	@$(COTE_A_COTE)
 	@if [ -n "$$MSG" ]; then m="$$MSG"; \
 	elif [ -t 0 ]; then printf 'Message du commit dans le finalisé (Entrée : « Mise à jour de %s ») : ' "$$(basename "$(DEST)")"; read -r m; \
 	else echo "publier : MSG manquant, rien n'a été copié. make publier MSG=\"ce qui a changé, en quelques mots\""; exit 1; fi; \
@@ -219,6 +227,7 @@ publier: pdf
 importer: pdf
 	@[ -n "$(DEST)" ] || { echo "DEST manquant : make importer DEST=/chemin, ou DEST dans Makefile.local"; exit 1; }
 	@[ -d "$(DEST)" ] || { echo "$(DEST) n'existe pas"; exit 1; }
+	@$(COTE_A_COTE)
 	@[ -z "$$(git status --porcelain)" ] || { echo "Arbre non propre : commiter ou remiser avant d'importer"; exit 1; }
 	@x=$$($(DEPS_LIB) | while read -r f; do printf -- '--exclude=/%s ' "$$(basename "$$f")"; done); \
 	  [ -z "$$x" ] || echo "Copies de lib/ laissées dans $(DEST) : $$(echo $$x | sed 's,--exclude=/,,g')"; \

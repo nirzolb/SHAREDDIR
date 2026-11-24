@@ -10,11 +10,38 @@ chantier ailleurs ».
 
 ## Ouvrir un chantier
 
-Depuis rien :
+Le préfixe `CARE-CHANTIER-` se met tout seul : `NOM` peut s'écrire sans lui.
+
+**Dans un répertoire de projet** (le cas courant, un exposé, un article, une demande de
+financement), créé d'abord dans le home, par exemple `~/2027-PROJET` :
+
+```
+cd ~/2027-PROJET
+/Users/bournez/public_raw/SHAREDDIR/SCRIPTS/nouveau-chantier.sh expose NOM --projet . --github
+cd CARE-CHANTIER-NOM && claude
+```
+
+Le projet contient alors, côte à côte, le chantier `CARE-CHANTIER-NOM` et son finalisé
+`NOM`, déjà écrit dans `Makefile.local` ; l'annuaire reçoit un lien vers le chantier.
+**Côte à côte, jamais l'un dans l'autre** : un chantier rangé dans son finalisé partirait
+avec toute copie de celui-ci, `make publier MIRROR=1` effacerait ses sources et `make
+importer` le recopierait en lui-même. Le script le refuse, `make publier` et `make
+importer` aussi (chantiers ouverts depuis le 24 novembre 2026).
+
+**Depuis Claude Code ou Codex**, lancé dans le répertoire du projet : dire « ouvre un
+chantier exposé ici » (ou cours, doc, article), avec le nom si on l'a. L'assistant lance la
+commande ci-dessus ; CLAUDE-PERSO.md, que les deux lisent partout, le lui dit. Deux choses
+à savoir. Une session lancée hors de l'annuaire ne peut souvent pas y écrire : le lien est
+alors refusé, et le script affiche la ligne `ln -s` à taper dans ton terminal. Et la
+session qui ouvre le chantier n'est pas dedans : elle n'en a ni les règles, ni la
+signature, ni les hooks. On travaille dans une nouvelle session, ouverte dans
+`CARE-CHANTIER-NOM`.
+
+**Sans projet**, rangé directement dans l'annuaire :
 
 ```
 /Users/bournez/public_raw/SHAREDDIR/SCRIPTS/nouveau-chantier.sh cours|expose|doc|article NOM --github
-cd /Users/bournez/00-CHANTIERS-CARE/NOM && claude
+cd /Users/bournez/00-CHANTIERS-CARE/CARE-CHANTIER-NOM && claude
 ```
 
 Le document principal porte le nom du chantier sans le préfixe `CARE-CHANTIER-` (option
@@ -67,6 +94,7 @@ Claude le fait aussi chaque matin. On ne corrige rien dans Notion.
 liens symboliques compris. Un chantier rangé ailleurs y a donc un lien, comme le CV.
 
 ```
+nouveau-chantier.sh doc NOM --projet ~/2027-PROJET      l'ouvrir dans un projet, finalisé à côté
 nouveau-chantier.sh doc NOM --dir ~/2027-PROJET         l'ouvrir ailleurs : le lien est posé
 deplacer-chantier.sh -n NOM ~/2027-PROJET               ce que ferait un déplacement
 deplacer-chantier.sh NOM ~/2027-PROJET                  le déplacer

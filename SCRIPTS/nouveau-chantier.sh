@@ -1,13 +1,27 @@
 #!/bin/bash
 # Ouvre un chantier LaTeX (Olivier Bournez et ses assistants) à partir de SHAREDDIR/SQUELETTE.
 #
-#   nouveau-chantier.sh cours|expose|doc|article NOM [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--sans-lien] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
+#   nouveau-chantier.sh cours|expose|doc|article NOM [--projet DIR] [--classe lipics|lncs|acm|generic] [--github] [--dir BASE] [--sans-lien] [--dest FINALISE] [--doc DOC] [--parent NOM|--sans-parent] [--no-git] [--no-make]
 #
+#   Le plus simple, depuis un répertoire de projet (un terminal, Claude Code ou Codex lancé là) :
+#       nouveau-chantier.sh expose MON-EXPOSE --projet .
+#   donne, côte à côte, le chantier ./CARE-CHANTIER-MON-EXPOSE et son finalisé ./MON-EXPOSE.
+#
+#   NOM     : le nom du chantier ; le préfixe CARE-CHANTIER- est ajouté s'il manque (un nom
+#             qui commence déjà par CARE- est pris tel quel)
 #   cours   : modèle cours-minimal.tex (+ entete-cours.tex, fin-cours.tex)
 #   expose  : modèle expose-minimal.tex
 #   doc     : modèle tex-minimal.tex
 #   article : modèle article-<classe>-minimal.tex (défaut lipics), importe CONVENTIONS-ARTICLES.md
 #             et la fiche STYLE-ANGLAIS.md
+#   --projet DIR    range le chantier dans le répertoire de projet DIR (« . » : le répertoire
+#                   courant), et son finalisé à côté de lui : DIR/NOM sans le préfixe, créé au
+#                   besoin, écrit dans Makefile.local (DEST). Le chantier reçoit un lien dans
+#                   l'annuaire. Exclut --dir ; --dest désigne un autre finalisé.
+#                   Côte à côte, jamais l'un dans l'autre : un chantier rangé dans son
+#                   finalisé partirait avec toute copie de celui-ci, make publier MIRROR=1
+#                   effacerait ses sources et make importer le recopierait en lui-même ;
+#                   le script refuse. [24 novembre 2026]
 #   --classe C      pour un article : lipics (défaut), lncs, acm ou generic
 #   --github        crée le dépôt privé GitHub NOM avec gh et pousse le premier commit
 #   --dir BASE      répertoire où ranger le chantier, créé au besoin (défaut : l'annuaire,
@@ -28,16 +42,19 @@
 # LATEX-EXEMPLES, et écrit SHAREDDIR_LOCAL dans le Makefile.local du chantier.
 set -euo pipefail
 
-usage() { sed -n '2,28p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+# L'aide : l'en-tête, jusqu'à la remarque sur l'emplacement du script.
+usage() { awk 'NR==1{next} /^# Le script doit rester/{exit} /^#/{sub(/^# ?/,""); print; next} {exit}' "$0"; exit 1; }
 [ $# -ge 2 ] || usage
 TYPE=$1; NOM=$2; shift 2
 ANNUAIRE="${CHANTIERS_DIR:-/Users/bournez/00-CHANTIERS-CARE}"
 BASE="$ANNUAIRE"
 GITHUB=0; DOGIT=1; DOMAKE=1; DEST=""; CLASSE=lipics; DOC=""; PARENT=""; SANSPARENT=0; LIEN=1
+PROJET=""; DIRDONNE=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --github)  GITHUB=1 ;;
-    --dir)     BASE="$2"; shift ;;
+    --projet)  PROJET="$2"; shift ;;
+    --dir)     BASE="$2"; DIRDONNE=1; shift ;;
     --sans-lien) LIEN=0 ;;
     --dest)    DEST="$2"; shift ;;
     --doc)     DOC="$2"; shift ;;
@@ -59,6 +76,14 @@ case "$TYPE" in
   *) echo "type inconnu : $TYPE (cours, expose, doc ou article)"; usage ;;
 esac
 case "$NOM" in *[!A-Za-z0-9._-]*|"") echo "NOM : lettres, chiffres, . _ - seulement"; exit 1 ;; esac
+# Le préfixe se met tout seul : « ENS-LYON » donne CARE-CHANTIER-ENS-LYON. Un nom en CARE-
+# (CARE-ET-PROGRAMMATION) reste tel quel. [24 novembre 2026]
+case "$NOM" in CARE-*) ;; *) NOM="CARE-CHANTIER-$NOM" ;; esac
+if [ -n "$PROJET" ]; then
+  [ "$DIRDONNE" = 0 ] || { echo "--projet et --dir s'excluent : --projet range déjà le chantier dans le projet"; exit 1; }
+  [ -d "$PROJET" ] || { echo "--projet : $PROJET n'existe pas (créer d'abord le répertoire du projet)"; exit 1; }
+  BASE="$PROJET"
+fi
 # Le document principal porte le nom du chantier sans le préfixe CARE-CHANTIER- (et non main) :
 # des PDF tous appelés main.pdf ne se distinguent pas. [2 octobre 2026]
 [ -n "$DOC" ] || DOC="${NOM#CARE-CHANTIER-}"
@@ -71,6 +96,25 @@ SQ="$SD/SQUELETTE"; EX="$SD/LATEX-EXEMPLES"
 mkdir -p "$BASE"; BASE=$(cd "$BASE" && pwd -P)
 CH="$BASE/$NOM"
 [ -e "$CH" ] && { echo "$CH existe déjà"; exit 1; }
+# Le finalisé : celui du projet, à côté du chantier, sauf --dest. Écrit en chemin absolu dans
+# Makefile.local, où un chemin relatif se lirait depuis le chantier.
+FINAL_CREE=0
+if [ -n "$PROJET" ] && [ -z "$DEST" ]; then
+  F="${NOM#CARE-CHANTIER-}"
+  case "$F" in CARE-*) echo "--projet : pas de nom de finalisé tiré de $NOM ; le donner par --dest"; exit 1 ;; esac
+  DEST="$BASE/$F"; [ -d "$DEST" ] || FINAL_CREE=1
+fi
+if [ -n "$DEST" ]; then
+  if [ -d "$DEST" ]; then DEST=$(cd "$DEST" && pwd -P)
+  elif [ -d "$(dirname "$DEST")" ]; then DEST="$(cd "$(dirname "$DEST")" && pwd -P)/$(basename "$DEST")"
+  fi
+  case "$DEST" in /*) ;; *) echo "--dest : $DEST introuvable (son répertoire parent doit exister)"; exit 1 ;; esac
+  # Côte à côte, jamais l'un dans l'autre (voir --projet). [24 novembre 2026]
+  case "$CH/" in "$DEST"/*) echo "Le chantier serait rangé dans son finalisé $DEST : il partirait avec toute copie du"
+    echo "finalisé, make publier MIRROR=1 effacerait ses sources, make importer le recopierait en lui-même."
+    echo "Les ranger côte à côte : --projet \"$DEST\" met le chantier et le finalisé dans ce répertoire."; exit 1 ;; esac
+  case "$DEST/" in "$CH"/*) echo "Le finalisé $DEST serait dans le chantier : le mettre à côté."; exit 1 ;; esac
+fi
 # Hors de l'annuaire, le chantier y aura un lien, pour que le registre le trouve.
 POSER=""
 if [ "$LIEN" = 1 ] && [ "$DOGIT" = 1 ] && [ -d "$ANNUAIRE" ]; then
@@ -96,6 +140,7 @@ case "$PARENT" in *[!A-Za-z0-9._=-]*) echo "--parent : un nom de chantier"; exit
 DATE=$(date +%Y-%m-%d)
 
 mkdir -p "$CH"
+[ "$FINAL_CREE" = 0 ] || mkdir -p "$DEST"
 cp -R "$SQ/." "$CH/"
 cp "$EX/$MODELE.tex" "$CH/$DOC.tex"
 if [ "$TYPE" = cours ]; then cp "$EX/entete-cours.tex" "$EX/fin-cours.tex" "$CH/"; fi
@@ -140,10 +185,14 @@ if [ "$DOGIT" = 1 ]; then
   git add -A
   # ${IDENT[@]+"${IDENT[@]}"} : un tableau vide sous set -u est une erreur en bash 3.2 (macOS)
   git ${IDENT[@]+"${IDENT[@]}"} commit -q -m "Ouverture du chantier $NOM ($TYPE, modèle $MODELE)"
-  if [ -n "$POSER" ]; then ln -s "$CH" "$POSER"; fi
+  # Une session de Claude Code ou de Codex lancée dans le projet n'écrit souvent que là : le
+  # lien peut être refusé. Le chantier est fait, on dit quoi taper. [24 novembre 2026]
+  LIEN_REFUSE=0
+  if [ -n "$POSER" ]; then ln -s "$CH" "$POSER" 2>/dev/null || LIEN_REFUSE=1; fi
   if [ "$GITHUB" = 1 ]; then
     if command -v gh >/dev/null 2>&1; then
-      gh repo create "$NOM" --private --source=. --remote=origin --push
+      gh repo create "$NOM" --private --source=. --remote=origin --push \
+        || echo "ATTENTION : gh a échoué ; depuis ton terminal : cd \"$CH\" && gh repo create $NOM --private --source=. --remote=origin --push"
     else
       echo "gh absent : créer le dépôt privé à la main puis : git remote add origin <url> && git push -u origin main"
     fi
@@ -152,13 +201,32 @@ fi
 
 echo
 echo "Chantier ouvert : $CH"
-[ -z "$POSER" ] || echo "  lien dans l'annuaire, pour le registre : $POSER"
+if [ -n "$POSER" ] && [ "${LIEN_REFUSE:-0}" = 0 ]; then echo "  lien dans l'annuaire, pour le registre : $POSER"; fi
+if [ -n "$DEST" ]; then
+  if [ "$FINAL_CREE" = 1 ]; then echo "  finalisé, créé à côté du chantier : $DEST (DEST dans Makefile.local)"
+  else echo "  finalisé : $DEST (DEST dans Makefile.local)"; fi
+fi
 echo "  $DOC.tex (modèle $MODELE)  AGENTS.md  CLAUDE.md  NOTES.md  Makefile  .claude/  .codex/"
 echo "  =LISEZ-MOI-SUR-CE-CHANTIER.md : mode d'emploi à trous, que l'assistant de la"
 echo "        première session remplit."
 echo "  CHANTIER.md : la fiche du registre des chantiers ; parent : $PARENT$DEDUIT"
-echo "Suite : cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"
+if [ "${LIEN_REFUSE:-0}" = 1 ]; then
+  echo
+  echo "ATTENTION : le lien dans l'annuaire a été refusé (session enfermée dans son répertoire ?)."
+  echo "Sans lui, le registre ne voit pas ce chantier. À taper dans ton terminal :"
+  echo "    ln -s \"$CH\" \"$POSER\""
+fi
+echo
+echo "Suite : travailler dans une NOUVELLE session ouverte dans le chantier ; celle qui a lancé ce"
+echo "        script n'en a ni les règles, ni la signature, ni les hooks."
+echo "        cd \"$CH\" && claude        (première fois : accepter la confiance du répertoire)"
 echo "        ou ouvrir ce répertoire dans Codex : les règles sont les mêmes, dans AGENTS.md"
 [ "$GITHUB" = 1 ] || echo "        dépôt distant : gh repo create $NOM --private --source=. --remote=origin --push"
-echo "        finalisé : DEST dans Makefile.local, puis hooks/install.sh /chemin/finalise"
+if [ -n "$DEST" ]; then
+  echo "        finalisé : s'il devient un dépôt git partagé, y poser le garde-fou depuis le chantier,"
+  echo "        hooks/install.sh \"$DEST\""
+else
+  echo "        finalisé : DEST dans Makefile.local, à côté du chantier et non dedans, puis"
+  echo "        hooks/install.sh /chemin/finalise s'il est sous git"
+fi
 echo "        registre de tous les chantiers : $SD/SCRIPTS/etat-chantiers.sh"
