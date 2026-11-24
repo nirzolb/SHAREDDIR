@@ -521,3 +521,34 @@ relecture.
 **Questions pour Olivier.** Aucune.
 
 Base : 5f2bbdd
+
+## 2026-11-24 10h49 (code)
+**Fait.** Un chantier s'ouvre maintenant depuis un répertoire de projet, depuis le terminal,
+Claude Code ou Codex (6c81153). `nouveau-chantier.sh --projet DIR` range côte à côte le
+chantier `CARE-CHANTIER-NOM` et son finalisé `NOM` (créé, `DEST` en chemin absolu dans
+`Makefile.local`), avec le lien dans l'annuaire. Le préfixe `CARE-CHANTIER-` s'ajoute s'il
+manque. Le script refuse un chantier rangé dans son finalisé. Un lien refusé dans l'annuaire
+(session enfermée dans le projet) ou un échec de `gh` ne l'arrêtent plus : il dit quoi
+taper. Essayé sur une copie jetable : avant, `make publier MIRROR=1` effaçait les sources
+d'un chantier rangé dans son finalisé et `make importer` le recopiait en lui-même ;
+`SQUELETTE/Makefile` les fait refuser. `README-CHANTIERS.md` et la table d'`AGENTS.md` à
+jour. Olivier a ouvert `CARE-CHANTIER-ENS-LYON-PASCALINE` dans
+`~/2026-EXPOSE-ENS-LYON-PASCALINE`, côte à côte : comparé au squelette, il est conforme
+(seul lui manque le garde-fou du Makefile, venu après, inutile ici), poussé, au registre
+(régénéré, sans recopie dans Notion).
+Commit b9725c2 à son nom, comme convenu : le paragraphe qu'il a collé dans
+`CLAUDE-PERSO.md`, qui dit aux deux assistants comment ouvrir un chantier partout.
+
+**Décidé (Olivier).** Le chantier et son finalisé se rangent côte à côte dans le projet,
+jamais l'un dans l'autre.
+
+**À faire.** Portage : aucun chantier ouvert n'est rangé dans son finalisé (vérifié), le
+garde-fou du Makefile n'a donc à aller nulle part ; il pourra suivre le portage de
+`make relecture`. Le script vit dans `SCRIPTS/` : rien à porter. Pour l'exposé, avant le
+premier `make publier` : `mkdir ~/2026-EXPOSE-ENS-LYON-PASCALINE/ENS-LYON-PASCALINE`, et
+remplir `=LISEZ-MOI-SUR-CE-CHANTIER.md` et `CHANTIER.md` à la première session du chantier.
+Le reste des entrées du 19 octobre tient.
+
+**Questions pour Olivier.** Aucune.
+
+Base : b9725c2
