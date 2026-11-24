@@ -52,6 +52,17 @@ Il est public dans SHAREDDIR : rien de personnel au-delà de chemins et de conve
   CARE-CHANTIER- (CARE-CHANTIER-Raisonner-Sur-ODEs donne Raisonner-Sur-ODEs.tex et .pdf),
   jamais main : des PDF tous appelés main.pdf ne se distinguent pas. nouveau-chantier.sh
   le fait par défaut (--doc pour un autre nom). [2 octobre 2026]
+- Ouvrir un chantier, depuis Claude Code ou Codex, où que je sois. Quand je dis « ouvre un
+  chantier » dans un répertoire de projet de mon home, lancer
+  `/Users/bournez/public_raw/SHAREDDIR/SCRIPTS/nouveau-chantier.sh TYPE NOM --projet .`,
+  avec `--github` si je le demande. TYPE : expose, article (avec `--classe lipics`, `lncs`,
+  `acm` ou `generic`), cours ou doc. Si ce que je dis n'est aucun des quatre (une note, un
+  rapport, une lettre), proposer le plus proche, doc à défaut, et me le faire confirmer ;
+  de même pour le nom, tiré du répertoire s'il manque. Le préfixe CARE-CHANTIER- se met
+  tout seul. Le chantier et son finalisé se rangent côte à côte, jamais l'un dans
+  l'autre. Si le script dit que le lien de l'annuaire est refusé, me recopier la ligne
+  qu'il donne. Puis me dire d'ouvrir une nouvelle session dans le chantier : celle-ci n'en
+  a ni les règles, ni la signature, ni les hooks, et n'y modifie rien. [24 novembre 2026]
 
 ## LaTeX
 - L'environnement recherche est à moi : ne jamais l'utiliser (mais préserver ses
